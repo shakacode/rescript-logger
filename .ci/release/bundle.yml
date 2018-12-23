@@ -10,7 +10,7 @@ steps:
       artifactName: Linux
       downloadPath: "_release"
 
-  - script: "mkdir _release/bin/platform-linux"
+  - script: "mkdir -p _release/bin/platform-linux"
     displayName: "Create _release/bin/platform-linux"
 
   - script: "mv _release/Linux/logppx.native _release/bin/platform-linux/logppx.native"
@@ -22,7 +22,7 @@ steps:
       artifactName: macOS
       downloadPath: "_release"
 
-  - script: "mkdir _release/bin/platform-darwin"
+  - script: "mkdir -p _release/bin/platform-darwin"
     displayName: "Create _release/bin/platform-darwin"
 
   - script: "mv _release/macOS/logppx.native _release/bin/platform-darwin/logppx.native"
@@ -34,14 +34,14 @@ steps:
       artifactName: Windows
       downloadPath: "_release"
 
-  - script: "mkdir _release/bin/platform-windows-x64"
+  - script: "mkdir -p _release/bin/platform-windows-x64"
     displayName: "Create _release/bin/platform-windows-x64"
 
   - script: "mv _release/Windows/logppx.native.exe _release/bin/platform-windows-x64/logppx.native.exe"
     displayName: "mv Windows"
 
   - script: |
-      mkdir _release/src
+      mkdir -p _release/src
       cp README.md _release/README.md
       cp package.json _release/package.json
       cp re-log/bsconfig.json _release/bsconfig.json
