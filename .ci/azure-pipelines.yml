@@ -1,7 +1,7 @@
 name: re-log-ci
 
 trigger:
-  - refs/tags/master
+  - master
 
 jobs:
   - template: release/pipeline.yml
