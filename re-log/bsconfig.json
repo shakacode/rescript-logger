@@ -1,5 +1,5 @@
 {
-  "name": "@minima-app/re-log",
+  "name": "@minima.app/re-log",
   "sources": ["src"],
   "refmt": 3,
   "package-specs": {

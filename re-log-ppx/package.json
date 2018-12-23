@@ -1,5 +1,5 @@
 {
-  "name": "@minima-app/re-log-ppx",
+  "name": "@minima.app/re-log-ppx",
   "version": "0.0.0",
   "description": "Logging implementation for ReasonML/BuckleScript",
   "author": "Alex Fedoseev <alex.fedoseev@gmail.com>",
