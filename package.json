@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/minima-app/re-log.git"
   },
+  "scripts": {
+    "postinstall": "node postinstall.js"
+  },
   "files": [
     "src",
     "bin",
