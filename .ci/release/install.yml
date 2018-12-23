@@ -1,0 +1,13 @@
+steps:
+  - task: NodeTool@0
+    displayName: "Use Node 8.x"
+    inputs:
+      versionSpec: 8.x
+
+  - script: yarn install
+    workingDirectory: "re-log"
+    displayName: "re-log: yarn install"
+
+  - script: yarn install
+    workingDirectory: "re-log-ppx"
+    displayName: "re-log-ppx: yarn install"

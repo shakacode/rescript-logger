@@ -1,0 +1,34 @@
+name: re-log-ci
+
+trigger:
+  - refs/tags/master
+
+jobs:
+  - template: release/pipeline.yml
+    parameters:
+      name: "re_log_Windows"
+      vmImage: "vs2017-win2016"
+      platform: "Windows"
+      fileEnding: ".exe"
+
+  - template: release/pipeline.yml
+    parameters:
+      name: "re_log_macOS"
+      vmImage: "macOS-10.13"
+      platform: "macOS"
+
+  - template: release/pipeline.yml
+    parameters:
+      name: "re_log_Linux"
+      vmImage: "ubuntu-16.04"
+      platform: "Linux"
+
+  - job: re_log_bundle
+    pool:
+      vmImage: ubuntu-16.04
+    dependsOn:
+      - re_log_Linux
+      - re_log_macOS
+      - re_log_Windows
+    steps:
+      - template: release/bundle.yml
