@@ -46,7 +46,6 @@ steps:
       cp package.json _release/package.json
       cp re-log/bsconfig.json _release/bsconfig.json
       cp re-log/src/Log.re _release/src/Log.re
-      cp re-log/src/Log.rei _release/src/Log.rei
       cp .ci/script/postinstall.js _release/postinstall.js
     displayName: "Copy needed files"
 
