@@ -1,12 +1,12 @@
 {
-  "name": "@minima.app/re-log",
+  "name": "bs-log",
   "version": "0.0.1",
   "description": "Logging implementation for ReasonML/BuckleScript",
   "author": "Alex Fedoseev <alex.fedoseev@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/minima-app/re-log.git"
+    "url": "https://github.com/minima-app/bs-log.git"
   },
   "scripts": {
     "postinstall": "node postinstall.js"

@@ -1,5 +1,5 @@
 {
-  "name": "@minima.app/re-log-ppx",
+  "name": "bs-log-ppx",
   "sources": [
     {
       "dir": "src",

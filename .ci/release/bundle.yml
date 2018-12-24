@@ -44,8 +44,8 @@ steps:
       mkdir -p _release/src
       cp README.md _release/README.md
       cp package.json _release/package.json
-      cp re-log/bsconfig.json _release/bsconfig.json
-      cp re-log/src/Log.re _release/src/Log.re
+      cp bs-log/bsconfig.json _release/bsconfig.json
+      cp bs-log/src/Log.re _release/src/Log.re
       cp .ci/script/postinstall.js _release/postinstall.js
     displayName: "Copy needed files"
 

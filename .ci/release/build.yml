@@ -1,8 +1,8 @@
 steps:
   - script: yarn run build
-    workingDirectory: "re-log"
-    displayName: "re-log: yarn run build"
+    workingDirectory: "bs-log"
+    displayName: "bs-log: yarn run build"
 
   - script: yarn run build
-    workingDirectory: "re-log-ppx"
-    displayName: "re-log-ppx: yarn run build"
+    workingDirectory: "bs-log-ppx"
+    displayName: "bs-log-ppx: yarn run build"

@@ -1,5 +1,5 @@
 parameters: # defaults to macOS
-  name: "re_log_macOS"
+  name: "bs_log_macOS"
   vmImage: "macOS-10.13"
   platform: "macOS"
   fileEnding: ""

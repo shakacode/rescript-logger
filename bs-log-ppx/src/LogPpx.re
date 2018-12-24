@@ -14,7 +14,7 @@ type level =
 exception InvalidLogLevel(string);
 
 let level =
-  switch (Sys.getenv("RE_LOG")) {
+  switch (Sys.getenv("BS_LOG")) {
   | "*" => Debug->Some
   | "debug" => Debug->Some
   | "info" => Info->Some
@@ -433,4 +433,4 @@ let logMapper = _ => {
     },
 };
 
-let () = Ast_mapper.register("re-log", logMapper);
+let () = Ast_mapper.register("bs-log", logMapper);

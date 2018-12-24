@@ -1,15 +1,15 @@
 {
-  "name": "@minima.app/re-log",
+  "name": "bs-log-ppx",
   "version": "0.0.1",
   "description": "Logging implementation for ReasonML/BuckleScript",
   "author": "Alex Fedoseev <alex.fedoseev@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "bsb -clean-world -make-world -w",
-    "build": "bsb -clean-world -make-world",
-    "test": "exit 0"
+    "build": "bsb -make-world -backend native",
+    "test": "bsb -make-world -backend js",
+    "clean": "bsb -clean-world"
   },
   "devDependencies": {
-    "bs-platform": "4.0.14"
+    "bsb-native": "4.0.7000"
   }
 }

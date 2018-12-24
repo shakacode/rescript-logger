@@ -1,11 +1,11 @@
-# re-log
+# bs-log
 
-[![npm version](https://img.shields.io/npm/v/@minima.app/re-log.svg?style=flat-square)](https://www.npmjs.com/package/@minima.app/re-log)
-[![license](https://img.shields.io/npm/l/@minima.app/re-log.svg?style=flat-square)](https://www.npmjs.com/package/@minima.app/re-log)
+[![npm version](https://img.shields.io/npm/v/bs-log.svg?style=flat-square)](https://www.npmjs.com/package/bs-log)
+[![license](https://img.shields.io/npm/l/bs-log.svg?style=flat-square)](https://www.npmjs.com/package/bs-log)
 
 Logging implementation for [ReasonML](https://reasonml.github.io) / [BuckleScript](https://bucklescript.github.io).
 
-![re-log](./.assets/all.png)
+![bs-log](./.assets/all.png)
 
 ## Features
 - Zero runtime in production builds.
@@ -17,18 +17,18 @@ Get the package:
 
 ```shell
 # yarn
-yarn add @minima.app/re-log
+yarn add bs-log
 # or npm
-npm install --save @minima.app/re-log
+npm install --save bs-log
 ```
 
 Then add it to `bsconfig.json`:
 
 ```json
 "bs-dependencies": [
-  "@minima.app/re-log"
+  "bs-log"
 ],
-"ppx-flags": ["@minima.app/re-log/ppx"]
+"ppx-flags": ["bs-log/ppx"]
 ```
 
 PPX is recommended but totally optional (read details below).
@@ -86,15 +86,15 @@ Here is how it looks like in console:
 ![output](./.assets/info-line.png)
 
 ### Verbosity customization
-You can set maximum log level via environment variable `RE_LOG`. This feature is available only when you use PPX.
+You can set maximum log level via environment variable `BS_LOG`. This feature is available only when you use PPX.
 
 Let's say you want to log only warnings and errors. To make it happen, run your build like this:
 
 ```shell
-RE_LOG=warn bsb -clean-world -make-world
+BS_LOG=warn bsb -clean-world -make-world
 ```
 
-Available `RE_LOG` values:
+Available `BS_LOG` values:
 - `*`: log everything
 - `debug`: basically, the same as `*`
 - `info`: log everything except `debug` level messages
@@ -103,7 +103,7 @@ Available `RE_LOG` values:
 - `error`: log `error` messages only
 - `off`: don't log anything (i.e. production mode)
 
-If `RE_LOG` is not defined or set to `off`, nothing will be logged and none of the log entries will appear in your JS assets.
+If `BS_LOG` is not defined or set to `off`, nothing will be logged and none of the log entries will appear in your JS assets.
 
 ### PPX vs non-PPX
 PPX gives you ability to customize maximum log level of your build. If for some reason you want to use non-PPX api, then you have to handle elimination of log entries yourself on post-compilation stage.
@@ -111,4 +111,4 @@ PPX gives you ability to customize maximum log level of your build. If for some 
 Log entries are compiled directly to `console.log` calls so those are discardable via [UglifyJS](https://github.com/mishoo/UglifyJS2#compress-options)/[TerserJS](https://github.com/terser-js/terser#compress-options) or [Babel plugin](https://babeljs.io/docs/en/babel-plugin-transform-remove-console).
 
 ## Caveats
-When you change a value of `RE_LOG`, `-clean-world` before the next build.
+When you change a value of `BS_LOG`, `-clean-world` before the next build.

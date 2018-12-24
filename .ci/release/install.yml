@@ -5,9 +5,9 @@ steps:
       versionSpec: 8.x
 
   - script: yarn install
-    workingDirectory: "re-log"
-    displayName: "re-log: yarn install"
+    workingDirectory: "bs-log"
+    displayName: "bs-log: yarn install"
 
   - script: yarn install
-    workingDirectory: "re-log-ppx"
-    displayName: "re-log-ppx: yarn install"
+    workingDirectory: "bs-log-ppx"
+    displayName: "bs-log-ppx: yarn install"
