@@ -111,4 +111,12 @@ PPX gives you ability to customize maximum log level of your build. If for some 
 Log entries are compiled directly to `console.log` calls so those are discardable via [UglifyJS](https://github.com/mishoo/UglifyJS2#compress-options)/[TerserJS](https://github.com/terser-js/terser#compress-options) or [Babel plugin](https://babeljs.io/docs/en/babel-plugin-transform-remove-console).
 
 ## Caveats
+**All logging is disabled after file save**<br />
+If you run `bsb` via editor integration, make sure editor picked up `BS_LOG` variable. E.g. if you run Atom:
+
+```shell
+BS_LOG=info atom .
+```
+
+**Changing value of BS_LOG doesn't make any effect**<br />
 When you change a value of `BS_LOG`, `-clean-world` before the next build.
