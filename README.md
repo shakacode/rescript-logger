@@ -5,7 +5,7 @@
 
 Logging implementation for [ReasonML](https://reasonml.github.io) / [BuckleScript](https://bucklescript.github.io).
 
-![bs-log](./.assets/all.png)
+![bs-log](./.assets/example.png)
 
 ## Features
 - Zero runtime in production builds.
@@ -31,17 +31,16 @@ Then add it to `bsconfig.json`:
 "ppx-flags": ["bs-log/ppx"]
 ```
 
-PPX is recommended but totally optional (read details below).
+PPX is highly recommended but optional (read details below).
 
 ## Usage
-There are 5 log levels:
+There are 4 log levels:
 - `debug`
 - `info`
-- `ok`
 - `warn`
 - `error`
 
-You can print message of specific level either using PPX or using common functions:
+You can log message of specific level either using PPX or using common functions:
 
 ```reason
 /* ppx */
@@ -51,39 +50,28 @@ You can print message of specific level either using PPX or using common functio
 Log.info("Info level message");
 ```
 
-It will result in the following output:
-
-![output](./.assets/info.png)
-
-### Additional argument
-You can add second argument to logger like this:
+### Additional data
+You can add data to log entry like this:
 
 ```reason
 /* ppx */
-[%log.info "Info level message"; 42];
+[%log.info "Info level message"; ("Foo", 42)];
+[%log.info
+  "Info level message";
+  ("Foo", {"x": 42});
+  ("Bar", [1, 2, 3]);
+];
 
 /* non-ppx */
-Log.info2("Info level message", 42);
+Log.infoWithData("Info level message", ("Foo", 42));
+Log.infoWithData2(
+  "Info level message",
+  ("Foo", {"x": 42}),
+  ("Bar", [1, 2, 3]),
+);
 ```
 
-Currently, 2 arguments per line is a max.
-
-### Additional lines
-Sometimes it's useful to print N entities per event. You can use `line` api for this:
-
-```reason
-/* ppx */
-[%log.info "Info level message"];
-[%log.info.line "Foo:"; {"x": 42}];
-
-/* non-ppx */
-Log.info("Info level message");
-Log.infoLine2("Foo:", {"x": 42});
-```
-
-Here is how it looks like in console:
-
-![output](./.assets/info-line.png)
+Currently, logger can accept up to 7 additional entries.
 
 ### Verbosity customization
 You can set maximum log level via environment variable `BS_LOG`. This feature is available only when you use PPX.
@@ -98,7 +86,6 @@ Available `BS_LOG` values:
 - `*`: log everything
 - `debug`: basically, the same as `*`
 - `info`: log everything except `debug` level messages
-- `ok`: log `ok`, `warn` & `error` messages
 - `warn`: log `warn` & `error` messages
 - `error`: log `error` messages only
 - `off`: don't log anything (i.e. production mode)
@@ -108,11 +95,11 @@ If `BS_LOG` is not defined or set to `off`, nothing will be logged and none of t
 ### PPX vs non-PPX
 PPX gives you ability to customize maximum log level of your build. If for some reason you want to use non-PPX api, then you have to handle elimination of log entries yourself on post-compilation stage.
 
-Log entries are compiled directly to `console.log` calls so those are discardable via [UglifyJS](https://github.com/mishoo/UglifyJS2#compress-options)/[TerserJS](https://github.com/terser-js/terser#compress-options) or [Babel plugin](https://babeljs.io/docs/en/babel-plugin-transform-remove-console).
+Default logger compiles log entries to `console.*` method calls so those are discardable via [UglifyJS](https://github.com/mishoo/UglifyJS2#compress-options)/[TerserJS](https://github.com/terser-js/terser#compress-options) or [Babel plugin](https://babeljs.io/docs/en/babel-plugin-transform-remove-console).
 
 ## Caveats
 **All logging is disabled after file save**<br />
-If you run `bsb` via editor integration, make sure editor picked up `BS_LOG` variable. E.g. if you run Atom:
+If you run `bsb` via editor integration, make sure editor picked up `BS_LOG` variable. E.g. if you use Atom run it like this:
 
 ```shell
 BS_LOG=info atom .

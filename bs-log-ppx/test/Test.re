@@ -1,36 +1,177 @@
 let something = Some("thing");
 
 [%log.debug "Debug level message"];
-[%log.debug.line "Foo:"; {"x": 42}];
-[%log.debug.line "Bar:"; something];
-[%log.debug "Debug level message"; 2];
-[%log.debug.line "Foo"];
-[%log.debug.line [|1, 2, 3|]];
+[%log.debug "Debug level message"; ("Foo", 42)];
+[%log.debug "Debug level message"; ("Foo", 42); ("Bar", {"x": 42})];
+[%log.debug
+  "Debug level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something)
+];
+[%log.debug
+  "Debug level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4])
+];
+[%log.debug
+  "Debug level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|])
+];
+[%log.debug
+  "Debug level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|]);
+  ("Bool", true)
+];
+[%log.debug
+  "Debug level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|]);
+  ("Bool", true);
+  ("Whatever", `Eh)
+];
 
 [%log.info "Info level message"];
-[%log.info.line "Foo:"; {"x": 42}];
-[%log.info.line "Bar:"; something];
-[%log.info "Info level message"; 2];
-[%log.info.line "Foo"];
-[%log.info.line [|1, 2, 3|]];
-
-[%log.ok "Ok level message"];
-[%log.ok.line "Foo:"; {"x": 42}];
-[%log.ok.line "Bar:"; something];
-[%log.ok "Ok level message"; 2];
-[%log.ok.line "Foo"];
-[%log.ok.line [|1, 2, 3|]];
+[%log.info "Info level message"; ("Foo", 42)];
+[%log.info "Info level message"; ("Foo", 42); ("Bar", {"x": 42})];
+[%log.info
+  "Info level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something)
+];
+[%log.info
+  "Info level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4])
+];
+[%log.info
+  "Info level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|])
+];
+[%log.info
+  "Info level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|]);
+  ("Bool", true)
+];
+[%log.info
+  "Info level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|]);
+  ("Bool", true);
+  ("Whatever", `Eh)
+];
 
 [%log.warn "Warn level message"];
-[%log.warn.line "Foo:"; {"x": 42}];
-[%log.warn.line "Bar:"; something];
-[%log.warn "Warn level message"; 2];
-[%log.warn.line "Foo"];
-[%log.warn.line [|1, 2, 3|]];
+[%log.warn "Warn level message"; ("Foo", 42)];
+[%log.warn "Warn level message"; ("Foo", 42); ("Bar", {"x": 42})];
+[%log.warn
+  "Warn level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something)
+];
+[%log.warn
+  "Warn level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4])
+];
+[%log.warn
+  "Warn level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|])
+];
+[%log.warn
+  "Warn level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|]);
+  ("Bool", true)
+];
+[%log.warn
+  "Warn level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|]);
+  ("Bool", true);
+  ("Whatever", `Eh)
+];
 
 [%log.error "Error level message"];
-[%log.error.line "Foo:"; {"x": 42}];
-[%log.error.line "Bar:"; something];
-[%log.error "Error level message"; 2];
-[%log.error.line "Foo"];
-[%log.error.line [|1, 2, 3|]];
+[%log.error "Error level message"; ("Foo", 42)];
+[%log.error "Error level message"; ("Foo", 42); ("Bar", {"x": 42})];
+[%log.error
+  "Error level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something)
+];
+[%log.error
+  "Error level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4])
+];
+[%log.error
+  "Error level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|])
+];
+[%log.error
+  "Error level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|]);
+  ("Bool", true)
+];
+[%log.error
+  "Error level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|]);
+  ("Bool", true);
+  ("Whatever", `Eh)
+];
