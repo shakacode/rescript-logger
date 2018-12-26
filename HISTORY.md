@@ -1,5 +1,8 @@
 # History
 
+## 0.0.6
+- Use default logger when `BS_LOGGER` is empty string.
+
 ## 0.0.5
 - Add `BS_LOGGER` environment variable.
 - Rename default logger from `Log` to `Console`.
