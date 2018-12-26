@@ -14,8 +14,9 @@ exception InvalidLogLevel(string);
 
 let logger =
   switch (Sys.getenv("BS_LOGGER")) {
-  | _ as x => x
+  | "" => "Console"
   | exception Not_found => "Console"
+  | _ as x => x
   };
 
 let level =
