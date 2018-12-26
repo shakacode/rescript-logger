@@ -1,5 +1,9 @@
 # History
 
+## 0.0.5
+- Add `BS_LOGGER` environment variable.
+- Rename default logger from `Log` to `Console`.
+
 ## 0.0.4
 React logger.
 

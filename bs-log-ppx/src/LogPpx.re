@@ -12,6 +12,12 @@ type level =
 
 exception InvalidLogLevel(string);
 
+let logger =
+  switch (Sys.getenv("BS_LOGGER")) {
+  | _ as x => x
+  | exception Not_found => "Console"
+  };
+
 let level =
   switch (Sys.getenv("BS_LOG")) {
   | "*" => Debug->Some
@@ -25,7 +31,7 @@ let level =
   };
 
 let logger = name =>
-  Exp.ident({txt: Ldot(Lident("Log"), name), loc: default_loc^});
+  Exp.ident({txt: Ldot(Lident(logger), name), loc: default_loc^});
 
 let log = (event, fn) => Exp.apply(fn->logger, [("", event)]);
 
