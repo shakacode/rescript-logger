@@ -45,7 +45,7 @@ steps:
       cp README.md _release/README.md
       cp package.json _release/package.json
       cp bs-log/bsconfig.json _release/bsconfig.json
-      cp bs-log/src/Log.re _release/src/Log.re
+      cp bs-log/src/Console.re _release/src/Console.re
       cp .ci/script/postinstall.js _release/postinstall.js
     displayName: "Copy needed files"
 
