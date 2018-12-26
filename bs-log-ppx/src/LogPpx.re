@@ -137,7 +137,7 @@ let toData = arg =>
     Exp.ident({txt: Lident(arg), loc: default_loc^}),
   ]);
 
-let logMapper = _ => {
+let baseMapper = _argv => {
   ...default_mapper,
   expr: (mapper, expr) =>
     switch (expr, level) {
@@ -782,7 +782,14 @@ let logMapper = _ => {
 
     | ({pexp_desc: Pexp_extension(({txt: "log.error"}, _))}, None) => nothing
 
-    /* React */
+    | _ => default_mapper.expr(mapper, expr)
+    },
+};
+
+let resultMapper = argv => {
+  ...default_mapper,
+  expr: (mapper, expr) =>
+    switch (expr, level) {
     | (
         {
           pexp_attributes: [({txt: "log"}, _)],
@@ -840,7 +847,7 @@ let logMapper = _ => {
                              action
                              ->reducerLogEntry(`WithoutPayload)
                              ->log("debug"),
-                             branch,
+                             baseMapper(argv).expr(mapper, branch),
                            ),
                          )
                        | {
@@ -865,7 +872,7 @@ let logMapper = _ => {
                              action
                              ->reducerLogEntry(`WithPayload)
                              ->logWithData("debugWithData", arg1->toData),
-                             branch,
+                             baseMapper(argv).expr(mapper, branch),
                            ),
                          )
                        | {
@@ -895,7 +902,7 @@ let logMapper = _ => {
                                  arg1->toData,
                                  arg2->toData,
                                ),
-                             branch,
+                             baseMapper(argv).expr(mapper, branch),
                            ),
                          )
                        | {
@@ -927,7 +934,7 @@ let logMapper = _ => {
                                  arg2->toData,
                                  arg3->toData,
                                ),
-                             branch,
+                             baseMapper(argv).expr(mapper, branch),
                            ),
                          )
                        | {
@@ -961,7 +968,7 @@ let logMapper = _ => {
                                  arg3->toData,
                                  arg4->toData,
                                ),
-                             branch,
+                             baseMapper(argv).expr(mapper, branch),
                            ),
                          )
                        | {
@@ -997,7 +1004,7 @@ let logMapper = _ => {
                                  arg4->toData,
                                  arg5->toData,
                                ),
-                             branch,
+                             baseMapper(argv).expr(mapper, branch),
                            ),
                          )
                        | {
@@ -1035,7 +1042,7 @@ let logMapper = _ => {
                                  arg5->toData,
                                  arg6->toData,
                                ),
-                             branch,
+                             baseMapper(argv).expr(mapper, branch),
                            ),
                          )
                        | {
@@ -1075,7 +1082,7 @@ let logMapper = _ => {
                                  arg6->toData,
                                  arg7->toData,
                                ),
-                             branch,
+                             baseMapper(argv).expr(mapper, branch),
                            ),
                          )
                        | {
@@ -1095,10 +1102,14 @@ let logMapper = _ => {
                              action
                              ->reducerLogEntry(`WithNotLoggedPayload)
                              ->log("debug"),
-                             branch,
+                             baseMapper(argv).expr(mapper, branch),
                            ),
                          )
-                       | _ => case
+                       | {pc_lhs: pattern, pc_rhs: branch} =>
+                         Exp.case(
+                           pattern,
+                           baseMapper(argv).expr(mapper, branch),
+                         )
                        },
                      _,
                    ),
@@ -1106,8 +1117,8 @@ let logMapper = _ => {
         ),
       )
 
-    | _ => default_mapper.expr(mapper, expr)
+    | _ => baseMapper(argv).expr(mapper, expr)
     },
 };
 
-let () = Ast_mapper.register("bs-log", logMapper);
+let () = Ast_mapper.register("bs-log", resultMapper);

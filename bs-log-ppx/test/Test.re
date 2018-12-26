@@ -194,7 +194,9 @@ let x = {
       (action, _state) =>
         switch (action) {
         | A => "a"
-        | B(data) => data
+        | B(data) =>
+          [%log.debug "B"; ("", "")];
+          data;
         | C(_data1, data2) => data2
         | D(_data1, _data2, data3) => data3
         | E(_data1, _data2, _data3, data4) => data4

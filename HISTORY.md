@@ -1,5 +1,8 @@
 # History
 
+## 0.0.7
+- Allow log statements inside annotated reducers.
+
 ## 0.0.6
 - Use default logger when `BS_LOGGER` is empty string.
 
