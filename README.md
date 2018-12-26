@@ -110,7 +110,9 @@ reducer: [@log] (action, state) => switch (action) {
 }
 ```
 
-These entries are logged on the `debug` level so none of those will appear in production builds.
+In the console, entries appear in the following form: `ModuleName::Action`, where `ModuleName` is value of `__MODULE__` variable. Keep that in mind, when read log for annotated components in sub-modules.
+
+Also, these entries are logged on the `debug` level so none of those will appear in production builds.
 
 ### Custom loggers
 Default logger served with `bs-log` simply prints data to browser console but you can replace it with your own implementation.
