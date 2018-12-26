@@ -42,7 +42,7 @@ There are 4 log levels:
 - `warn`
 - `error`
 
-You can log message of specific level either using PPX or using common functions:
+You can log message of specific level using either PPX or common functions:
 
 ```reason
 /* ppx */
@@ -100,9 +100,9 @@ PPX gives you ability to customize maximum log level of your build and eliminate
 Default logger compiles log entries to `console.*` method calls so those are discardable via [UglifyJS](https://github.com/mishoo/UglifyJS2#compress-options)/[TerserJS](https://github.com/terser-js/terser#compress-options) or [Babel plugin](https://babeljs.io/docs/en/babel-plugin-transform-remove-console).
 
 ### `ReasonReact` integration
-With `bs-log`, you can automatically log dispatched events in your components.
+With `bs-log`, you can automatically log dispatched actions in your components.
 
-Annotate a `reducer` functions like this:
+Annotate `reducer` function like this:
 
 ```reason
 reducer: [@log] (action, state) => switch (action) {
@@ -135,7 +135,7 @@ let errorWithData2 = (event, (label1, data1), (label2, data2)) =>
 /* Up to 7 */
 ```
 
-You don't have to re-implement all functions from default logger, only the ones you actually use. Don't worry to forget implement something, if, later on, you will attempt to use unimplemented method it will be compile time error.
+You don't have to re-implement all functions from default logger, only the ones you actually use. Don't worry to forget to implement something, if, later on, you will attempt to use unimplemented method it will be compile time error.
 
 ## Caveats
 **All logging is disabled after file save**<br />
