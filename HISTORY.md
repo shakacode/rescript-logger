@@ -1,5 +1,8 @@
 # History
 
+## 0.0.4
+React logger.
+
 ## 0.0.3
 Lots of changes, hope nobody used it yet.
 
