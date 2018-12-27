@@ -11,9 +11,9 @@ Logging implementation for [ReasonML](https://reasonml.github.io) / [BuckleScrip
 - Zero runtime in production builds.
 - Multiple logging levels.
 - Customizable verbosity via environment variable.
-- Custom loggers.
 - `[@log]` helper.
 - `ReasonReact` integration.
+- Custom loggers.
 
 ## Installation
 Get the package:
@@ -50,7 +50,7 @@ You can log message of specific level using either PPX or common functions:
 [%log.info "Info level message"];
 
 /* non-ppx */
-Console.info("Info level message");
+BrowserLogger.info("Info level message");
 ```
 
 ### Additional data
@@ -66,8 +66,8 @@ You can add data to log entry like this:
 ];
 
 /* non-ppx */
-Console.infoWithData("Info level message", ("Foo", 42));
-Console.infoWithData2(
+BrowserLogger.infoWithData("Info level message", ("Foo", 42));
+BrowserLogger.infoWithData2(
   "Info level message",
   ("Foo", {"x": 42}),
   ("Bar", [1, 2, 3]),
@@ -143,11 +143,15 @@ For most of the components, namespace will be a value of `__MODULE__` variable, 
 Also, these entries are logged on the `debug` level so none of those will appear in production builds.
 
 ### Custom loggers
-Default logger served with `bs-log` simply prints data to browser console but you can replace it with your own implementation.
+`bs-log` ships with 2 loggers:
+- `BrowserLogger` (default)
+- `NodeLogger`
 
-For example, in development, you want to log everything to console, but in production, you want to disable logging to console and send `error` level events to bug tracker.
+And you can easily plug your own.
 
-To implement your own logger, you need to create your own module (e.g. `BugTracker.re`) and set the following environment variables for production build.
+For example, in development, you want to log everything to console using default logger, but in production, you want to disable console logging and send `error` level events to bug tracker.
+
+To implement your own logger, you need to create a module (e.g. `BugTracker.re`) and set the following environment variables for production build.
 
 ```
 BS_LOG=error
@@ -157,6 +161,8 @@ BS_LOGGER=BugTracker
 Considering that you want to log only `error` level messages, you need to create functions only for errors logging.
 
 ```reason
+/* BugTracker.re */
+
 let error = event => RemoteBugTracker.notify(event);
 
 let errorWithData = (event, (label, data)) =>

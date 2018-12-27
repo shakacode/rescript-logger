@@ -1,5 +1,9 @@
 # History
 
+## 0.0.9
+- Default logger renamed from `Console` to `BrowserLogger`.
+- Added `NodeLogger`.
+
 ## 0.0.8
 - Make `[@log]` annotation generic: it can be placed in front of any `switch` expression with constructors.
 - `[@log]` can accept optional namespace: `[@log "MyNamespace"]`.
