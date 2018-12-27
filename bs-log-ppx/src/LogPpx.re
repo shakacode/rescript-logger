@@ -99,32 +99,30 @@ let logWithData7 =
 
 let nothing = Exp.construct({txt: Lident("()"), loc: default_loc^}, None);
 
-let reducerLogEntry = (action, ctx) =>
+let matchedLogEntry = (tag, ns, ctx) =>
   Exp.apply(
     Exp.ident({txt: Ldot(Lident("Pervasives"), "^"), loc: default_loc^}),
     [
       (
         "",
-        Exp.ident({
-          txt: Ldot(Lident("Pervasives"), "__MODULE__"),
-          loc: default_loc^,
-        }),
+        switch (ns) {
+        | None =>
+          Exp.ident({
+            txt: Ldot(Lident("Pervasives"), "__MODULE__"),
+            loc: default_loc^,
+          })
+        | Some(ns) => Exp.constant(Const_string(ns, None))
+        },
       ),
       (
         "",
         switch (ctx) {
-        | `WithoutPayload =>
-          Exp.constant(Const_string("::" ++ action ++ " dispatched", None))
+        | `WithoutPayload => Exp.constant(Const_string("::" ++ tag, None))
         | `WithPayload =>
-          Exp.constant(
-            Const_string("::" ++ action ++ " dispatched with payload", None),
-          )
+          Exp.constant(Const_string("::" ++ tag ++ " with payload", None))
         | `WithNotLoggedPayload =>
           Exp.constant(
-            Const_string(
-              "::" ++ action ++ " dispatched with payload (not logged)",
-              None,
-            ),
+            Const_string("::" ++ tag ++ " with payload (not logged)", None),
           )
         },
       ),
@@ -792,330 +790,308 @@ let resultMapper = argv => {
     switch (expr, level) {
     | (
         {
-          pexp_attributes: [({txt: "log"}, _)],
-          pexp_desc:
-            Pexp_fun(
-              _,
-              None,
-              {ppat_desc: Ppat_var(_)} as action,
-              {
-                pexp_desc:
-                  Pexp_fun(
-                    _,
-                    None,
-                    {ppat_desc: Ppat_var(_)} as state,
-                    {
-                      pexp_desc:
-                        Pexp_match(
-                          {pexp_desc: Pexp_ident(_)} as actionMatch,
-                          cases,
-                        ),
-                    },
-                  ),
-              },
-            ),
+          pexp_attributes: [({txt: "log"}, payload)],
+          pexp_desc: Pexp_match(match, cases),
         },
         Some(Debug),
       ) =>
-      Exp.fun_(
-        "",
-        None,
-        action,
-        Exp.fun_(
-          "",
-          None,
-          state,
-          Exp.match(
-            actionMatch,
-            cases->List.map(
-                     case =>
-                       switch (case) {
-                       | {
-                           pc_lhs:
-                             {
-                               ppat_desc:
-                                 Ppat_construct(
-                                   {txt: Lident(action)},
-                                   None,
-                                 ),
-                             } as pattern,
-                           pc_rhs: branch,
-                         } =>
-                         Exp.case(
-                           pattern,
-                           Exp.sequence(
-                             action
-                             ->reducerLogEntry(`WithoutPayload)
-                             ->log("debug"),
-                             baseMapper(argv).expr(mapper, branch),
+      let ns =
+        switch (payload) {
+        | PStr([
+            {
+              pstr_desc:
+                Pstr_eval(
+                  {pexp_desc: Pexp_constant(Const_string(x, None))},
+                  _,
+                ),
+            },
+          ]) =>
+          x->Some
+        | _ => None
+        };
+      Exp.match(
+        match,
+        cases->List.map(
+                 case =>
+                   switch (case) {
+                   | {
+                       pc_lhs:
+                         {
+                           ppat_desc:
+                             Ppat_construct({txt: Lident(tag)}, None),
+                         } as pattern,
+                       pc_rhs: branch,
+                     } =>
+                     Exp.case(
+                       pattern,
+                       Exp.sequence(
+                         tag
+                         ->matchedLogEntry(ns, `WithoutPayload)
+                         ->log("debug"),
+                         baseMapper(argv).expr(mapper, branch),
+                       ),
+                     )
+                   | {
+                       pc_lhs:
+                         {
+                           ppat_desc:
+                             Ppat_construct(
+                               {txt: Lident(tag)},
+                               Some({
+                                 ppat_desc:
+                                   Ppat_tuple([
+                                     {ppat_desc: Ppat_var({txt: arg1})},
+                                   ]),
+                               }),
+                             ),
+                         } as pattern,
+                       pc_rhs: branch,
+                     } =>
+                     Exp.case(
+                       pattern,
+                       Exp.sequence(
+                         tag
+                         ->matchedLogEntry(ns, `WithPayload)
+                         ->logWithData("debugWithData", arg1->toData),
+                         baseMapper(argv).expr(mapper, branch),
+                       ),
+                     )
+                   | {
+                       pc_lhs:
+                         {
+                           ppat_desc:
+                             Ppat_construct(
+                               {txt: Lident(tag)},
+                               Some({
+                                 ppat_desc:
+                                   Ppat_tuple([
+                                     {ppat_desc: Ppat_var({txt: arg1})},
+                                     {ppat_desc: Ppat_var({txt: arg2})},
+                                   ]),
+                               }),
+                             ),
+                         } as pattern,
+                       pc_rhs: branch,
+                     } =>
+                     Exp.case(
+                       pattern,
+                       Exp.sequence(
+                         tag
+                         ->matchedLogEntry(ns, `WithPayload)
+                         ->logWithData2(
+                             "debugWithData2",
+                             arg1->toData,
+                             arg2->toData,
                            ),
-                         )
-                       | {
-                           pc_lhs:
-                             {
-                               ppat_desc:
-                                 Ppat_construct(
-                                   {txt: Lident(action)},
-                                   Some({
-                                     ppat_desc:
-                                       Ppat_tuple([
-                                         {ppat_desc: Ppat_var({txt: arg1})},
-                                       ]),
-                                   }),
-                                 ),
-                             } as pattern,
-                           pc_rhs: branch,
-                         } =>
-                         Exp.case(
-                           pattern,
-                           Exp.sequence(
-                             action
-                             ->reducerLogEntry(`WithPayload)
-                             ->logWithData("debugWithData", arg1->toData),
-                             baseMapper(argv).expr(mapper, branch),
+                         baseMapper(argv).expr(mapper, branch),
+                       ),
+                     )
+                   | {
+                       pc_lhs:
+                         {
+                           ppat_desc:
+                             Ppat_construct(
+                               {txt: Lident(tag)},
+                               Some({
+                                 ppat_desc:
+                                   Ppat_tuple([
+                                     {ppat_desc: Ppat_var({txt: arg1})},
+                                     {ppat_desc: Ppat_var({txt: arg2})},
+                                     {ppat_desc: Ppat_var({txt: arg3})},
+                                   ]),
+                               }),
+                             ),
+                         } as pattern,
+                       pc_rhs: branch,
+                     } =>
+                     Exp.case(
+                       pattern,
+                       Exp.sequence(
+                         tag
+                         ->matchedLogEntry(ns, `WithPayload)
+                         ->logWithData3(
+                             "debugWithData3",
+                             arg1->toData,
+                             arg2->toData,
+                             arg3->toData,
                            ),
-                         )
-                       | {
-                           pc_lhs:
-                             {
-                               ppat_desc:
-                                 Ppat_construct(
-                                   {txt: Lident(action)},
-                                   Some({
-                                     ppat_desc:
-                                       Ppat_tuple([
-                                         {ppat_desc: Ppat_var({txt: arg1})},
-                                         {ppat_desc: Ppat_var({txt: arg2})},
-                                       ]),
-                                   }),
-                                 ),
-                             } as pattern,
-                           pc_rhs: branch,
-                         } =>
-                         Exp.case(
-                           pattern,
-                           Exp.sequence(
-                             action
-                             ->reducerLogEntry(`WithPayload)
-                             ->logWithData2(
-                                 "debugWithData2",
-                                 arg1->toData,
-                                 arg2->toData,
-                               ),
-                             baseMapper(argv).expr(mapper, branch),
+                         baseMapper(argv).expr(mapper, branch),
+                       ),
+                     )
+                   | {
+                       pc_lhs:
+                         {
+                           ppat_desc:
+                             Ppat_construct(
+                               {txt: Lident(tag)},
+                               Some({
+                                 ppat_desc:
+                                   Ppat_tuple([
+                                     {ppat_desc: Ppat_var({txt: arg1})},
+                                     {ppat_desc: Ppat_var({txt: arg2})},
+                                     {ppat_desc: Ppat_var({txt: arg3})},
+                                     {ppat_desc: Ppat_var({txt: arg4})},
+                                   ]),
+                               }),
+                             ),
+                         } as pattern,
+                       pc_rhs: branch,
+                     } =>
+                     Exp.case(
+                       pattern,
+                       Exp.sequence(
+                         tag
+                         ->matchedLogEntry(ns, `WithPayload)
+                         ->logWithData4(
+                             "debugWithData4",
+                             arg1->toData,
+                             arg2->toData,
+                             arg3->toData,
+                             arg4->toData,
                            ),
-                         )
-                       | {
-                           pc_lhs:
-                             {
-                               ppat_desc:
-                                 Ppat_construct(
-                                   {txt: Lident(action)},
-                                   Some({
-                                     ppat_desc:
-                                       Ppat_tuple([
-                                         {ppat_desc: Ppat_var({txt: arg1})},
-                                         {ppat_desc: Ppat_var({txt: arg2})},
-                                         {ppat_desc: Ppat_var({txt: arg3})},
-                                       ]),
-                                   }),
-                                 ),
-                             } as pattern,
-                           pc_rhs: branch,
-                         } =>
-                         Exp.case(
-                           pattern,
-                           Exp.sequence(
-                             action
-                             ->reducerLogEntry(`WithPayload)
-                             ->logWithData3(
-                                 "debugWithData3",
-                                 arg1->toData,
-                                 arg2->toData,
-                                 arg3->toData,
-                               ),
-                             baseMapper(argv).expr(mapper, branch),
+                         baseMapper(argv).expr(mapper, branch),
+                       ),
+                     )
+                   | {
+                       pc_lhs:
+                         {
+                           ppat_desc:
+                             Ppat_construct(
+                               {txt: Lident(tag)},
+                               Some({
+                                 ppat_desc:
+                                   Ppat_tuple([
+                                     {ppat_desc: Ppat_var({txt: arg1})},
+                                     {ppat_desc: Ppat_var({txt: arg2})},
+                                     {ppat_desc: Ppat_var({txt: arg3})},
+                                     {ppat_desc: Ppat_var({txt: arg4})},
+                                     {ppat_desc: Ppat_var({txt: arg5})},
+                                   ]),
+                               }),
+                             ),
+                         } as pattern,
+                       pc_rhs: branch,
+                     } =>
+                     Exp.case(
+                       pattern,
+                       Exp.sequence(
+                         tag
+                         ->matchedLogEntry(ns, `WithPayload)
+                         ->logWithData5(
+                             "debugWithData5",
+                             arg1->toData,
+                             arg2->toData,
+                             arg3->toData,
+                             arg4->toData,
+                             arg5->toData,
                            ),
-                         )
-                       | {
-                           pc_lhs:
-                             {
-                               ppat_desc:
-                                 Ppat_construct(
-                                   {txt: Lident(action)},
-                                   Some({
-                                     ppat_desc:
-                                       Ppat_tuple([
-                                         {ppat_desc: Ppat_var({txt: arg1})},
-                                         {ppat_desc: Ppat_var({txt: arg2})},
-                                         {ppat_desc: Ppat_var({txt: arg3})},
-                                         {ppat_desc: Ppat_var({txt: arg4})},
-                                       ]),
-                                   }),
-                                 ),
-                             } as pattern,
-                           pc_rhs: branch,
-                         } =>
-                         Exp.case(
-                           pattern,
-                           Exp.sequence(
-                             action
-                             ->reducerLogEntry(`WithPayload)
-                             ->logWithData4(
-                                 "debugWithData4",
-                                 arg1->toData,
-                                 arg2->toData,
-                                 arg3->toData,
-                                 arg4->toData,
-                               ),
-                             baseMapper(argv).expr(mapper, branch),
+                         baseMapper(argv).expr(mapper, branch),
+                       ),
+                     )
+                   | {
+                       pc_lhs:
+                         {
+                           ppat_desc:
+                             Ppat_construct(
+                               {txt: Lident(tag)},
+                               Some({
+                                 ppat_desc:
+                                   Ppat_tuple([
+                                     {ppat_desc: Ppat_var({txt: arg1})},
+                                     {ppat_desc: Ppat_var({txt: arg2})},
+                                     {ppat_desc: Ppat_var({txt: arg3})},
+                                     {ppat_desc: Ppat_var({txt: arg4})},
+                                     {ppat_desc: Ppat_var({txt: arg5})},
+                                     {ppat_desc: Ppat_var({txt: arg6})},
+                                   ]),
+                               }),
+                             ),
+                         } as pattern,
+                       pc_rhs: branch,
+                     } =>
+                     Exp.case(
+                       pattern,
+                       Exp.sequence(
+                         tag
+                         ->matchedLogEntry(ns, `WithPayload)
+                         ->logWithData6(
+                             "debugWithData6",
+                             arg1->toData,
+                             arg2->toData,
+                             arg3->toData,
+                             arg4->toData,
+                             arg5->toData,
+                             arg6->toData,
                            ),
-                         )
-                       | {
-                           pc_lhs:
-                             {
-                               ppat_desc:
-                                 Ppat_construct(
-                                   {txt: Lident(action)},
-                                   Some({
-                                     ppat_desc:
-                                       Ppat_tuple([
-                                         {ppat_desc: Ppat_var({txt: arg1})},
-                                         {ppat_desc: Ppat_var({txt: arg2})},
-                                         {ppat_desc: Ppat_var({txt: arg3})},
-                                         {ppat_desc: Ppat_var({txt: arg4})},
-                                         {ppat_desc: Ppat_var({txt: arg5})},
-                                       ]),
-                                   }),
-                                 ),
-                             } as pattern,
-                           pc_rhs: branch,
-                         } =>
-                         Exp.case(
-                           pattern,
-                           Exp.sequence(
-                             action
-                             ->reducerLogEntry(`WithPayload)
-                             ->logWithData5(
-                                 "debugWithData5",
-                                 arg1->toData,
-                                 arg2->toData,
-                                 arg3->toData,
-                                 arg4->toData,
-                                 arg5->toData,
-                               ),
-                             baseMapper(argv).expr(mapper, branch),
+                         baseMapper(argv).expr(mapper, branch),
+                       ),
+                     )
+                   | {
+                       pc_lhs:
+                         {
+                           ppat_desc:
+                             Ppat_construct(
+                               {txt: Lident(tag)},
+                               Some({
+                                 ppat_desc:
+                                   Ppat_tuple([
+                                     {ppat_desc: Ppat_var({txt: arg1})},
+                                     {ppat_desc: Ppat_var({txt: arg2})},
+                                     {ppat_desc: Ppat_var({txt: arg3})},
+                                     {ppat_desc: Ppat_var({txt: arg4})},
+                                     {ppat_desc: Ppat_var({txt: arg5})},
+                                     {ppat_desc: Ppat_var({txt: arg6})},
+                                     {ppat_desc: Ppat_var({txt: arg7})},
+                                   ]),
+                               }),
+                             ),
+                         } as pattern,
+                       pc_rhs: branch,
+                     } =>
+                     Exp.case(
+                       pattern,
+                       Exp.sequence(
+                         tag
+                         ->matchedLogEntry(ns, `WithPayload)
+                         ->logWithData7(
+                             "debugWithData7",
+                             arg1->toData,
+                             arg2->toData,
+                             arg3->toData,
+                             arg4->toData,
+                             arg5->toData,
+                             arg6->toData,
+                             arg7->toData,
                            ),
-                         )
-                       | {
-                           pc_lhs:
-                             {
-                               ppat_desc:
-                                 Ppat_construct(
-                                   {txt: Lident(action)},
-                                   Some({
-                                     ppat_desc:
-                                       Ppat_tuple([
-                                         {ppat_desc: Ppat_var({txt: arg1})},
-                                         {ppat_desc: Ppat_var({txt: arg2})},
-                                         {ppat_desc: Ppat_var({txt: arg3})},
-                                         {ppat_desc: Ppat_var({txt: arg4})},
-                                         {ppat_desc: Ppat_var({txt: arg5})},
-                                         {ppat_desc: Ppat_var({txt: arg6})},
-                                       ]),
-                                   }),
-                                 ),
-                             } as pattern,
-                           pc_rhs: branch,
-                         } =>
-                         Exp.case(
-                           pattern,
-                           Exp.sequence(
-                             action
-                             ->reducerLogEntry(`WithPayload)
-                             ->logWithData6(
-                                 "debugWithData6",
-                                 arg1->toData,
-                                 arg2->toData,
-                                 arg3->toData,
-                                 arg4->toData,
-                                 arg5->toData,
-                                 arg6->toData,
-                               ),
-                             baseMapper(argv).expr(mapper, branch),
-                           ),
-                         )
-                       | {
-                           pc_lhs:
-                             {
-                               ppat_desc:
-                                 Ppat_construct(
-                                   {txt: Lident(action)},
-                                   Some({
-                                     ppat_desc:
-                                       Ppat_tuple([
-                                         {ppat_desc: Ppat_var({txt: arg1})},
-                                         {ppat_desc: Ppat_var({txt: arg2})},
-                                         {ppat_desc: Ppat_var({txt: arg3})},
-                                         {ppat_desc: Ppat_var({txt: arg4})},
-                                         {ppat_desc: Ppat_var({txt: arg5})},
-                                         {ppat_desc: Ppat_var({txt: arg6})},
-                                         {ppat_desc: Ppat_var({txt: arg7})},
-                                       ]),
-                                   }),
-                                 ),
-                             } as pattern,
-                           pc_rhs: branch,
-                         } =>
-                         Exp.case(
-                           pattern,
-                           Exp.sequence(
-                             action
-                             ->reducerLogEntry(`WithPayload)
-                             ->logWithData7(
-                                 "debugWithData7",
-                                 arg1->toData,
-                                 arg2->toData,
-                                 arg3->toData,
-                                 arg4->toData,
-                                 arg5->toData,
-                                 arg6->toData,
-                                 arg7->toData,
-                               ),
-                             baseMapper(argv).expr(mapper, branch),
-                           ),
-                         )
-                       | {
-                           pc_lhs:
-                             {
-                               ppat_desc:
-                                 Ppat_construct(
-                                   {txt: Lident(action)},
-                                   Some(_),
-                                 ),
-                             } as pattern,
-                           pc_rhs: branch,
-                         } =>
-                         Exp.case(
-                           pattern,
-                           Exp.sequence(
-                             action
-                             ->reducerLogEntry(`WithNotLoggedPayload)
-                             ->log("debug"),
-                             baseMapper(argv).expr(mapper, branch),
-                           ),
-                         )
-                       | {pc_lhs: pattern, pc_rhs: branch} =>
-                         Exp.case(
-                           pattern,
-                           baseMapper(argv).expr(mapper, branch),
-                         )
-                       },
-                     _,
-                   ),
-          ),
-        ),
-      )
+                         baseMapper(argv).expr(mapper, branch),
+                       ),
+                     )
+                   | {
+                       pc_lhs:
+                         {
+                           ppat_desc:
+                             Ppat_construct({txt: Lident(tag)}, Some(_)),
+                         } as pattern,
+                       pc_rhs: branch,
+                     } =>
+                     Exp.case(
+                       pattern,
+                       Exp.sequence(
+                         tag
+                         ->matchedLogEntry(ns, `WithNotLoggedPayload)
+                         ->log("debug"),
+                         baseMapper(argv).expr(mapper, branch),
+                       ),
+                     )
+                   | {pc_lhs: pattern, pc_rhs: branch} =>
+                     Exp.case(
+                       pattern,
+                       baseMapper(argv).expr(mapper, branch),
+                     )
+                   },
+                 _,
+               ),
+      );
 
     | _ => baseMapper(argv).expr(mapper, expr)
     },

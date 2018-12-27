@@ -12,6 +12,7 @@ Logging implementation for [ReasonML](https://reasonml.github.io) / [BuckleScrip
 - Multiple logging levels.
 - Customizable verbosity via environment variable.
 - Custom loggers.
+- `[@log]` helper.
 - `ReasonReact` integration.
 
 ## Installation
@@ -99,18 +100,45 @@ PPX gives you ability to customize maximum log level of your build and eliminate
 
 Default logger compiles log entries to `console.*` method calls so those are discardable via [UglifyJS](https://github.com/mishoo/UglifyJS2#compress-options)/[TerserJS](https://github.com/terser-js/terser#compress-options) or [Babel plugin](https://babeljs.io/docs/en/babel-plugin-transform-remove-console).
 
+### `[@log]` helper
+This helper can be placed in front of any `switch` expression with constructor patterns and it will inject debug expressions into each branch.
+
+```reason
+let _ = x => [@log] switch (x) {
+  | A => "A"
+  | B(b) => b
+}
+```
+
+It will be rewritten into:
+
+```reason
+let _ = x => switch (x) {
+  | A =>
+    [%log.debug "Module::A"];
+    "A";
+  | B(b) =>
+    [%log.debug "Module::B with payload"; ("b", b)];
+    b;
+}
+```
+
+Where `Module` is a value of `__MODULE__` variable. You can pass optional custom namespace to helper like this: `[@log "MyNamespace"]`.
+
+`[@log]` helper works only for `switch` expressions with constructor patterns, for now. In the future, it will be extended to handle more cases.
+
 ### `ReasonReact` integration
-With `bs-log`, you can automatically log dispatched actions in your components.
+Using `[@log]` helper, you can log dispatched actions in your components.
 
 Annotate `reducer` function like this:
 
 ```reason
-reducer: [@log] (action, state) => switch (action) {
+reducer: (action, state) => [@log] switch (action) {
   ...
 }
 ```
 
-In the console, entries appear in the following form: `ModuleName::Action`, where `ModuleName` is value of `__MODULE__` variable. Keep that in mind, when read log for annotated components in sub-modules.
+For most of the components, namespace will be a value of `__MODULE__` variable, which is a name of the current component. If you annotate components in sub-modules, you can define custom namespace.
 
 Also, these entries are logged on the `debug` level so none of those will appear in production builds.
 
@@ -130,10 +158,22 @@ Considering that you want to log only `error` level messages, you need to create
 
 ```reason
 let error = event => RemoteBugTracker.notify(event);
+
 let errorWithData = (event, (label, data)) =>
-  RemoteBugTracker.notify(event, [|(label, data)|]);
+  RemoteBugTracker.notify(
+    event,
+    [|(label, data)|], /* dummy example of passing additional data */
+  );
+
 let errorWithData2 = (event, (label1, data1), (label2, data2)) =>
-  RemoteBugTracker.notify(event, [|(label1, data1), (label2, data2)|]);
+  RemoteBugTracker.notify(
+    event,
+    [|
+      (label1, data1),
+      (label2, data2),
+    |],
+  );
+
 /* Up to 7 */
 ```
 

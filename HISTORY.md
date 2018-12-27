@@ -1,5 +1,9 @@
 # History
 
+## 0.0.8
+- Make `[@log]` annotation generic: it can be placed in front of any `switch` expression with constructors.
+- `[@log]` can accept optional namespace: `[@log "MyNamespace"]`.
+
 ## 0.0.7
 - Allow log statements inside annotated reducers.
 
