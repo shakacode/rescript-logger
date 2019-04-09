@@ -4,10 +4,11 @@ steps:
     inputs:
       versionSpec: 8.x
 
-  - script: yarn install
-    workingDirectory: "bs-log"
-    displayName: "bs-log: yarn install"
+  - script: "npm install -g esy@0.5.6"
+    displayName: "npm install -g esy@0.5.6"
 
   - script: yarn install
-    workingDirectory: "bs-log-ppx"
-    displayName: "bs-log-ppx: yarn install"
+    displayName: "yarn install"
+
+  - script: esy @ppx
+    displayName: "esy @ppx"

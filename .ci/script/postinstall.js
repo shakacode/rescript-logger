@@ -5,7 +5,7 @@ var path = require("path");
 
 var platform = process.platform;
 
-var bin = "logppx.native";
+var bin = "bin.exe";
 
 /**
  * Since os.arch returns node binary's target arch, not

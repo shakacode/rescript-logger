@@ -212,7 +212,7 @@ Clone repo and install deps:
 
 ```shell
 esy @ppx
-yarn install --ignore-scripts
+yarn install
 ```
 
 Build loggers and ppx:

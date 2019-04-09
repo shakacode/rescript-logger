@@ -2,13 +2,12 @@ parameters: # defaults to macOS
   name: "bs_log_macOS"
   vmImage: "macOS-10.13"
   platform: "macOS"
-  fileEnding: ""
 
 jobs:
   - job: ${{ parameters.name }}
     pool:
       vmImage: ${{ parameters.vmImage }}
-      demands: npm
+      demands: node.js
 
     steps:
       - template: install.yml
@@ -16,4 +15,3 @@ jobs:
       - template: publish.yml
         parameters:
           platform: ${{ parameters.platform }}
-          fileEnding: ${{ parameters.fileEnding }}

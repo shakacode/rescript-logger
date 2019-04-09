@@ -9,7 +9,6 @@ jobs:
       name: "bs_log_Windows"
       vmImage: "vs2017-win2016"
       platform: "Windows"
-      fileEnding: ".exe"
 
   - template: release/pipeline.yml
     parameters:
