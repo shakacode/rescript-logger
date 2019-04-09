@@ -1,0 +1,27 @@
+{
+  "name": "bs-log-ppx",
+  "version": "0.0.9",
+  "description": "Logging implementation for ReasonML/BuckleScript",
+  "author": "Alex Fedoseev <alex.fedoseev@gmail.com>",
+  "license": "MIT",
+  "esy": {
+    "build": "dune build -p #{self.name}",
+    "buildsInSource": "_build"
+  },
+  "dependencies": {
+    "@esy-ocaml/esy-installer": "^0.0.1",
+    "@esy-ocaml/reason": "*",
+    "@opam/dune": ">=1.6.0",
+    "@opam/ocaml-migrate-parsetree": "1.2.0",
+    "ocaml": "~4.2.3",
+    "refmterr": "*"
+  },
+  "resolutions": {
+    "@esy-ocaml/esy-installer": "0.0.1",
+    "@opam/menhir": "20171013",
+    "@opam/re": "1.8.0"
+  },
+  "devDependencies": {
+    "@opam/merlin": "*"
+  }
+}

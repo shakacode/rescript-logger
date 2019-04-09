@@ -1,6 +1,8 @@
 {
   "name": "bs-log",
-  "sources": ["src"],
+  "sources": [
+    "src"
+  ],
   "refmt": 3,
   "package-specs": {
     "module": "es6",

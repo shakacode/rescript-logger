@@ -9,6 +9,9 @@
     "url": "https://github.com/minima-app/bs-log.git"
   },
   "scripts": {
+    "start": "bsb -clean-world -make-world -w",
+    "build": "bsb -clean-world -make-world",
+    "test": "exit 0",
     "postinstall": "node postinstall.js"
   },
   "files": [
@@ -18,7 +21,10 @@
     "postinstall.js"
   ],
   "peerDependencies": {
-    "bs-platform": "^4.0.5"
+    "bs-platform": "^5.0.0"
+  },
+  "devDependencies": {
+    "bs-platform": "5.0.0"
   },
   "keywords": [
     "log",

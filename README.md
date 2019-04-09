@@ -195,3 +195,43 @@ BS_LOG=info atom .
 
 **Changing value of `BS_LOG`/`BS_LOGGER` doesn't make any effect**<br />
 When you change a value of `BS_LOG` and/or `BS_LOGGER`, `-clean-world` before the next build.
+
+## Developing
+Repo consists of 2 parts:
+- BuckleScript loggers: dependencies are managed by `yarn`
+- Dune ppx: dependencies are managed by `esy`
+
+Clone repo and install deps:
+
+```shell
+esy @ppx
+yarn install --ignore-scripts
+```
+
+Build loggers and ppx:
+
+```shell
+yarn run build
+esy @ppx build
+```
+
+To explore generated output, extend `bsconfig.json`:
+
+```json
+"sources": [
+  "src",
+  {
+    "dir": "test",
+    "type" : "dev"
+  }
+],
+"ppx-flags": [
+  "./_build/default/bin/bin.exe"
+]
+```
+
+And rebuild BuckleScript project:
+
+```shell
+BS_LOG=* yarn run build
+```

@@ -1,16 +1,105 @@
+open Migrate_parsetree;
+open OCaml_406.Ast;
 open Ast_mapper;
 open Ast_helper;
 open Asttypes;
 open Parsetree;
 open Longident;
 
-type level =
-  | Debug
-  | Info
-  | Warn
-  | Error;
-
 exception InvalidLogLevel(string);
+
+module Level = {
+  type t =
+    | Debug
+    | Info
+    | Warn
+    | Error;
+
+  let fromEnv = () =>
+    switch (Sys.getenv("BS_LOG")) {
+    | "*" => Some(Debug)
+    | "debug" => Some(Debug)
+    | "info" => Some(Info)
+    | "warn" => Some(Warn)
+    | "error" => Some(Error)
+    | "off" => None
+    | exception Not_found => None
+    | _ as x => raise(InvalidLogLevel(x))
+    };
+};
+
+module Fn = {
+  type t =
+    | Debug
+    | Debug1
+    | Debug2
+    | Debug3
+    | Debug4
+    | Debug5
+    | Debug6
+    | Debug7
+    | Info
+    | Info1
+    | Info2
+    | Info3
+    | Info4
+    | Info5
+    | Info6
+    | Info7
+    | Warn
+    | Warn1
+    | Warn2
+    | Warn3
+    | Warn4
+    | Warn5
+    | Warn6
+    | Warn7
+    | Error
+    | Error1
+    | Error2
+    | Error3
+    | Error4
+    | Error5
+    | Error6
+    | Error7;
+
+  let toString =
+    fun
+    | Debug => "debug"
+    | Debug1 => "debugWithData"
+    | Debug2 => "debugWithData2"
+    | Debug3 => "debugWithData3"
+    | Debug4 => "debugWithData4"
+    | Debug5 => "debugWithData5"
+    | Debug6 => "debugWithData6"
+    | Debug7 => "debugWithData7"
+    | Info => "info"
+    | Info1 => "infoWithData"
+    | Info2 => "infoWithData2"
+    | Info3 => "infoWithData3"
+    | Info4 => "infoWithData4"
+    | Info5 => "infoWithData5"
+    | Info6 => "infoWithData6"
+    | Info7 => "infoWithData7"
+    | Warn => "warn"
+    | Warn1 => "warnWithData"
+    | Warn2 => "warnWithData2"
+    | Warn3 => "warnWithData3"
+    | Warn4 => "warnWithData4"
+    | Warn5 => "warnWithData5"
+    | Warn6 => "warnWithData6"
+    | Warn7 => "warnWithData7"
+    | Error => "error"
+    | Error1 => "errorWithData"
+    | Error2 => "errorWithData2"
+    | Error3 => "errorWithData3"
+    | Error4 => "errorWithData4"
+    | Error5 => "errorWithData5"
+    | Error6 => "errorWithData6"
+    | Error7 => "errorWithData7";
+};
+
+let level = Level.fromEnv();
 
 let logger =
   switch (Sys.getenv("BS_LOGGER")) {
@@ -19,110 +108,116 @@ let logger =
   | _ as x => x
   };
 
-let level =
-  switch (Sys.getenv("BS_LOG")) {
-  | "*" => Debug->Some
-  | "debug" => Debug->Some
-  | "info" => Info->Some
-  | "warn" => Warn->Some
-  | "error" => Error->Some
-  | "off" => None
-  | exception Not_found => None
-  | _ as x => x->InvalidLogLevel->raise
-  };
-
 let logger = name =>
   Exp.ident({txt: Ldot(Lident(logger), name), loc: default_loc^});
 
-let log = (event, fn) => Exp.apply(fn->logger, [("", event)]);
+let log = (fn, event) =>
+  Exp.apply(fn |> Fn.toString |> logger, [(Nolabel, event)]);
 
-let logWithData = (event, fn, data1) =>
-  Exp.apply(fn->logger, [("", event), ("", data1)]);
-
-let logWithData2 = (event, fn, data1, data2) =>
-  Exp.apply(fn->logger, [("", event), ("", data1), ("", data2)]);
-
-let logWithData3 = (event, fn, data1, data2, data3) =>
+let logWithData = (fn, data1, event) =>
   Exp.apply(
-    fn->logger,
-    [("", event), ("", data1), ("", data2), ("", data3)],
+    fn |> Fn.toString |> logger,
+    [(Nolabel, event), (Nolabel, data1)],
   );
 
-let logWithData4 = (event, fn, data1, data2, data3, data4) =>
+let logWithData2 = (fn, data1, data2, event) =>
   Exp.apply(
-    fn->logger,
-    [("", event), ("", data1), ("", data2), ("", data3), ("", data4)],
+    fn |> Fn.toString |> logger,
+    [(Nolabel, event), (Nolabel, data1), (Nolabel, data2)],
   );
 
-let logWithData5 = (event, fn, data1, data2, data3, data4, data5) =>
+let logWithData3 = (fn, data1, data2, data3, event) =>
   Exp.apply(
-    fn->logger,
+    fn |> Fn.toString |> logger,
     [
-      ("", event),
-      ("", data1),
-      ("", data2),
-      ("", data3),
-      ("", data4),
-      ("", data5),
+      (Nolabel, event),
+      (Nolabel, data1),
+      (Nolabel, data2),
+      (Nolabel, data3),
     ],
   );
 
-let logWithData6 = (event, fn, data1, data2, data3, data4, data5, data6) =>
+let logWithData4 = (fn, data1, data2, data3, data4, event) =>
   Exp.apply(
-    fn->logger,
+    fn |> Fn.toString |> logger,
     [
-      ("", event),
-      ("", data1),
-      ("", data2),
-      ("", data3),
-      ("", data4),
-      ("", data5),
-      ("", data6),
+      (Nolabel, event),
+      (Nolabel, data1),
+      (Nolabel, data2),
+      (Nolabel, data3),
+      (Nolabel, data4),
+    ],
+  );
+
+let logWithData5 = (fn, data1, data2, data3, data4, data5, event) =>
+  Exp.apply(
+    fn |> Fn.toString |> logger,
+    [
+      (Nolabel, event),
+      (Nolabel, data1),
+      (Nolabel, data2),
+      (Nolabel, data3),
+      (Nolabel, data4),
+      (Nolabel, data5),
+    ],
+  );
+
+let logWithData6 = (fn, data1, data2, data3, data4, data5, data6, event) =>
+  Exp.apply(
+    fn |> Fn.toString |> logger,
+    [
+      (Nolabel, event),
+      (Nolabel, data1),
+      (Nolabel, data2),
+      (Nolabel, data3),
+      (Nolabel, data4),
+      (Nolabel, data5),
+      (Nolabel, data6),
     ],
   );
 
 let logWithData7 =
-    (event, fn, data1, data2, data3, data4, data5, data6, data7) =>
+    (fn, data1, data2, data3, data4, data5, data6, data7, event) =>
   Exp.apply(
-    fn->logger,
+    fn |> Fn.toString |> logger,
     [
-      ("", event),
-      ("", data1),
-      ("", data2),
-      ("", data3),
-      ("", data4),
-      ("", data5),
-      ("", data6),
-      ("", data7),
+      (Nolabel, event),
+      (Nolabel, data1),
+      (Nolabel, data2),
+      (Nolabel, data3),
+      (Nolabel, data4),
+      (Nolabel, data5),
+      (Nolabel, data6),
+      (Nolabel, data7),
     ],
   );
 
 let nothing = Exp.construct({txt: Lident("()"), loc: default_loc^}, None);
 
-let matchedLogEntry = (tag, ns, ctx) =>
+let matchedLogEntry = (ns, ctx, tag) =>
   Exp.apply(
     Exp.ident({txt: Ldot(Lident("Pervasives"), "^"), loc: default_loc^}),
     [
       (
-        "",
+        Nolabel,
         switch (ns) {
         | None =>
           Exp.ident({
             txt: Ldot(Lident("Pervasives"), "__MODULE__"),
             loc: default_loc^,
           })
-        | Some(ns) => Exp.constant(Const_string(ns, None))
+        | Some(ns) => Exp.constant(Pconst_string(ns, None))
         },
       ),
       (
-        "",
+        Nolabel,
         switch (ctx) {
-        | `WithoutPayload => Exp.constant(Const_string("::" ++ tag, None))
+        | `WithoutPayload => Exp.constant(Pconst_string("::" ++ tag, None))
         | `WithPayload =>
-          Exp.constant(Const_string("::" ++ tag ++ " with payload", None))
+          Exp.constant(Pconst_string("::" ++ tag ++ " with payload", None))
         | `WithNotLoggedPayload =>
           Exp.constant(
-            Const_string("::" ++ tag ++ " with payload (not logged)", None),
+            Pconst_string("::" ++ tag ++ " with payload (not logged)", None),
           )
         },
       ),
@@ -131,11 +226,11 @@ let matchedLogEntry = (tag, ns, ctx) =>
 
 let toData = arg =>
   Exp.tuple([
-    Exp.constant(Const_string(arg, None)),
+    Exp.constant(Pconst_string(arg, None)),
     Exp.ident({txt: Lident(arg), loc: default_loc^}),
   ]);
 
-let baseMapper = _argv => {
+let baseMapper = (_config, _cookies) => {
   ...default_mapper,
   expr: (mapper, expr) =>
     switch (expr, level) {
@@ -150,7 +245,7 @@ let baseMapper = _argv => {
         },
         Some(Debug),
       ) =>
-      event->log("debug")
+      event |> log(Debug)
 
     | (
         {
@@ -165,7 +260,7 @@ let baseMapper = _argv => {
         },
         Some(Debug),
       ) =>
-      event->logWithData("debugWithData", data1)
+      event |> logWithData(Debug1, data1)
 
     | (
         {
@@ -181,7 +276,7 @@ let baseMapper = _argv => {
         },
         Some(Debug),
       ) =>
-      event->logWithData2("debugWithData2", data1, data2)
+      event |> logWithData2(Debug2, data1, data2)
 
     | (
         {
@@ -198,7 +293,7 @@ let baseMapper = _argv => {
         },
         Some(Debug),
       ) =>
-      event->logWithData3("debugWithData3", data1, data2, data3)
+      event |> logWithData3(Debug3, data1, data2, data3)
 
     | (
         {
@@ -216,7 +311,7 @@ let baseMapper = _argv => {
         },
         Some(Debug),
       ) =>
-      event->logWithData4("debugWithData4", data1, data2, data3, data4)
+      event |> logWithData4(Debug4, data1, data2, data3, data4)
 
     | (
         {
@@ -235,7 +330,7 @@ let baseMapper = _argv => {
         },
         Some(Debug),
       ) =>
-      event->logWithData5("debugWithData5", data1, data2, data3, data4, data5)
+      event |> logWithData5(Debug5, data1, data2, data3, data4, data5)
 
     | (
         {
@@ -255,15 +350,7 @@ let baseMapper = _argv => {
         },
         Some(Debug),
       ) =>
-      event->logWithData6(
-        "debugWithData6",
-        data1,
-        data2,
-        data3,
-        data4,
-        data5,
-        data6,
-      )
+      event |> logWithData6(Debug6, data1, data2, data3, data4, data5, data6)
 
     | (
         {
@@ -284,16 +371,8 @@ let baseMapper = _argv => {
         },
         Some(Debug),
       ) =>
-      event->logWithData7(
-        "debugWithData7",
-        data1,
-        data2,
-        data3,
-        data4,
-        data5,
-        data6,
-        data7,
-      )
+      event
+      |> logWithData7(Debug7, data1, data2, data3, data4, data5, data6, data7)
 
     | (
         {pexp_desc: Pexp_extension(({txt: "log.debug"}, _))},
@@ -311,7 +390,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info),
       ) =>
-      event->log("info")
+      event |> log(Info)
 
     | (
         {
@@ -326,7 +405,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info),
       ) =>
-      event->logWithData("infoWithData", data1)
+      event |> logWithData(Info1, data1)
 
     | (
         {
@@ -342,7 +421,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info),
       ) =>
-      event->logWithData2("infoWithData2", data1, data2)
+      event |> logWithData2(Info2, data1, data2)
 
     | (
         {
@@ -359,7 +438,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info),
       ) =>
-      event->logWithData3("infoWithData3", data1, data2, data3)
+      event |> logWithData3(Info3, data1, data2, data3)
 
     | (
         {
@@ -377,7 +456,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info),
       ) =>
-      event->logWithData4("infoWithData4", data1, data2, data3, data4)
+      event |> logWithData4(Info4, data1, data2, data3, data4)
 
     | (
         {
@@ -396,7 +475,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info),
       ) =>
-      event->logWithData5("infoWithData5", data1, data2, data3, data4, data5)
+      event |> logWithData5(Info5, data1, data2, data3, data4, data5)
 
     | (
         {
@@ -416,15 +495,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info),
       ) =>
-      event->logWithData6(
-        "infoWithData6",
-        data1,
-        data2,
-        data3,
-        data4,
-        data5,
-        data6,
-      )
+      event |> logWithData6(Info6, data1, data2, data3, data4, data5, data6)
 
     | (
         {
@@ -445,16 +516,8 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info),
       ) =>
-      event->logWithData7(
-        "infoWithData7",
-        data1,
-        data2,
-        data3,
-        data4,
-        data5,
-        data6,
-        data7,
-      )
+      event
+      |> logWithData7(Info7, data1, data2, data3, data4, data5, data6, data7)
 
     | (
         {pexp_desc: Pexp_extension(({txt: "log.info"}, _))},
@@ -472,7 +535,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn),
       ) =>
-      event->log("warn")
+      event |> log(Warn)
 
     | (
         {
@@ -487,7 +550,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn),
       ) =>
-      event->logWithData("warnWithData", data1)
+      event |> logWithData(Warn1, data1)
 
     | (
         {
@@ -503,7 +566,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn),
       ) =>
-      event->logWithData2("warnWithData2", data1, data2)
+      event |> logWithData2(Warn2, data1, data2)
 
     | (
         {
@@ -520,7 +583,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn),
       ) =>
-      event->logWithData3("warnWithData3", data1, data2, data3)
+      event |> logWithData3(Warn3, data1, data2, data3)
 
     | (
         {
@@ -538,7 +601,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn),
       ) =>
-      event->logWithData4("warnWithData4", data1, data2, data3, data4)
+      event |> logWithData4(Warn4, data1, data2, data3, data4)
 
     | (
         {
@@ -557,7 +620,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn),
       ) =>
-      event->logWithData5("warnWithData5", data1, data2, data3, data4, data5)
+      event |> logWithData5(Warn5, data1, data2, data3, data4, data5)
 
     | (
         {
@@ -577,15 +640,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn),
       ) =>
-      event->logWithData6(
-        "warnWithData6",
-        data1,
-        data2,
-        data3,
-        data4,
-        data5,
-        data6,
-      )
+      event |> logWithData6(Warn6, data1, data2, data3, data4, data5, data6)
 
     | (
         {
@@ -606,16 +661,8 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn),
       ) =>
-      event->logWithData7(
-        "warnWithData7",
-        data1,
-        data2,
-        data3,
-        data4,
-        data5,
-        data6,
-        data7,
-      )
+      event
+      |> logWithData7(Warn7, data1, data2, data3, data4, data5, data6, data7)
 
     | (
         {pexp_desc: Pexp_extension(({txt: "log.warn"}, _))},
@@ -633,7 +680,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn | Error),
       ) =>
-      event->log("error")
+      event |> log(Error)
 
     | (
         {
@@ -648,7 +695,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn | Error),
       ) =>
-      event->logWithData("errorWithData", data1)
+      event |> logWithData(Error1, data1)
 
     | (
         {
@@ -664,7 +711,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn | Error),
       ) =>
-      event->logWithData2("errorWithData2", data1, data2)
+      event |> logWithData2(Error2, data1, data2)
 
     | (
         {
@@ -681,7 +728,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn | Error),
       ) =>
-      event->logWithData3("errorWithData3", data1, data2, data3)
+      event |> logWithData3(Error3, data1, data2, data3)
 
     | (
         {
@@ -699,7 +746,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn | Error),
       ) =>
-      event->logWithData4("errorWithData4", data1, data2, data3, data4)
+      event |> logWithData4(Error4, data1, data2, data3, data4)
 
     | (
         {
@@ -718,7 +765,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn | Error),
       ) =>
-      event->logWithData5("errorWithData5", data1, data2, data3, data4, data5)
+      event |> logWithData5(Error5, data1, data2, data3, data4, data5)
 
     | (
         {
@@ -738,15 +785,7 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn | Error),
       ) =>
-      event->logWithData6(
-        "errorWithData6",
-        data1,
-        data2,
-        data3,
-        data4,
-        data5,
-        data6,
-      )
+      event |> logWithData6(Error6, data1, data2, data3, data4, data5, data6)
 
     | (
         {
@@ -767,16 +806,8 @@ let baseMapper = _argv => {
         },
         Some(Debug | Info | Warn | Error),
       ) =>
-      event->logWithData7(
-        "errorWithData7",
-        data1,
-        data2,
-        data3,
-        data4,
-        data5,
-        data6,
-        data7,
-      )
+      event
+      |> logWithData7(Error7, data1, data2, data3, data4, data5, data6, data7)
 
     | ({pexp_desc: Pexp_extension(({txt: "log.error"}, _))}, None) => nothing
 
@@ -784,7 +815,7 @@ let baseMapper = _argv => {
     },
 };
 
-let resultMapper = argv => {
+let resultMapper = (config, cookies) => {
   ...default_mapper,
   expr: (mapper, expr) =>
     switch (expr, level) {
@@ -801,300 +832,293 @@ let resultMapper = argv => {
             {
               pstr_desc:
                 Pstr_eval(
-                  {pexp_desc: Pexp_constant(Const_string(x, None))},
+                  {pexp_desc: Pexp_constant(Pconst_string(x, None))},
                   _,
                 ),
             },
           ]) =>
-          x->Some
+          Some(x)
         | _ => None
         };
       Exp.match(
         match,
-        cases->List.map(
-                 case =>
-                   switch (case) {
-                   | {
-                       pc_lhs:
-                         {
+        cases
+        |> List.map(case =>
+             switch (case) {
+             | {
+                 pc_lhs:
+                   {ppat_desc: Ppat_construct({txt: Lident(tag)}, None)} as pattern,
+                 pc_rhs: branch,
+               } =>
+               Exp.case(
+                 pattern,
+                 Exp.sequence(
+                   tag |> matchedLogEntry(ns, `WithoutPayload) |> log(Debug),
+                   baseMapper(config, cookies).expr(mapper, branch),
+                 ),
+               )
+             | {
+                 pc_lhs:
+                   {
+                     ppat_desc:
+                       Ppat_construct(
+                         {txt: Lident(tag)},
+                         Some({
                            ppat_desc:
-                             Ppat_construct({txt: Lident(tag)}, None),
-                         } as pattern,
-                       pc_rhs: branch,
-                     } =>
-                     Exp.case(
-                       pattern,
-                       Exp.sequence(
-                         tag
-                         ->matchedLogEntry(ns, `WithoutPayload)
-                         ->log("debug"),
-                         baseMapper(argv).expr(mapper, branch),
+                             Ppat_tuple([
+                               {ppat_desc: Ppat_var({txt: arg1})},
+                             ]),
+                         }),
                        ),
-                     )
-                   | {
-                       pc_lhs:
-                         {
+                   } as pattern,
+                 pc_rhs: branch,
+               } =>
+               Exp.case(
+                 pattern,
+                 Exp.sequence(
+                   tag
+                   |> matchedLogEntry(ns, `WithPayload)
+                   |> logWithData(Debug1, arg1 |> toData),
+                   baseMapper(config, cookies).expr(mapper, branch),
+                 ),
+               )
+             | {
+                 pc_lhs:
+                   {
+                     ppat_desc:
+                       Ppat_construct(
+                         {txt: Lident(tag)},
+                         Some({
                            ppat_desc:
-                             Ppat_construct(
-                               {txt: Lident(tag)},
-                               Some({
-                                 ppat_desc:
-                                   Ppat_tuple([
-                                     {ppat_desc: Ppat_var({txt: arg1})},
-                                   ]),
-                               }),
-                             ),
-                         } as pattern,
-                       pc_rhs: branch,
-                     } =>
-                     Exp.case(
-                       pattern,
-                       Exp.sequence(
-                         tag
-                         ->matchedLogEntry(ns, `WithPayload)
-                         ->logWithData("debugWithData", arg1->toData),
-                         baseMapper(argv).expr(mapper, branch),
+                             Ppat_tuple([
+                               {ppat_desc: Ppat_var({txt: arg1})},
+                               {ppat_desc: Ppat_var({txt: arg2})},
+                             ]),
+                         }),
                        ),
-                     )
-                   | {
-                       pc_lhs:
-                         {
+                   } as pattern,
+                 pc_rhs: branch,
+               } =>
+               Exp.case(
+                 pattern,
+                 Exp.sequence(
+                   tag
+                   |> matchedLogEntry(ns, `WithPayload)
+                   |> logWithData2(Debug2, arg1 |> toData, arg2 |> toData),
+                   baseMapper(config, cookies).expr(mapper, branch),
+                 ),
+               )
+             | {
+                 pc_lhs:
+                   {
+                     ppat_desc:
+                       Ppat_construct(
+                         {txt: Lident(tag)},
+                         Some({
                            ppat_desc:
-                             Ppat_construct(
-                               {txt: Lident(tag)},
-                               Some({
-                                 ppat_desc:
-                                   Ppat_tuple([
-                                     {ppat_desc: Ppat_var({txt: arg1})},
-                                     {ppat_desc: Ppat_var({txt: arg2})},
-                                   ]),
-                               }),
-                             ),
-                         } as pattern,
-                       pc_rhs: branch,
-                     } =>
-                     Exp.case(
-                       pattern,
-                       Exp.sequence(
-                         tag
-                         ->matchedLogEntry(ns, `WithPayload)
-                         ->logWithData2(
-                             "debugWithData2",
-                             arg1->toData,
-                             arg2->toData,
-                           ),
-                         baseMapper(argv).expr(mapper, branch),
+                             Ppat_tuple([
+                               {ppat_desc: Ppat_var({txt: arg1})},
+                               {ppat_desc: Ppat_var({txt: arg2})},
+                               {ppat_desc: Ppat_var({txt: arg3})},
+                             ]),
+                         }),
                        ),
-                     )
-                   | {
-                       pc_lhs:
-                         {
+                   } as pattern,
+                 pc_rhs: branch,
+               } =>
+               Exp.case(
+                 pattern,
+                 Exp.sequence(
+                   tag
+                   |> matchedLogEntry(ns, `WithPayload)
+                   |> logWithData3(
+                        Debug3,
+                        arg1 |> toData,
+                        arg2 |> toData,
+                        arg3 |> toData,
+                      ),
+                   baseMapper(config, cookies).expr(mapper, branch),
+                 ),
+               )
+             | {
+                 pc_lhs:
+                   {
+                     ppat_desc:
+                       Ppat_construct(
+                         {txt: Lident(tag)},
+                         Some({
                            ppat_desc:
-                             Ppat_construct(
-                               {txt: Lident(tag)},
-                               Some({
-                                 ppat_desc:
-                                   Ppat_tuple([
-                                     {ppat_desc: Ppat_var({txt: arg1})},
-                                     {ppat_desc: Ppat_var({txt: arg2})},
-                                     {ppat_desc: Ppat_var({txt: arg3})},
-                                   ]),
-                               }),
-                             ),
-                         } as pattern,
-                       pc_rhs: branch,
-                     } =>
-                     Exp.case(
-                       pattern,
-                       Exp.sequence(
-                         tag
-                         ->matchedLogEntry(ns, `WithPayload)
-                         ->logWithData3(
-                             "debugWithData3",
-                             arg1->toData,
-                             arg2->toData,
-                             arg3->toData,
-                           ),
-                         baseMapper(argv).expr(mapper, branch),
+                             Ppat_tuple([
+                               {ppat_desc: Ppat_var({txt: arg1})},
+                               {ppat_desc: Ppat_var({txt: arg2})},
+                               {ppat_desc: Ppat_var({txt: arg3})},
+                               {ppat_desc: Ppat_var({txt: arg4})},
+                             ]),
+                         }),
                        ),
-                     )
-                   | {
-                       pc_lhs:
-                         {
+                   } as pattern,
+                 pc_rhs: branch,
+               } =>
+               Exp.case(
+                 pattern,
+                 Exp.sequence(
+                   tag
+                   |> matchedLogEntry(ns, `WithPayload)
+                   |> logWithData4(
+                        Debug4,
+                        arg1 |> toData,
+                        arg2 |> toData,
+                        arg3 |> toData,
+                        arg4 |> toData,
+                      ),
+                   baseMapper(config, cookies).expr(mapper, branch),
+                 ),
+               )
+             | {
+                 pc_lhs:
+                   {
+                     ppat_desc:
+                       Ppat_construct(
+                         {txt: Lident(tag)},
+                         Some({
                            ppat_desc:
-                             Ppat_construct(
-                               {txt: Lident(tag)},
-                               Some({
-                                 ppat_desc:
-                                   Ppat_tuple([
-                                     {ppat_desc: Ppat_var({txt: arg1})},
-                                     {ppat_desc: Ppat_var({txt: arg2})},
-                                     {ppat_desc: Ppat_var({txt: arg3})},
-                                     {ppat_desc: Ppat_var({txt: arg4})},
-                                   ]),
-                               }),
-                             ),
-                         } as pattern,
-                       pc_rhs: branch,
-                     } =>
-                     Exp.case(
-                       pattern,
-                       Exp.sequence(
-                         tag
-                         ->matchedLogEntry(ns, `WithPayload)
-                         ->logWithData4(
-                             "debugWithData4",
-                             arg1->toData,
-                             arg2->toData,
-                             arg3->toData,
-                             arg4->toData,
-                           ),
-                         baseMapper(argv).expr(mapper, branch),
+                             Ppat_tuple([
+                               {ppat_desc: Ppat_var({txt: arg1})},
+                               {ppat_desc: Ppat_var({txt: arg2})},
+                               {ppat_desc: Ppat_var({txt: arg3})},
+                               {ppat_desc: Ppat_var({txt: arg4})},
+                               {ppat_desc: Ppat_var({txt: arg5})},
+                             ]),
+                         }),
                        ),
-                     )
-                   | {
-                       pc_lhs:
-                         {
+                   } as pattern,
+                 pc_rhs: branch,
+               } =>
+               Exp.case(
+                 pattern,
+                 Exp.sequence(
+                   tag
+                   |> matchedLogEntry(ns, `WithPayload)
+                   |> logWithData5(
+                        Debug5,
+                        arg1 |> toData,
+                        arg2 |> toData,
+                        arg3 |> toData,
+                        arg4 |> toData,
+                        arg5 |> toData,
+                      ),
+                   baseMapper(config, cookies).expr(mapper, branch),
+                 ),
+               )
+             | {
+                 pc_lhs:
+                   {
+                     ppat_desc:
+                       Ppat_construct(
+                         {txt: Lident(tag)},
+                         Some({
                            ppat_desc:
-                             Ppat_construct(
-                               {txt: Lident(tag)},
-                               Some({
-                                 ppat_desc:
-                                   Ppat_tuple([
-                                     {ppat_desc: Ppat_var({txt: arg1})},
-                                     {ppat_desc: Ppat_var({txt: arg2})},
-                                     {ppat_desc: Ppat_var({txt: arg3})},
-                                     {ppat_desc: Ppat_var({txt: arg4})},
-                                     {ppat_desc: Ppat_var({txt: arg5})},
-                                   ]),
-                               }),
-                             ),
-                         } as pattern,
-                       pc_rhs: branch,
-                     } =>
-                     Exp.case(
-                       pattern,
-                       Exp.sequence(
-                         tag
-                         ->matchedLogEntry(ns, `WithPayload)
-                         ->logWithData5(
-                             "debugWithData5",
-                             arg1->toData,
-                             arg2->toData,
-                             arg3->toData,
-                             arg4->toData,
-                             arg5->toData,
-                           ),
-                         baseMapper(argv).expr(mapper, branch),
+                             Ppat_tuple([
+                               {ppat_desc: Ppat_var({txt: arg1})},
+                               {ppat_desc: Ppat_var({txt: arg2})},
+                               {ppat_desc: Ppat_var({txt: arg3})},
+                               {ppat_desc: Ppat_var({txt: arg4})},
+                               {ppat_desc: Ppat_var({txt: arg5})},
+                               {ppat_desc: Ppat_var({txt: arg6})},
+                             ]),
+                         }),
                        ),
-                     )
-                   | {
-                       pc_lhs:
-                         {
+                   } as pattern,
+                 pc_rhs: branch,
+               } =>
+               Exp.case(
+                 pattern,
+                 Exp.sequence(
+                   tag
+                   |> matchedLogEntry(ns, `WithPayload)
+                   |> logWithData6(
+                        Debug6,
+                        arg1 |> toData,
+                        arg2 |> toData,
+                        arg3 |> toData,
+                        arg4 |> toData,
+                        arg5 |> toData,
+                        arg6 |> toData,
+                      ),
+                   baseMapper(config, cookies).expr(mapper, branch),
+                 ),
+               )
+             | {
+                 pc_lhs:
+                   {
+                     ppat_desc:
+                       Ppat_construct(
+                         {txt: Lident(tag)},
+                         Some({
                            ppat_desc:
-                             Ppat_construct(
-                               {txt: Lident(tag)},
-                               Some({
-                                 ppat_desc:
-                                   Ppat_tuple([
-                                     {ppat_desc: Ppat_var({txt: arg1})},
-                                     {ppat_desc: Ppat_var({txt: arg2})},
-                                     {ppat_desc: Ppat_var({txt: arg3})},
-                                     {ppat_desc: Ppat_var({txt: arg4})},
-                                     {ppat_desc: Ppat_var({txt: arg5})},
-                                     {ppat_desc: Ppat_var({txt: arg6})},
-                                   ]),
-                               }),
-                             ),
-                         } as pattern,
-                       pc_rhs: branch,
-                     } =>
-                     Exp.case(
-                       pattern,
-                       Exp.sequence(
-                         tag
-                         ->matchedLogEntry(ns, `WithPayload)
-                         ->logWithData6(
-                             "debugWithData6",
-                             arg1->toData,
-                             arg2->toData,
-                             arg3->toData,
-                             arg4->toData,
-                             arg5->toData,
-                             arg6->toData,
-                           ),
-                         baseMapper(argv).expr(mapper, branch),
+                             Ppat_tuple([
+                               {ppat_desc: Ppat_var({txt: arg1})},
+                               {ppat_desc: Ppat_var({txt: arg2})},
+                               {ppat_desc: Ppat_var({txt: arg3})},
+                               {ppat_desc: Ppat_var({txt: arg4})},
+                               {ppat_desc: Ppat_var({txt: arg5})},
+                               {ppat_desc: Ppat_var({txt: arg6})},
+                               {ppat_desc: Ppat_var({txt: arg7})},
+                             ]),
+                         }),
                        ),
-                     )
-                   | {
-                       pc_lhs:
-                         {
-                           ppat_desc:
-                             Ppat_construct(
-                               {txt: Lident(tag)},
-                               Some({
-                                 ppat_desc:
-                                   Ppat_tuple([
-                                     {ppat_desc: Ppat_var({txt: arg1})},
-                                     {ppat_desc: Ppat_var({txt: arg2})},
-                                     {ppat_desc: Ppat_var({txt: arg3})},
-                                     {ppat_desc: Ppat_var({txt: arg4})},
-                                     {ppat_desc: Ppat_var({txt: arg5})},
-                                     {ppat_desc: Ppat_var({txt: arg6})},
-                                     {ppat_desc: Ppat_var({txt: arg7})},
-                                   ]),
-                               }),
-                             ),
-                         } as pattern,
-                       pc_rhs: branch,
-                     } =>
-                     Exp.case(
-                       pattern,
-                       Exp.sequence(
-                         tag
-                         ->matchedLogEntry(ns, `WithPayload)
-                         ->logWithData7(
-                             "debugWithData7",
-                             arg1->toData,
-                             arg2->toData,
-                             arg3->toData,
-                             arg4->toData,
-                             arg5->toData,
-                             arg6->toData,
-                             arg7->toData,
-                           ),
-                         baseMapper(argv).expr(mapper, branch),
-                       ),
-                     )
-                   | {
-                       pc_lhs:
-                         {
-                           ppat_desc:
-                             Ppat_construct({txt: Lident(tag)}, Some(_)),
-                         } as pattern,
-                       pc_rhs: branch,
-                     } =>
-                     Exp.case(
-                       pattern,
-                       Exp.sequence(
-                         tag
-                         ->matchedLogEntry(ns, `WithNotLoggedPayload)
-                         ->log("debug"),
-                         baseMapper(argv).expr(mapper, branch),
-                       ),
-                     )
-                   | {pc_lhs: pattern, pc_rhs: branch} =>
-                     Exp.case(
-                       pattern,
-                       baseMapper(argv).expr(mapper, branch),
-                     )
-                   },
-                 _,
-               ),
+                   } as pattern,
+                 pc_rhs: branch,
+               } =>
+               Exp.case(
+                 pattern,
+                 Exp.sequence(
+                   tag
+                   |> matchedLogEntry(ns, `WithPayload)
+                   |> logWithData7(
+                        Debug7,
+                        arg1 |> toData,
+                        arg2 |> toData,
+                        arg3 |> toData,
+                        arg4 |> toData,
+                        arg5 |> toData,
+                        arg6 |> toData,
+                        arg7 |> toData,
+                      ),
+                   baseMapper(config, cookies).expr(mapper, branch),
+                 ),
+               )
+             | {
+                 pc_lhs:
+                   {ppat_desc: Ppat_construct({txt: Lident(tag)}, Some(_))} as pattern,
+                 pc_rhs: branch,
+               } =>
+               Exp.case(
+                 pattern,
+                 Exp.sequence(
+                   tag
+                   |> matchedLogEntry(ns, `WithNotLoggedPayload)
+                   |> log(Debug),
+                   baseMapper(config, cookies).expr(mapper, branch),
+                 ),
+               )
+             | {pc_lhs: pattern, pc_rhs: branch} =>
+               Exp.case(
+                 pattern,
+                 baseMapper(config, cookies).expr(mapper, branch),
+               )
+             }
+           ),
       );
 
-    | _ => baseMapper(argv).expr(mapper, expr)
+    | _ => baseMapper(config, cookies).expr(mapper, expr)
     },
 };
 
-let () = Ast_mapper.register("bs-log", resultMapper);
+let () =
+  Driver.register(
+    ~name="bs-log-ppx",
+    ~args=[],
+    Versions.ocaml_406,
+    resultMapper,
+  );
