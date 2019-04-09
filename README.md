@@ -50,8 +50,10 @@ You can log message of specific level using either PPX or common functions:
 [%log.info "Info level message"];
 
 /* non-ppx */
-BrowserLogger.info("Info level message");
+BrowserLogger.info(__MODULE__, "Info level message");
 ```
+
+If you use PPX, value of `__MODULE__` variable will be injected automatically.
 
 ### Additional data
 You can add data to log entry like this:
@@ -66,8 +68,9 @@ You can add data to log entry like this:
 ];
 
 /* non-ppx */
-BrowserLogger.infoWithData("Info level message", ("Foo", 42));
+BrowserLogger.infoWithData(__MODULE__, "Info level message", ("Foo", 42));
 BrowserLogger.infoWithData2(
+  __MODULE__,
   "Info level message",
   ("Foo", {"x": 42}),
   ("Bar", [1, 2, 3]),
@@ -115,15 +118,15 @@ It will be rewritten into:
 ```reason
 let _ = x => switch (x) {
   | A =>
-    [%log.debug "Module::A"];
+    [%log.debug "A"];
     "A";
   | B(b) =>
-    [%log.debug "Module::B with payload"; ("b", b)];
+    [%log.debug "B with payload"; ("b", b)];
     b;
 }
 ```
 
-Where `Module` is a value of `__MODULE__` variable. You can pass optional custom namespace to helper like this: `[@log "MyNamespace"]`.
+You can pass optional custom namespace to helper like this: `[@log "MyNamespace"]`.
 
 `[@log]` helper works only for `switch` expressions with constructor patterns, for now. In the future, it will be extended to handle more cases.
 
@@ -138,9 +141,7 @@ reducer: (action, state) => [@log] switch (action) {
 }
 ```
 
-For most of the components, namespace will be a value of `__MODULE__` variable, which is a name of the current component. If you annotate components in sub-modules, you can define custom namespace.
-
-Also, these entries are logged on the `debug` level so none of those will appear in production builds.
+These entries are logged on the `debug` level so none of those will appear in production builds.
 
 ### Custom loggers
 `bs-log` ships with 2 loggers:
@@ -163,17 +164,23 @@ Considering that you want to log only `error` level messages, you need to create
 ```reason
 /* BugTracker.re */
 
-let error = event => RemoteBugTracker.notify(event);
+let error = (__module__, event) =>
+  RemoteBugTracker.notify(event ++ " in " ++ __module__);
 
-let errorWithData = (event, (label, data)) =>
+let errorWithData = (__module__, event, (label, data)) =>
   RemoteBugTracker.notify(
-    event,
+    event ++ " in " ++ __module__,
     [|(label, data)|], /* dummy example of passing additional data */
   );
 
-let errorWithData2 = (event, (label1, data1), (label2, data2)) =>
+let errorWithData2 = (
+  __module__,
+  event,
+  (label1, data1),
+  (label2, data2),
+) =>
   RemoteBugTracker.notify(
-    event,
+    event ++ " in " ++ __module__,
     [|
       (label1, data1),
       (label2, data2),
@@ -183,7 +190,7 @@ let errorWithData2 = (event, (label1, data1), (label2, data2)) =>
 /* Up to 7 */
 ```
 
-You don't have to re-implement all functions from default logger, only the ones you actually use. Don't worry to forget to implement something, if, later on, you will attempt to use unimplemented method it will be compile time error.
+You don't have to re-implement all functions from default logger, only the ones you actually use. Don't worry to forget to implement something. If later on, you will attempt to use unimplemented method it will be compile time error.
 
 ## Caveats
 **All logging is disabled after file save**<br />

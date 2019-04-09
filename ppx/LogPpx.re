@@ -2,9 +2,7 @@ open Migrate_parsetree;
 open OCaml_406.Ast;
 open Ast_mapper;
 open Ast_helper;
-open Asttypes;
 open Parsetree;
-open Longident;
 
 exception InvalidLogLevel(string);
 
@@ -108,28 +106,43 @@ let logger =
   | _ as x => x
   };
 
+let __module__ =
+  Exp.ident({
+    txt: Ldot(Lident("Pervasives"), "__MODULE__"),
+    loc: default_loc^,
+  });
+
 let logger = name =>
   Exp.ident({txt: Ldot(Lident(logger), name), loc: default_loc^});
 
 let log = (fn, event) =>
-  Exp.apply(fn |> Fn.toString |> logger, [(Nolabel, event)]);
+  Exp.apply(
+    fn |> Fn.toString |> logger,
+    [(Nolabel, __module__), (Nolabel, event)],
+  );
 
 let logWithData = (fn, data1, event) =>
   Exp.apply(
     fn |> Fn.toString |> logger,
-    [(Nolabel, event), (Nolabel, data1)],
+    [(Nolabel, __module__), (Nolabel, event), (Nolabel, data1)],
   );
 
 let logWithData2 = (fn, data1, data2, event) =>
   Exp.apply(
     fn |> Fn.toString |> logger,
-    [(Nolabel, event), (Nolabel, data1), (Nolabel, data2)],
+    [
+      (Nolabel, __module__),
+      (Nolabel, event),
+      (Nolabel, data1),
+      (Nolabel, data2),
+    ],
   );
 
 let logWithData3 = (fn, data1, data2, data3, event) =>
   Exp.apply(
     fn |> Fn.toString |> logger,
     [
+      (Nolabel, __module__),
       (Nolabel, event),
       (Nolabel, data1),
       (Nolabel, data2),
@@ -141,6 +154,7 @@ let logWithData4 = (fn, data1, data2, data3, data4, event) =>
   Exp.apply(
     fn |> Fn.toString |> logger,
     [
+      (Nolabel, __module__),
       (Nolabel, event),
       (Nolabel, data1),
       (Nolabel, data2),
@@ -153,6 +167,7 @@ let logWithData5 = (fn, data1, data2, data3, data4, data5, event) =>
   Exp.apply(
     fn |> Fn.toString |> logger,
     [
+      (Nolabel, __module__),
       (Nolabel, event),
       (Nolabel, data1),
       (Nolabel, data2),
@@ -166,6 +181,7 @@ let logWithData6 = (fn, data1, data2, data3, data4, data5, data6, event) =>
   Exp.apply(
     fn |> Fn.toString |> logger,
     [
+      (Nolabel, __module__),
       (Nolabel, event),
       (Nolabel, data1),
       (Nolabel, data2),
@@ -181,6 +197,7 @@ let logWithData7 =
   Exp.apply(
     fn |> Fn.toString |> logger,
     [
+      (Nolabel, __module__),
       (Nolabel, event),
       (Nolabel, data1),
       (Nolabel, data2),
@@ -195,34 +212,38 @@ let logWithData7 =
 let nothing = Exp.construct({txt: Lident("()"), loc: default_loc^}, None);
 
 let matchedLogEntry = (ns, ctx, tag) =>
-  Exp.apply(
-    Exp.ident({txt: Ldot(Lident("Pervasives"), "^"), loc: default_loc^}),
-    [
-      (
-        Nolabel,
-        switch (ns) {
-        | None =>
-          Exp.ident({
-            txt: Ldot(Lident("Pervasives"), "__MODULE__"),
-            loc: default_loc^,
-          })
-        | Some(ns) => Exp.constant(Pconst_string(ns, None))
-        },
-      ),
-      (
-        Nolabel,
-        switch (ctx) {
-        | `WithoutPayload => Exp.constant(Pconst_string("::" ++ tag, None))
-        | `WithPayload =>
-          Exp.constant(Pconst_string("::" ++ tag ++ " with payload", None))
-        | `WithNotLoggedPayload =>
-          Exp.constant(
-            Pconst_string("::" ++ tag ++ " with payload (not logged)", None),
-          )
-        },
-      ),
-    ],
-  );
+  switch (ns) {
+  | None =>
+    switch (ctx) {
+    | `WithoutPayload => Exp.constant(Pconst_string(tag, None))
+    | `WithPayload =>
+      Exp.constant(Pconst_string(tag ++ " with payload", None))
+    | `WithNotLoggedPayload =>
+      Exp.constant(Pconst_string(tag ++ " with payload (not logged)", None))
+    }
+  | Some(ns) =>
+    Exp.apply(
+      Exp.ident({txt: Ldot(Lident("Pervasives"), "^"), loc: default_loc^}),
+      [
+        (Nolabel, Exp.constant(Pconst_string(ns, None))),
+        (
+          Nolabel,
+          switch (ctx) {
+          | `WithoutPayload => Exp.constant(Pconst_string("::" ++ tag, None))
+          | `WithPayload =>
+            Exp.constant(Pconst_string("::" ++ tag ++ " with payload", None))
+          | `WithNotLoggedPayload =>
+            Exp.constant(
+              Pconst_string(
+                "::" ++ tag ++ " with payload (not logged)",
+                None,
+              ),
+            )
+          },
+        ),
+      ],
+    )
+  };
 
 let toData = arg =>
   Exp.tuple([

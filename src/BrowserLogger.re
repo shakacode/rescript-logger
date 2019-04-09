@@ -2,13 +2,18 @@
 [@bs.val] [@bs.scope "console"] external log2: ('a, 'b) => unit = "log";
 [@bs.val] [@bs.scope "console"] external groupEnd: unit => unit = "groupEnd";
 
+module Module = {
+  let format = x => {j|[$x]|j};
+};
+
 /* Level: Debug */
 [@bs.val] [@bs.scope "console"]
 external debugGroup:
   (
     [@bs.as "%c DEBUG "] _,
     [@bs.as "background: #82658c; color: #fff;"] _,
-    'a
+    'a,
+    'b
   ) =>
   unit =
   "group";
@@ -18,29 +23,32 @@ external debugGroupCollapsed:
   (
     [@bs.as "%c DEBUG "] _,
     [@bs.as "background: #82658c; color: #fff;"] _,
-    'a
+    'a,
+    'b
   ) =>
   unit =
   "groupCollapsed";
 
-let debug = (event: string) => {
-  event->debugGroupCollapsed;
+let debug = (__module__: string, event: string) => {
+  __module__->Module.format->debugGroupCollapsed(event);
   groupEnd();
 };
 
-let debugWithData = (event: string, (label1, data1): (string, 'data1)) => {
-  event->debugGroup;
+let debugWithData =
+    (__module__: string, event: string, (label1, data1): (string, 'data1)) => {
+  __module__->Module.format->debugGroup(event);
   log2(label1 ++ ":", data1);
   groupEnd();
 };
 
 let debugWithData2 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
     ) => {
-  event->debugGroup;
+  __module__->Module.format->debugGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   groupEnd();
@@ -48,12 +56,13 @@ let debugWithData2 =
 
 let debugWithData3 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
     ) => {
-  event->debugGroup;
+  __module__->Module.format->debugGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -62,13 +71,14 @@ let debugWithData3 =
 
 let debugWithData4 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
       (label4, data4): (string, 'data4),
     ) => {
-  event->debugGroup;
+  __module__->Module.format->debugGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -78,6 +88,7 @@ let debugWithData4 =
 
 let debugWithData5 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
@@ -85,7 +96,7 @@ let debugWithData5 =
       (label4, data4): (string, 'data4),
       (label5, data5): (string, 'data5),
     ) => {
-  event->debugGroup;
+  __module__->Module.format->debugGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -96,6 +107,7 @@ let debugWithData5 =
 
 let debugWithData6 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
@@ -104,7 +116,7 @@ let debugWithData6 =
       (label5, data5): (string, 'data5),
       (label6, data6): (string, 'data6),
     ) => {
-  event->debugGroup;
+  __module__->Module.format->debugGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -116,6 +128,7 @@ let debugWithData6 =
 
 let debugWithData7 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
@@ -125,7 +138,7 @@ let debugWithData7 =
       (label6, data6): (string, 'data6),
       (label7, data7): (string, 'data7),
     ) => {
-  event->debugGroup;
+  __module__->Module.format->debugGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -139,34 +152,46 @@ let debugWithData7 =
 /* Level: Info */
 [@bs.val] [@bs.scope "console"]
 external infoGroup:
-  ([@bs.as "%c INFO "] _, [@bs.as "background: #29d; color: #fff;"] _, 'a) =>
+  (
+    [@bs.as "%c INFO "] _,
+    [@bs.as "background: #29d; color: #fff;"] _,
+    'a,
+    'b
+  ) =>
   unit =
   "group";
 
 [@bs.val] [@bs.scope "console"]
 external infoGroupCollapsed:
-  ([@bs.as "%c INFO "] _, [@bs.as "background: #29d; color: #fff;"] _, 'a) =>
+  (
+    [@bs.as "%c INFO "] _,
+    [@bs.as "background: #29d; color: #fff;"] _,
+    'a,
+    'b
+  ) =>
   unit =
   "groupCollapsed";
 
-let info = (event: string) => {
-  event->infoGroupCollapsed;
+let info = (__module__: string, event: string) => {
+  __module__->Module.format->infoGroupCollapsed(event);
   groupEnd();
 };
 
-let infoWithData = (event: string, (label1, data1): (string, 'data1)) => {
-  event->infoGroup;
+let infoWithData =
+    (__module__: string, event: string, (label1, data1): (string, 'data1)) => {
+  __module__->Module.format->infoGroup(event);
   log2(label1 ++ ":", data1);
   groupEnd();
 };
 
 let infoWithData2 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
     ) => {
-  event->infoGroup;
+  __module__->Module.format->infoGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   groupEnd();
@@ -174,12 +199,13 @@ let infoWithData2 =
 
 let infoWithData3 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
     ) => {
-  event->infoGroup;
+  __module__->Module.format->infoGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -188,13 +214,14 @@ let infoWithData3 =
 
 let infoWithData4 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
       (label4, data4): (string, 'data4),
     ) => {
-  event->infoGroup;
+  __module__->Module.format->infoGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -204,6 +231,7 @@ let infoWithData4 =
 
 let infoWithData5 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
@@ -211,7 +239,7 @@ let infoWithData5 =
       (label4, data4): (string, 'data4),
       (label5, data5): (string, 'data5),
     ) => {
-  event->infoGroup;
+  __module__->Module.format->infoGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -222,6 +250,7 @@ let infoWithData5 =
 
 let infoWithData6 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
@@ -230,7 +259,7 @@ let infoWithData6 =
       (label5, data5): (string, 'data5),
       (label6, data6): (string, 'data6),
     ) => {
-  event->infoGroup;
+  __module__->Module.format->infoGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -242,6 +271,7 @@ let infoWithData6 =
 
 let infoWithData7 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
@@ -251,7 +281,7 @@ let infoWithData7 =
       (label6, data6): (string, 'data6),
       (label7, data7): (string, 'data7),
     ) => {
-  event->infoGroup;
+  __module__->Module.format->infoGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -268,7 +298,8 @@ external warnGroup:
   (
     [@bs.as "%c WARNING "] _,
     [@bs.as "background: #fce473; color: #573a08;"] _,
-    'a
+    'a,
+    'b
   ) =>
   unit =
   "group";
@@ -278,29 +309,32 @@ external warnGroupCollapsed:
   (
     [@bs.as "%c WARNING "] _,
     [@bs.as "background: #fce473; color: #573a08;"] _,
-    'a
+    'a,
+    'b
   ) =>
   unit =
   "groupCollapsed";
 
-let warn = (event: string) => {
-  event->warnGroupCollapsed;
+let warn = (__module__: string, event: string) => {
+  __module__->Module.format->warnGroupCollapsed(event);
   groupEnd();
 };
 
-let warnWithData = (event: string, (label1, data1): (string, 'data1)) => {
-  event->warnGroup;
+let warnWithData =
+    (__module__: string, event: string, (label1, data1): (string, 'data1)) => {
+  __module__->Module.format->warnGroup(event);
   log2(label1 ++ ":", data1);
   groupEnd();
 };
 
 let warnWithData2 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
     ) => {
-  event->warnGroup;
+  __module__->Module.format->warnGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   groupEnd();
@@ -308,12 +342,13 @@ let warnWithData2 =
 
 let warnWithData3 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
     ) => {
-  event->warnGroup;
+  __module__->Module.format->warnGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -322,13 +357,14 @@ let warnWithData3 =
 
 let warnWithData4 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
       (label4, data4): (string, 'data4),
     ) => {
-  event->warnGroup;
+  __module__->Module.format->warnGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -338,6 +374,7 @@ let warnWithData4 =
 
 let warnWithData5 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
@@ -345,7 +382,7 @@ let warnWithData5 =
       (label4, data4): (string, 'data5),
       (label5, data5): (string, 'data6),
     ) => {
-  event->warnGroup;
+  __module__->Module.format->warnGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -356,6 +393,7 @@ let warnWithData5 =
 
 let warnWithData6 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
@@ -364,7 +402,7 @@ let warnWithData6 =
       (label5, data5): (string, 'data5),
       (label6, data6): (string, 'data6),
     ) => {
-  event->warnGroup;
+  __module__->Module.format->warnGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -376,6 +414,7 @@ let warnWithData6 =
 
 let warnWithData7 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
@@ -385,7 +424,7 @@ let warnWithData7 =
       (label6, data6): (string, 'data6),
       (label7, data7): (string, 'data7),
     ) => {
-  event->warnGroup;
+  __module__->Module.format->warnGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -402,7 +441,8 @@ external errorGroup:
   (
     [@bs.as "%c ERROR "] _,
     [@bs.as "background: #d11a1a; color: #fff;"] _,
-    'a
+    'a,
+    'b
   ) =>
   unit =
   "group";
@@ -412,29 +452,32 @@ external errorGroupCollapsed:
   (
     [@bs.as "%c ERROR "] _,
     [@bs.as "background: #d11a1a; color: #fff;"] _,
-    'a
+    'a,
+    'b
   ) =>
   unit =
   "groupCollapsed";
 
-let error = (event: string) => {
-  event->errorGroupCollapsed;
+let error = (__module__: string, event: string) => {
+  __module__->Module.format->errorGroupCollapsed(event);
   groupEnd();
 };
 
-let errorWithData = (event: string, (label1, data1): (string, 'data1)) => {
-  event->errorGroup;
+let errorWithData =
+    (__module__: string, event: string, (label1, data1): (string, 'data1)) => {
+  __module__->Module.format->errorGroup(event);
   log2(label1 ++ ":", data1);
   groupEnd();
 };
 
 let errorWithData2 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
     ) => {
-  event->errorGroup;
+  __module__->Module.format->errorGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   groupEnd();
@@ -442,12 +485,13 @@ let errorWithData2 =
 
 let errorWithData3 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
     ) => {
-  event->errorGroup;
+  __module__->Module.format->errorGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -456,13 +500,14 @@ let errorWithData3 =
 
 let errorWithData4 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
       (label4, data4): (string, 'data4),
     ) => {
-  event->errorGroup;
+  __module__->Module.format->errorGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -472,6 +517,7 @@ let errorWithData4 =
 
 let errorWithData5 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
@@ -479,7 +525,7 @@ let errorWithData5 =
       (label4, data4): (string, 'data4),
       (label5, data5): (string, 'data5),
     ) => {
-  event->errorGroup;
+  __module__->Module.format->errorGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -490,6 +536,7 @@ let errorWithData5 =
 
 let errorWithData6 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
@@ -498,7 +545,7 @@ let errorWithData6 =
       (label5, data5): (string, 'data5),
       (label6, data6): (string, 'data6),
     ) => {
-  event->errorGroup;
+  __module__->Module.format->errorGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
@@ -510,6 +557,7 @@ let errorWithData6 =
 
 let errorWithData7 =
     (
+      __module__: string,
       event: string,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
@@ -519,7 +567,7 @@ let errorWithData7 =
       (label6, data6): (string, 'data6),
       (label7, data7): (string, 'data7),
     ) => {
-  event->errorGroup;
+  __module__->Module.format->errorGroup(event);
   log2(label1 ++ ":", data1);
   log2(label2 ++ ":", data2);
   log2(label3 ++ ":", data3);
