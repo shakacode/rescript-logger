@@ -28,17 +28,17 @@ steps:
   - script: "mv _release/macOS/bin.exe _release/bin/platform-darwin/bin.exe"
     displayName: "mv macOS"
 
-  - task: DownloadBuildArtifacts@0
-    displayName: "Download Windows Artifacts"
-    inputs:
-      artifactName: Windows
-      downloadPath: "_release"
-
-  - script: "mkdir -p _release/bin/platform-windows-x64"
-    displayName: "Create _release/bin/platform-windows-x64"
-
-  - script: "mv _release/Windows/bin.exe _release/bin/platform-windows-x64/bin.exe"
-    displayName: "mv Windows"
+  # - task: DownloadBuildArtifacts@0
+  #   displayName: "Download Windows Artifacts"
+  #   inputs:
+  #     artifactName: Windows
+  #     downloadPath: "_release"
+  #
+  # - script: "mkdir -p _release/bin/platform-windows-x64"
+  #   displayName: "Create _release/bin/platform-windows-x64"
+  #
+  # - script: "mv _release/Windows/bin.exe _release/bin/platform-windows-x64/bin.exe"
+  #   displayName: "mv Windows"
 
   - script: |
       mkdir -p _release/src
