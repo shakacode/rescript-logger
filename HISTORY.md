@@ -1,5 +1,9 @@
 # History
 
+## 0.1.0
+- Prefix all log entries with value of a `__MODULE__` variable.
+- Update PPX setup.
+
 ## 0.0.9
 - Default logger renamed from `Console` to `BrowserLogger`.
 - Added `NodeLogger`.

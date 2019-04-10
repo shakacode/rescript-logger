@@ -2,7 +2,7 @@ steps:
   - task: PublishBuildArtifacts@1
     displayName: "Publish ${{ parameters.platform }}"
     inputs:
-      pathToPublish: "bs-log-ppx/lib/bs/native/logppx.native${{ parameters.fileEnding }}"
+      pathToPublish: "_build/default/bin/bin.exe"
       artifactName: "${{ parameters.platform }}"
       parallel: true
       parallelCount: 8

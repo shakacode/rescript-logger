@@ -13,7 +13,7 @@ steps:
   - script: "mkdir -p _release/bin/platform-linux"
     displayName: "Create _release/bin/platform-linux"
 
-  - script: "mv _release/Linux/logppx.native _release/bin/platform-linux/logppx.native"
+  - script: "mv _release/Linux/bin.exe _release/bin/platform-linux/bin.exe"
     displayName: "mv Linux"
 
   - task: DownloadBuildArtifacts@0
@@ -25,29 +25,30 @@ steps:
   - script: "mkdir -p _release/bin/platform-darwin"
     displayName: "Create _release/bin/platform-darwin"
 
-  - script: "mv _release/macOS/logppx.native _release/bin/platform-darwin/logppx.native"
+  - script: "mv _release/macOS/bin.exe _release/bin/platform-darwin/bin.exe"
     displayName: "mv macOS"
 
-  - task: DownloadBuildArtifacts@0
-    displayName: "Download Windows Artifacts"
-    inputs:
-      artifactName: Windows
-      downloadPath: "_release"
-
-  - script: "mkdir -p _release/bin/platform-windows-x64"
-    displayName: "Create _release/bin/platform-windows-x64"
-
-  - script: "mv _release/Windows/logppx.native.exe _release/bin/platform-windows-x64/logppx.native.exe"
-    displayName: "mv Windows"
+  # - task: DownloadBuildArtifacts@0
+  #   displayName: "Download Windows Artifacts"
+  #   inputs:
+  #     artifactName: Windows
+  #     downloadPath: "_release"
+  #
+  # - script: "mkdir -p _release/bin/platform-windows-x64"
+  #   displayName: "Create _release/bin/platform-windows-x64"
+  #
+  # - script: "mv _release/Windows/bin.exe _release/bin/platform-windows-x64/bin.exe"
+  #   displayName: "mv Windows"
 
   - script: |
       mkdir -p _release/src
       cp README.md _release/README.md
       cp package.json _release/package.json
-      cp bs-log/bsconfig.json _release/bsconfig.json
-      cp bs-log/src/BrowserLogger.re _release/src/BrowserLogger.re
-      cp bs-log/src/NodeLogger.re _release/src/NodeLogger.re
+      cp bsconfig.json _release/bsconfig.json
+      cp src/BrowserLogger.re _release/src/BrowserLogger.re
+      cp src/NodeLogger.re _release/src/NodeLogger.re
       cp .ci/script/postinstall.js _release/postinstall.js
+      node .ci/script/package.json.js
     displayName: "Copy needed files"
 
   - task: PublishBuildArtifacts@1

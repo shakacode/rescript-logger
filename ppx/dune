@@ -1,0 +1,6 @@
+(library
+  (name LogPpx)
+  (public_name bs-log-ppx.lib)
+  (libraries reason ocaml-migrate-parsetree)
+  (kind ppx_rewriter)
+)

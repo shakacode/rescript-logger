@@ -6,3 +6,6 @@ dist/
 .bsb.lock
 *.bs.js
 .DS_Store
+_esy
+_build
+bs-log-ppx.install
