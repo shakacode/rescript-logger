@@ -1,5 +1,8 @@
 # History
 
+## 0.1.1
+- Fix Windows build.
+
 ## 0.1.0
 - Prefix all log entries with value of a `__MODULE__` variable.
 - Update PPX setup.
