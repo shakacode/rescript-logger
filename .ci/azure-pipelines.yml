@@ -16,11 +16,11 @@ jobs:
       vmImage: "ubuntu-16.04"
       platform: "Linux"
 
-  # - template: release/pipeline.yml
-  #   parameters:
-  #     name: "bs_log_Windows"
-  #     vmImage: "vs2017-win2016"
-  #     platform: "Windows"
+  - template: release/pipeline.yml
+    parameters:
+      name: "bs_log_Windows"
+      vmImage: "vs2017-win2016"
+      platform: "Windows"
 
   - job: bs_log_bundle
     pool:
@@ -28,6 +28,6 @@ jobs:
     dependsOn:
       - bs_log_Linux
       - bs_log_macOS
-      # - bs_log_Windows
+      - bs_log_Windows
     steps:
       - template: release/bundle.yml
