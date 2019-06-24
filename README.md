@@ -200,6 +200,8 @@ If you run `bsb` via editor integration, make sure editor picked up `BS_LOG` var
 BS_LOG=info atom .
 ```
 
+If your editor is telling you, variables used in ppx are unused, opening editor with `BS_LOG` variable also helps.
+
 **Changing value of `BS_LOG`/`BS_LOGGER` doesn't make any effect**<br />
 When you change a value of `BS_LOG` and/or `BS_LOGGER`, `-clean-world` before the next build.
 
