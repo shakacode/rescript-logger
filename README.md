@@ -96,7 +96,9 @@ Available `BS_LOG` values:
 - `error`: log `error` messages only
 - `off`: don't log anything
 
-If `BS_LOG` is not defined or set to `off`, nothing will be logged and none of the log entries will appear in your JS assets.
+If `BS_LOG` is set to `off`, nothing will be logged and none of the log entries will appear in your JS assets.
+
+In case if `BS_LOG` environment variable is not set, log level `warn` will be set.
 
 ### PPX vs non-PPX
 PPX gives you ability to customize maximum log level of your build and eliminates unwanted log entries from production builds. Also, it enables `ReasonReact` integration. If for some reason you want to use non-PPX api, then you have to handle elimination of log entries yourself on post-compilation stage.
