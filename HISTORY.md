@@ -1,5 +1,10 @@
 # History
 
+## 1.0.0
+- BuckleScript v7 support.
+- Make `warn` default log level for situations when `BS_LOG` env var doesn't exist.
+- Fix postinstall script for Windows.
+
 ## 0.1.1
 - Fix Windows build.
 
