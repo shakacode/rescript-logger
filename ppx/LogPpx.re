@@ -1,5 +1,5 @@
 open Migrate_parsetree;
-open OCaml_406.Ast;
+open Ast_406;
 open Ast_mapper;
 open Ast_helper;
 open Parsetree;
