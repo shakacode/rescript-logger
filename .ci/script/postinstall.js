@@ -7,6 +7,8 @@ var platform = process.platform;
 
 var bin = "bin.exe";
 
+var WINDOWS_X64 = "windows-x64";
+
 /**
  * Since os.arch returns node binary's target arch, not
  * the system arch.
@@ -77,7 +79,8 @@ function copyFileSync(sourcePath, destPath) {
 var copyPlatformBinaries = platformPath => {
   var platformBuildPath = path.join(__dirname, "bin", "platform-" + platformPath);
   var sourcePath = path.join(platformBuildPath, bin);
-  var destPath = path.join(__dirname, "ppx");
+  var destBin = platformPath === WINDOWS_X64 ? "ppx.exe" : "ppx";
+  var destPath = path.join(__dirname, destBin);
   if (fs.existsSync(destPath)) {
     fs.unlinkSync(destPath);
   }
@@ -92,7 +95,7 @@ switch (platform) {
       process.exit(1);
     }
 
-    copyPlatformBinaries("windows-x64");
+    copyPlatformBinaries(WINDOWS_X64);
     break;
   case "linux":
   case "darwin":
