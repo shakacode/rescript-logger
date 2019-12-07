@@ -1,5 +1,5 @@
 open Migrate_parsetree;
-open OCaml_406.Ast;
+open Ast_406;
 open Ast_mapper;
 open Ast_helper;
 open Parsetree;
@@ -15,13 +15,14 @@ module Level = {
 
   let fromEnv = () =>
     switch (Sys.getenv("BS_LOG")) {
-    | "*" => Some(Debug)
+    | "*"
     | "debug" => Some(Debug)
     | "info" => Some(Info)
-    | "warn" => Some(Warn)
+    | "warn"
+    | "warning" => Some(Warn)
     | "error" => Some(Error)
     | "off" => None
-    | exception Not_found => None
+    | exception Not_found => Some(Warn)
     | _ as x => raise(InvalidLogLevel(x))
     };
 };
