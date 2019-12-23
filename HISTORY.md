@@ -1,5 +1,8 @@
 # History
 
+## 1.1.0
+- Logging in libraries.
+
 ## 1.0.0
 - BuckleScript v7 support.
 - Make `warn` default log level for situations when `BS_LOG` env var doesn't exist.
