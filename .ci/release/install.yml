@@ -10,5 +10,5 @@ steps:
   - script: yarn install
     displayName: "yarn install"
 
-  - script: esy @ppx
-    displayName: "esy @ppx"
+  - script: esy install
+    displayName: "esy install"
