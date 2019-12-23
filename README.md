@@ -215,7 +215,7 @@ Repo consists of 2 parts:
 Clone repo and install deps:
 
 ```shell
-esy @ppx
+esy install
 yarn install
 ```
 
@@ -223,7 +223,7 @@ Build loggers and ppx:
 
 ```shell
 yarn run build
-esy @ppx build
+esy build
 ```
 
 To explore generated output, extend `bsconfig.json`:
