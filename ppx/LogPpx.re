@@ -4,7 +4,36 @@ open Ast_mapper;
 open Ast_helper;
 open Parsetree;
 
-exception InvalidLogLevel(string);
+module Env = {
+  let level = "BS_LOG";
+  let logger = "BS_LOGGER";
+};
+
+module Delimiter = {
+  let keyVal = '=';
+  let entries = ',';
+};
+
+module Args = {
+  let args: ref(option(string)) = ref(None);
+
+  let set = x => args := Some(x);
+  let reset = () => args := None;
+
+  let list = [("--lib", Arg.String(set), "<name> Library name")];
+};
+
+module Lib = {
+  let fromArgs = () =>
+    if (Sys.argv |> Array.length > 1) {
+      switch (Sys.argv[1] |> String.split_on_char(Delimiter.keyVal)) {
+      | ["--lib", lib] => Some(lib)
+      | _ => None
+      };
+    } else {
+      None;
+    };
+};
 
 module Level = {
   type t =
@@ -13,8 +42,8 @@ module Level = {
     | Warn
     | Error;
 
-  let fromEnv = () =>
-    switch (Sys.getenv("BS_LOG")) {
+  let fromString =
+    fun
     | "*"
     | "debug" => Some(Debug)
     | "info" => Some(Info)
@@ -22,9 +51,7 @@ module Level = {
     | "warning" => Some(Warn)
     | "error" => Some(Error)
     | "off" => None
-    | exception Not_found => Some(Warn)
-    | _ as x => raise(InvalidLogLevel(x))
-    };
+    | _ as x => failwith("Invalid log level: " ++ x);
 };
 
 module Fn = {
@@ -98,14 +125,47 @@ module Fn = {
     | Error7 => "errorWithData7";
 };
 
-let level = Level.fromEnv();
+let level = {
+  let default = Level.Warn;
+  let lib = Lib.fromArgs();
+  switch (Env.level |> Sys.getenv) {
+  | exception Not_found =>
+    switch (lib) {
+    | Some(_) => None
+    | None => Some(default)
+    }
+  | _ as rawEnvEntries =>
+    let entries = rawEnvEntries |> String.split_on_char(Delimiter.entries);
+    switch (entries, lib) {
+    | ([], _) =>
+      failwith("Empty value of environment variable " ++ Env.level)
+    | ([level] | [level, ..._], None) => level |> Level.fromString
+    | (entries, Some(lib)) =>
+      entries
+      |> List.fold_left(
+           (res, entry) =>
+             switch (res) {
+             | Some(res) => Some(res)
+             | None =>
+               switch (entry |> String.split_on_char(Delimiter.keyVal)) {
+               | [lib', level] when lib' == lib => level |> Level.fromString
+               | _ => None
+               }
+             },
+           None,
+         )
+    };
+  };
+};
 
-let logger =
-  switch (Sys.getenv("BS_LOGGER")) {
-  | "" => "BrowserLogger"
-  | exception Not_found => "BrowserLogger"
+let logger = {
+  let default = "BrowserLogger";
+  switch (Env.logger |> Sys.getenv) {
+  | "" => default
+  | exception Not_found => default
   | _ as x => x
   };
+};
 
 let __module__ =
   Exp.ident({
@@ -1140,7 +1200,8 @@ let resultMapper = (config, cookies) => {
 let () =
   Driver.register(
     ~name="bs-log-ppx",
-    ~args=[],
+    ~args=Args.list,
+    ~reset_args=Args.reset,
     Versions.ocaml_406,
     resultMapper,
   );
