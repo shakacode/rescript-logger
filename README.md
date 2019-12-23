@@ -14,6 +14,7 @@ Logging implementation for [ReasonML](https://reasonml.github.io) / [BuckleScrip
 - `[@log]` helper.
 - `ReasonReact` integration.
 - Custom loggers.
+- Logging in libraries.
 
 ## Installation
 Get the package:
@@ -98,7 +99,9 @@ Available `BS_LOG` values:
 
 If `BS_LOG` is set to `off`, nothing will be logged and none of the log entries will appear in your JS assets.
 
-In case if `BS_LOG` environment variable is not set, log level `warn` will be set.
+In case if `BS_LOG` environment variable is not set, log level `warn` will be used.
+
+Also, see [Usage in libraries](#usage-in-libraries).
 
 ### PPX vs non-PPX
 PPX gives you ability to customize maximum log level of your build and eliminates unwanted log entries from production builds. Also, it enables `ReasonReact` integration. If for some reason you want to use non-PPX api, then you have to handle elimination of log entries yourself on post-compilation stage.
@@ -115,7 +118,7 @@ let _ = x => [@log] switch (x) {
 }
 ```
 
-It will be rewritten into:
+Without a `@log` helper, an equivalent would be:
 
 ```reason
 let _ = x => switch (x) {
@@ -130,7 +133,7 @@ let _ = x => switch (x) {
 
 You can pass optional custom namespace to helper like this: `[@log "MyNamespace"]`.
 
-`[@log]` helper works only for `switch` expressions with constructor patterns, for now. In the future, it will be extended to handle more cases.
+`[@log]` helper works only for `switch` expressions with constructor patterns, for now. Let us know [in the issues](/issues) if you need to handle more cases.
 
 ### `ReasonReact` integration
 Using `[@log]` helper, you can log dispatched actions in your components.
@@ -138,7 +141,7 @@ Using `[@log]` helper, you can log dispatched actions in your components.
 Annotate `reducer` function like this:
 
 ```reason
-reducer: (action, state) => [@log] switch (action) {
+let reducer = (state, action) => [@log] switch (action) {
   ...
 }
 ```
@@ -194,15 +197,56 @@ let errorWithData2 = (
 
 You don't have to re-implement all functions from default logger, only the ones you actually use. Don't worry to forget to implement something. If later on, you will attempt to use unimplemented method it will be compile time error.
 
+### Usage in libraries
+I you are developing a library and want to use `bs-log` during development process, you can do so without spamming output of consumers of your library.
+
+`bs-log/ppx` accepts `--lib` flag:
+
+```json
+"ppx-flags": [
+  ["bs-log/ppx", "--lib=my-lib"]
+]
+```
+
+Once this flag is passed, you need to provide special value of `BS_LOG` to log your entries:
+
+```shell
+BS_LOG=my-lib=* bsb -make-world
+```
+
+If consumers of your lib would like to see log output from your lib, they can do so too by extending a value of `BS_LOG` variable:
+
+```shell
+BS_LOG=*,my-lib=error bsb -make-world
+```
+
+Few more examples to illustrate how it works:
+
+```shell
+# log everything from application code only
+BS_LOG=* bsb -make-world
+
+# log everything from application code
+# log errors from `my-lib`
+BS_LOG=*,my-lib=error bsb -make-world
+
+# log everything from application code
+# log errors from `my-lib-1`
+# log warnings and errors from `my-lib-2`
+BS_LOG=*,my-lib-1=error,my-lib-2=warn bsb -make-world
+```
+
 ## Caveats
-**All logging is disabled after file save**<br />
+**Logging is disabled after file save**<br />
 If you run `bsb` via editor integration, make sure editor picked up `BS_LOG` variable. E.g. if you use Atom run it like this:
 
 ```shell
 BS_LOG=info atom .
 ```
 
-If your editor is telling you, variables used in ppx are unused, opening editor with `BS_LOG` variable also helps.
+If your editor is telling you, variables used in ppx are unused, you can either:
+1. prefix such variables with `_`
+2. or open editor with `BS_LOG` variable set to appropriate level.
 
 **Changing value of `BS_LOG`/`BS_LOGGER` doesn't make any effect**<br />
 When you change a value of `BS_LOG` and/or `BS_LOGGER`, `-clean-world` before the next build.
