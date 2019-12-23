@@ -1,6 +1,6 @@
 {
   "name": "bs-log",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Logging implementation for ReasonML/BuckleScript",
   "author": "Alex Fedoseev <alex.fedoseev@gmail.com>",
   "license": "MIT",
