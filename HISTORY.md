@@ -1,5 +1,8 @@
 # History
 
+## 1.2.0
+- Make logging event polymorphic in `BrowserLogger` and `NodeLogger`.
+
 ## 1.1.0
 - Logging in libraries.
 
