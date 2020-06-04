@@ -29,13 +29,13 @@ external debugGroupCollapsed:
   unit =
   "groupCollapsed";
 
-let debug = (__module__: string, event: string) => {
+let debug = (__module__: string, event: 'a) => {
   __module__->Module.format->debugGroupCollapsed(event);
   groupEnd();
 };
 
 let debugWithData =
-    (__module__: string, event: string, (label1, data1): (string, 'data1)) => {
+    (__module__: string, event: 'a, (label1, data1): (string, 'data1)) => {
   __module__->Module.format->debugGroup(event);
   log2(label1 ++ ":", data1);
   groupEnd();
@@ -44,7 +44,7 @@ let debugWithData =
 let debugWithData2 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
     ) => {
@@ -57,7 +57,7 @@ let debugWithData2 =
 let debugWithData3 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -72,7 +72,7 @@ let debugWithData3 =
 let debugWithData4 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -89,7 +89,7 @@ let debugWithData4 =
 let debugWithData5 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -108,7 +108,7 @@ let debugWithData5 =
 let debugWithData6 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -129,7 +129,7 @@ let debugWithData6 =
 let debugWithData7 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -172,13 +172,13 @@ external infoGroupCollapsed:
   unit =
   "groupCollapsed";
 
-let info = (__module__: string, event: string) => {
+let info = (__module__: string, event: 'a) => {
   __module__->Module.format->infoGroupCollapsed(event);
   groupEnd();
 };
 
 let infoWithData =
-    (__module__: string, event: string, (label1, data1): (string, 'data1)) => {
+    (__module__: string, event: 'a, (label1, data1): (string, 'data1)) => {
   __module__->Module.format->infoGroup(event);
   log2(label1 ++ ":", data1);
   groupEnd();
@@ -187,7 +187,7 @@ let infoWithData =
 let infoWithData2 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
     ) => {
@@ -200,7 +200,7 @@ let infoWithData2 =
 let infoWithData3 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -215,7 +215,7 @@ let infoWithData3 =
 let infoWithData4 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -232,7 +232,7 @@ let infoWithData4 =
 let infoWithData5 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -251,7 +251,7 @@ let infoWithData5 =
 let infoWithData6 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -272,7 +272,7 @@ let infoWithData6 =
 let infoWithData7 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -315,13 +315,13 @@ external warnGroupCollapsed:
   unit =
   "groupCollapsed";
 
-let warn = (__module__: string, event: string) => {
+let warn = (__module__: string, event: 'a) => {
   __module__->Module.format->warnGroupCollapsed(event);
   groupEnd();
 };
 
 let warnWithData =
-    (__module__: string, event: string, (label1, data1): (string, 'data1)) => {
+    (__module__: string, event: 'a, (label1, data1): (string, 'data1)) => {
   __module__->Module.format->warnGroup(event);
   log2(label1 ++ ":", data1);
   groupEnd();
@@ -330,7 +330,7 @@ let warnWithData =
 let warnWithData2 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
     ) => {
@@ -343,7 +343,7 @@ let warnWithData2 =
 let warnWithData3 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -358,7 +358,7 @@ let warnWithData3 =
 let warnWithData4 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -375,7 +375,7 @@ let warnWithData4 =
 let warnWithData5 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -394,7 +394,7 @@ let warnWithData5 =
 let warnWithData6 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -415,7 +415,7 @@ let warnWithData6 =
 let warnWithData7 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -458,13 +458,13 @@ external errorGroupCollapsed:
   unit =
   "groupCollapsed";
 
-let error = (__module__: string, event: string) => {
+let error = (__module__: string, event: 'a) => {
   __module__->Module.format->errorGroupCollapsed(event);
   groupEnd();
 };
 
 let errorWithData =
-    (__module__: string, event: string, (label1, data1): (string, 'data1)) => {
+    (__module__: string, event: 'a, (label1, data1): (string, 'data1)) => {
   __module__->Module.format->errorGroup(event);
   log2(label1 ++ ":", data1);
   groupEnd();
@@ -473,7 +473,7 @@ let errorWithData =
 let errorWithData2 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
     ) => {
@@ -486,7 +486,7 @@ let errorWithData2 =
 let errorWithData3 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -501,7 +501,7 @@ let errorWithData3 =
 let errorWithData4 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -518,7 +518,7 @@ let errorWithData4 =
 let errorWithData5 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -537,7 +537,7 @@ let errorWithData5 =
 let errorWithData6 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
@@ -558,7 +558,7 @@ let errorWithData6 =
 let errorWithData7 =
     (
       __module__: string,
-      event: string,
+      event: 'a,
       (label1, data1): (string, 'data1),
       (label2, data2): (string, 'data2),
       (label3, data3): (string, 'data3),
