@@ -19,7 +19,7 @@ external debugGroup:
   "group";
 
 [@bs.val] [@bs.scope "console"]
-external debugGroupCollapsed:
+external debugJs:
   (
     [@bs.as "%c DEBUG "] _,
     [@bs.as "background: #82658c; color: #fff;"] _,
@@ -27,11 +27,10 @@ external debugGroupCollapsed:
     'b
   ) =>
   unit =
-  "groupCollapsed";
+  "debug";
 
 let debug = (__module__: string, event: 'a) => {
-  __module__->Module.format->debugGroupCollapsed(event);
-  groupEnd();
+  __module__->Module.format->debugJs(event);
 };
 
 let debugWithData =
@@ -162,7 +161,7 @@ external infoGroup:
   "group";
 
 [@bs.val] [@bs.scope "console"]
-external infoGroupCollapsed:
+external infoJs:
   (
     [@bs.as "%c INFO "] _,
     [@bs.as "background: #29d; color: #fff;"] _,
@@ -170,11 +169,10 @@ external infoGroupCollapsed:
     'b
   ) =>
   unit =
-  "groupCollapsed";
+  "info";
 
 let info = (__module__: string, event: 'a) => {
-  __module__->Module.format->infoGroupCollapsed(event);
-  groupEnd();
+  __module__->Module.format->infoJs(event);
 };
 
 let infoWithData =
@@ -305,7 +303,7 @@ external warnGroup:
   "group";
 
 [@bs.val] [@bs.scope "console"]
-external warnGroupCollapsed:
+external warnJs:
   (
     [@bs.as "%c WARNING "] _,
     [@bs.as "background: #fce473; color: #573a08;"] _,
@@ -313,11 +311,10 @@ external warnGroupCollapsed:
     'b
   ) =>
   unit =
-  "groupCollapsed";
+  "warn";
 
 let warn = (__module__: string, event: 'a) => {
-  __module__->Module.format->warnGroupCollapsed(event);
-  groupEnd();
+  __module__->Module.format->warnJs(event);
 };
 
 let warnWithData =
@@ -448,7 +445,7 @@ external errorGroup:
   "group";
 
 [@bs.val] [@bs.scope "console"]
-external errorGroupCollapsed:
+external errorJs:
   (
     [@bs.as "%c ERROR "] _,
     [@bs.as "background: #d11a1a; color: #fff;"] _,
@@ -456,11 +453,10 @@ external errorGroupCollapsed:
     'b
   ) =>
   unit =
-  "groupCollapsed";
+  "error";
 
 let error = (__module__: string, event: 'a) => {
-  __module__->Module.format->errorGroupCollapsed(event);
-  groupEnd();
+  __module__->Module.format->errorJs(event);
 };
 
 let errorWithData =
