@@ -1,7 +1,8 @@
 # History
 
-## UNRELEASED
+## 1.3.0
 - Add `Trace` level.
+- Ensure PPX binary is available on all platforms.
 
 ## 1.2.0
 - Make logging event polymorphic in `BrowserLogger` and `NodeLogger`.
