@@ -6,6 +6,149 @@ module Module = {
   let format = x => {j|[$x]|j};
 };
 
+/* Level: Trace */
+[@bs.val] [@bs.scope "console"]
+external traceGroup:
+  (
+    [@bs.as "%c TRACE "] _,
+    [@bs.as "background: #636363; color: #fff;"] _,
+    'a,
+    'b
+  ) =>
+  unit =
+  "group";
+
+[@bs.val] [@bs.scope "console"]
+external traceGroupCollapsed:
+  (
+    [@bs.as "%c TRACE "] _,
+    [@bs.as "background: #636363; color: #fff;"] _,
+    'a,
+    'b
+  ) =>
+  unit =
+  "groupCollapsed";
+
+let trace = (__module__: string, event: 'a) => {
+  __module__->Module.format->traceGroupCollapsed(event);
+  groupEnd();
+};
+
+let traceWithData =
+    (__module__: string, event: 'a, (label1, data1): (string, 'data1)) => {
+  __module__->Module.format->traceGroup(event);
+  log2(label1 ++ ":", data1);
+  groupEnd();
+};
+
+let traceWithData2 =
+    (
+      __module__: string,
+      event: 'a,
+      (label1, data1): (string, 'data1),
+      (label2, data2): (string, 'data2),
+    ) => {
+  __module__->Module.format->traceGroup(event);
+  log2(label1 ++ ":", data1);
+  log2(label2 ++ ":", data2);
+  groupEnd();
+};
+
+let traceWithData3 =
+    (
+      __module__: string,
+      event: 'a,
+      (label1, data1): (string, 'data1),
+      (label2, data2): (string, 'data2),
+      (label3, data3): (string, 'data3),
+    ) => {
+  __module__->Module.format->traceGroup(event);
+  log2(label1 ++ ":", data1);
+  log2(label2 ++ ":", data2);
+  log2(label3 ++ ":", data3);
+  groupEnd();
+};
+
+let traceWithData4 =
+    (
+      __module__: string,
+      event: 'a,
+      (label1, data1): (string, 'data1),
+      (label2, data2): (string, 'data2),
+      (label3, data3): (string, 'data3),
+      (label4, data4): (string, 'data4),
+    ) => {
+  __module__->Module.format->traceGroup(event);
+  log2(label1 ++ ":", data1);
+  log2(label2 ++ ":", data2);
+  log2(label3 ++ ":", data3);
+  log2(label4 ++ ":", data4);
+  groupEnd();
+};
+
+let traceWithData5 =
+    (
+      __module__: string,
+      event: 'a,
+      (label1, data1): (string, 'data1),
+      (label2, data2): (string, 'data2),
+      (label3, data3): (string, 'data3),
+      (label4, data4): (string, 'data4),
+      (label5, data5): (string, 'data5),
+    ) => {
+  __module__->Module.format->traceGroup(event);
+  log2(label1 ++ ":", data1);
+  log2(label2 ++ ":", data2);
+  log2(label3 ++ ":", data3);
+  log2(label4 ++ ":", data4);
+  log2(label5 ++ ":", data5);
+  groupEnd();
+};
+
+let traceWithData6 =
+    (
+      __module__: string,
+      event: 'a,
+      (label1, data1): (string, 'data1),
+      (label2, data2): (string, 'data2),
+      (label3, data3): (string, 'data3),
+      (label4, data4): (string, 'data4),
+      (label5, data5): (string, 'data5),
+      (label6, data6): (string, 'data6),
+    ) => {
+  __module__->Module.format->traceGroup(event);
+  log2(label1 ++ ":", data1);
+  log2(label2 ++ ":", data2);
+  log2(label3 ++ ":", data3);
+  log2(label4 ++ ":", data4);
+  log2(label5 ++ ":", data5);
+  log2(label6 ++ ":", data6);
+  groupEnd();
+};
+
+let traceWithData7 =
+    (
+      __module__: string,
+      event: 'a,
+      (label1, data1): (string, 'data1),
+      (label2, data2): (string, 'data2),
+      (label3, data3): (string, 'data3),
+      (label4, data4): (string, 'data4),
+      (label5, data5): (string, 'data5),
+      (label6, data6): (string, 'data6),
+      (label7, data7): (string, 'data7),
+    ) => {
+  __module__->Module.format->traceGroup(event);
+  log2(label1 ++ ":", data1);
+  log2(label2 ++ ":", data2);
+  log2(label3 ++ ":", data3);
+  log2(label4 ++ ":", data4);
+  log2(label5 ++ ":", data5);
+  log2(label6 ++ ":", data6);
+  log2(label7 ++ ":", data7);
+  groupEnd();
+};
+
 /* Level: Debug */
 [@bs.val] [@bs.scope "console"]
 external debugGroup:
