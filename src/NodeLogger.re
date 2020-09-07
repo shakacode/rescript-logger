@@ -9,6 +9,129 @@ module Module = {
   let format = x => {j|[$x]|j};
 };
 
+/* Level: Trace */
+let traceLabel = {js|\u001B[48;2;99;99;99m\u001B[38;2;255;255;255m TRACE \u001B[39m\u001B[49m|js};
+
+let trace = (__module__: string, event: 'a) => {
+  traceLabel->groupCollapsed(__module__->Module.format, event);
+  groupEnd();
+};
+
+let traceWithData =
+    (__module__: string, event: 'a, (label1, data1): (string, 'data1)) => {
+  traceLabel->group(__module__->Module.format, event);
+  log2(label1 ++ ":", data1);
+  groupEnd();
+};
+
+let traceWithData2 =
+    (
+      __module__: string,
+      event: 'a,
+      (label1, data1): (string, 'data1),
+      (label2, data2): (string, 'data2),
+    ) => {
+  traceLabel->group(__module__->Module.format, event);
+  log2(label1 ++ ":", data1);
+  log2(label2 ++ ":", data2);
+  groupEnd();
+};
+
+let traceWithData3 =
+    (
+      __module__: string,
+      event: 'a,
+      (label1, data1): (string, 'data1),
+      (label2, data2): (string, 'data2),
+      (label3, data3): (string, 'data3),
+    ) => {
+  traceLabel->group(__module__->Module.format, event);
+  log2(label1 ++ ":", data1);
+  log2(label2 ++ ":", data2);
+  log2(label3 ++ ":", data3);
+  groupEnd();
+};
+
+let traceWithData4 =
+    (
+      __module__: string,
+      event: 'a,
+      (label1, data1): (string, 'data1),
+      (label2, data2): (string, 'data2),
+      (label3, data3): (string, 'data3),
+      (label4, data4): (string, 'data4),
+    ) => {
+  traceLabel->group(__module__->Module.format, event);
+  log2(label1 ++ ":", data1);
+  log2(label2 ++ ":", data2);
+  log2(label3 ++ ":", data3);
+  log2(label4 ++ ":", data4);
+  groupEnd();
+};
+
+let traceWithData5 =
+    (
+      __module__: string,
+      event: 'a,
+      (label1, data1): (string, 'data1),
+      (label2, data2): (string, 'data2),
+      (label3, data3): (string, 'data3),
+      (label4, data4): (string, 'data4),
+      (label5, data5): (string, 'data5),
+    ) => {
+  traceLabel->group(__module__->Module.format, event);
+  log2(label1 ++ ":", data1);
+  log2(label2 ++ ":", data2);
+  log2(label3 ++ ":", data3);
+  log2(label4 ++ ":", data4);
+  log2(label5 ++ ":", data5);
+  groupEnd();
+};
+
+let traceWithData6 =
+    (
+      __module__: string,
+      event: 'a,
+      (label1, data1): (string, 'data1),
+      (label2, data2): (string, 'data2),
+      (label3, data3): (string, 'data3),
+      (label4, data4): (string, 'data4),
+      (label5, data5): (string, 'data5),
+      (label6, data6): (string, 'data6),
+    ) => {
+  traceLabel->group(__module__->Module.format, event);
+  log2(label1 ++ ":", data1);
+  log2(label2 ++ ":", data2);
+  log2(label3 ++ ":", data3);
+  log2(label4 ++ ":", data4);
+  log2(label5 ++ ":", data5);
+  log2(label6 ++ ":", data6);
+  groupEnd();
+};
+
+let traceWithData7 =
+    (
+      __module__: string,
+      event: 'a,
+      (label1, data1): (string, 'data1),
+      (label2, data2): (string, 'data2),
+      (label3, data3): (string, 'data3),
+      (label4, data4): (string, 'data4),
+      (label5, data5): (string, 'data5),
+      (label6, data6): (string, 'data6),
+      (label7, data7): (string, 'data7),
+    ) => {
+  traceLabel->group(__module__->Module.format, event);
+  log2(label1 ++ ":", data1);
+  log2(label2 ++ ":", data2);
+  log2(label3 ++ ":", data3);
+  log2(label4 ++ ":", data4);
+  log2(label5 ++ ":", data5);
+  log2(label6 ++ ":", data6);
+  log2(label7 ++ ":", data7);
+  groupEnd();
+};
+
 /* Level: Debug */
 let debugLabel = {js|\u001B[48;2;130;101;140m\u001B[38;2;255;255;255m DEBUG \u001B[39m\u001B[49m|js};
 

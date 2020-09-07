@@ -1,5 +1,49 @@
 let something = Some("thing");
 
+[%log.trace "Trace level message"];
+[%log.trace "Trace level message"; ("Foo", 42)];
+[%log.trace "Trace level message"; ("Foo", 42); ("Bar", {"x": 42})];
+[%log.trace
+  "Trace level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something)
+];
+[%log.trace
+  "Trace level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4])
+];
+[%log.trace
+  "Trace level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|])
+];
+[%log.trace
+  "Trace level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|]);
+  ("Bool", true)
+];
+[%log.trace
+  "Trace level message";
+  ("Foo", 42);
+  ("Bar", {"x": 42});
+  ("Baz", something);
+  ("List", [1, 2, 4]);
+  ("Array", [|1, 2, 4|]);
+  ("Bool", true);
+  ("Whatever", `Eh)
+];
+
 [%log.debug "Debug level message"];
 [%log.debug "Debug level message"; ("Foo", 42)];
 [%log.debug "Debug level message"; ("Foo", 42); ("Bar", {"x": 42})];

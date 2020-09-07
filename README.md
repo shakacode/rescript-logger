@@ -38,7 +38,8 @@ Then add it to `bsconfig.json`:
 PPX is highly recommended but optional (read details below).
 
 ## Usage
-There are 4 log levels:
+There are 5 log levels:
+- `trace`
 - `debug`
 - `info`
 - `warn`
@@ -91,9 +92,10 @@ BS_LOG=warn bsb -clean-world -make-world
 
 Available `BS_LOG` values:
 - `*`: log everything
-- `debug`: basically, the same as `*`
-- `info`: log everything except `debug` level messages
-- `warn`: log `warn` & `error` messages
+- `trace`: basically, the same as `*`
+- `debug`: log everything except `trace` level messages
+- `info`: log everything except `trace` & `debug` level messages
+- `warn`: log `warn` & `error` messages only
 - `error`: log `error` messages only
 - `off`: don't log anything
 

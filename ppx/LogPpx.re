@@ -37,6 +37,7 @@ module Lib = {
 
 module Level = {
   type t =
+    | Trace
     | Debug
     | Info
     | Warn
@@ -45,6 +46,7 @@ module Level = {
   let fromString =
     fun
     | "*"
+    | "trace" => Some(Trace)
     | "debug" => Some(Debug)
     | "info" => Some(Info)
     | "warn"
@@ -56,6 +58,14 @@ module Level = {
 
 module Fn = {
   type t =
+    | Trace
+    | Trace1
+    | Trace2
+    | Trace3
+    | Trace4
+    | Trace5
+    | Trace6
+    | Trace7
     | Debug
     | Debug1
     | Debug2
@@ -91,6 +101,14 @@ module Fn = {
 
   let toString =
     fun
+    | Trace => "trace"
+    | Trace1 => "traceWithData"
+    | Trace2 => "traceWithData2"
+    | Trace3 => "traceWithData3"
+    | Trace4 => "traceWithData4"
+    | Trace5 => "traceWithData5"
+    | Trace6 => "traceWithData6"
+    | Trace7 => "traceWithData7"
     | Debug => "debug"
     | Debug1 => "debugWithData"
     | Debug2 => "debugWithData2"
@@ -316,6 +334,151 @@ let baseMapper = (_config, _cookies) => {
   ...default_mapper,
   expr: (mapper, expr) =>
     switch (expr, level) {
+    /* Level: Trace */
+    | (
+        {
+          pexp_desc:
+            Pexp_extension((
+              {txt: "log.trace"},
+              PStr([{pstr_desc: Pstr_eval(event, _)}]),
+            )),
+        },
+        Some(Trace),
+      ) =>
+      event |> log(Trace)
+
+    | (
+        {
+          pexp_desc:
+            Pexp_extension((
+              {txt: "log.trace"},
+              PStr([
+                {pstr_desc: Pstr_eval(event, _)},
+                {pstr_desc: Pstr_eval(data1, _)},
+              ]),
+            )),
+        },
+        Some(Trace),
+      ) =>
+      event |> logWithData(Trace1, data1)
+
+    | (
+        {
+          pexp_desc:
+            Pexp_extension((
+              {txt: "log.trace"},
+              PStr([
+                {pstr_desc: Pstr_eval(event, _)},
+                {pstr_desc: Pstr_eval(data1, _)},
+                {pstr_desc: Pstr_eval(data2, _)},
+              ]),
+            )),
+        },
+        Some(Trace),
+      ) =>
+      event |> logWithData2(Trace2, data1, data2)
+
+    | (
+        {
+          pexp_desc:
+            Pexp_extension((
+              {txt: "log.trace"},
+              PStr([
+                {pstr_desc: Pstr_eval(event, _)},
+                {pstr_desc: Pstr_eval(data1, _)},
+                {pstr_desc: Pstr_eval(data2, _)},
+                {pstr_desc: Pstr_eval(data3, _)},
+              ]),
+            )),
+        },
+        Some(Trace),
+      ) =>
+      event |> logWithData3(Trace3, data1, data2, data3)
+
+    | (
+        {
+          pexp_desc:
+            Pexp_extension((
+              {txt: "log.trace"},
+              PStr([
+                {pstr_desc: Pstr_eval(event, _)},
+                {pstr_desc: Pstr_eval(data1, _)},
+                {pstr_desc: Pstr_eval(data2, _)},
+                {pstr_desc: Pstr_eval(data3, _)},
+                {pstr_desc: Pstr_eval(data4, _)},
+              ]),
+            )),
+        },
+        Some(Trace),
+      ) =>
+      event |> logWithData4(Trace4, data1, data2, data3, data4)
+
+    | (
+        {
+          pexp_desc:
+            Pexp_extension((
+              {txt: "log.trace"},
+              PStr([
+                {pstr_desc: Pstr_eval(event, _)},
+                {pstr_desc: Pstr_eval(data1, _)},
+                {pstr_desc: Pstr_eval(data2, _)},
+                {pstr_desc: Pstr_eval(data3, _)},
+                {pstr_desc: Pstr_eval(data4, _)},
+                {pstr_desc: Pstr_eval(data5, _)},
+              ]),
+            )),
+        },
+        Some(Trace),
+      ) =>
+      event |> logWithData5(Trace5, data1, data2, data3, data4, data5)
+
+    | (
+        {
+          pexp_desc:
+            Pexp_extension((
+              {txt: "log.trace"},
+              PStr([
+                {pstr_desc: Pstr_eval(event, _)},
+                {pstr_desc: Pstr_eval(data1, _)},
+                {pstr_desc: Pstr_eval(data2, _)},
+                {pstr_desc: Pstr_eval(data3, _)},
+                {pstr_desc: Pstr_eval(data4, _)},
+                {pstr_desc: Pstr_eval(data5, _)},
+                {pstr_desc: Pstr_eval(data6, _)},
+              ]),
+            )),
+        },
+        Some(Trace),
+      ) =>
+      event |> logWithData6(Trace6, data1, data2, data3, data4, data5, data6)
+
+    | (
+        {
+          pexp_desc:
+            Pexp_extension((
+              {txt: "log.trace"},
+              PStr([
+                {pstr_desc: Pstr_eval(event, _)},
+                {pstr_desc: Pstr_eval(data1, _)},
+                {pstr_desc: Pstr_eval(data2, _)},
+                {pstr_desc: Pstr_eval(data3, _)},
+                {pstr_desc: Pstr_eval(data4, _)},
+                {pstr_desc: Pstr_eval(data5, _)},
+                {pstr_desc: Pstr_eval(data6, _)},
+                {pstr_desc: Pstr_eval(data7, _)},
+              ]),
+            )),
+        },
+        Some(Trace),
+      ) =>
+      event
+      |> logWithData7(Trace7, data1, data2, data3, data4, data5, data6, data7)
+
+    | (
+        {pexp_desc: Pexp_extension(({txt: "log.trace"}, _))},
+        Some(Debug | Info | Warn | Error) | None,
+      ) => nothing
+
     /* Level: Debug */
     | (
         {
@@ -325,7 +488,7 @@ let baseMapper = (_config, _cookies) => {
               PStr([{pstr_desc: Pstr_eval(event, _)}]),
             )),
         },
-        Some(Debug),
+        Some(Trace | Debug),
       ) =>
       event |> log(Debug)
 
@@ -340,7 +503,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug),
+        Some(Trace | Debug),
       ) =>
       event |> logWithData(Debug1, data1)
 
@@ -356,7 +519,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug),
+        Some(Trace | Debug),
       ) =>
       event |> logWithData2(Debug2, data1, data2)
 
@@ -373,7 +536,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug),
+        Some(Trace | Debug),
       ) =>
       event |> logWithData3(Debug3, data1, data2, data3)
 
@@ -391,7 +554,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug),
+        Some(Trace | Debug),
       ) =>
       event |> logWithData4(Debug4, data1, data2, data3, data4)
 
@@ -410,7 +573,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug),
+        Some(Trace | Debug),
       ) =>
       event |> logWithData5(Debug5, data1, data2, data3, data4, data5)
 
@@ -430,7 +593,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug),
+        Some(Trace | Debug),
       ) =>
       event |> logWithData6(Debug6, data1, data2, data3, data4, data5, data6)
 
@@ -451,7 +614,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug),
+        Some(Trace | Debug),
       ) =>
       event
       |> logWithData7(Debug7, data1, data2, data3, data4, data5, data6, data7)
@@ -470,7 +633,7 @@ let baseMapper = (_config, _cookies) => {
               PStr([{pstr_desc: Pstr_eval(event, _)}]),
             )),
         },
-        Some(Debug | Info),
+        Some(Trace | Debug | Info),
       ) =>
       event |> log(Info)
 
@@ -485,7 +648,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info),
+        Some(Trace | Debug | Info),
       ) =>
       event |> logWithData(Info1, data1)
 
@@ -501,7 +664,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info),
+        Some(Trace | Debug | Info),
       ) =>
       event |> logWithData2(Info2, data1, data2)
 
@@ -518,7 +681,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info),
+        Some(Trace | Debug | Info),
       ) =>
       event |> logWithData3(Info3, data1, data2, data3)
 
@@ -536,7 +699,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info),
+        Some(Trace | Debug | Info),
       ) =>
       event |> logWithData4(Info4, data1, data2, data3, data4)
 
@@ -555,7 +718,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info),
+        Some(Trace | Debug | Info),
       ) =>
       event |> logWithData5(Info5, data1, data2, data3, data4, data5)
 
@@ -575,7 +738,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info),
+        Some(Trace | Debug | Info),
       ) =>
       event |> logWithData6(Info6, data1, data2, data3, data4, data5, data6)
 
@@ -596,7 +759,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info),
+        Some(Trace | Debug | Info),
       ) =>
       event
       |> logWithData7(Info7, data1, data2, data3, data4, data5, data6, data7)
@@ -615,7 +778,7 @@ let baseMapper = (_config, _cookies) => {
               PStr([{pstr_desc: Pstr_eval(event, _)}]),
             )),
         },
-        Some(Debug | Info | Warn),
+        Some(Trace | Debug | Info | Warn),
       ) =>
       event |> log(Warn)
 
@@ -630,7 +793,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn),
+        Some(Trace | Debug | Info | Warn),
       ) =>
       event |> logWithData(Warn1, data1)
 
@@ -646,7 +809,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn),
+        Some(Trace | Debug | Info | Warn),
       ) =>
       event |> logWithData2(Warn2, data1, data2)
 
@@ -663,7 +826,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn),
+        Some(Trace | Debug | Info | Warn),
       ) =>
       event |> logWithData3(Warn3, data1, data2, data3)
 
@@ -681,7 +844,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn),
+        Some(Trace | Debug | Info | Warn),
       ) =>
       event |> logWithData4(Warn4, data1, data2, data3, data4)
 
@@ -700,7 +863,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn),
+        Some(Trace | Debug | Info | Warn),
       ) =>
       event |> logWithData5(Warn5, data1, data2, data3, data4, data5)
 
@@ -720,7 +883,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn),
+        Some(Trace | Debug | Info | Warn),
       ) =>
       event |> logWithData6(Warn6, data1, data2, data3, data4, data5, data6)
 
@@ -741,7 +904,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn),
+        Some(Trace | Debug | Info | Warn),
       ) =>
       event
       |> logWithData7(Warn7, data1, data2, data3, data4, data5, data6, data7)
@@ -760,7 +923,7 @@ let baseMapper = (_config, _cookies) => {
               PStr([{pstr_desc: Pstr_eval(event, _)}]),
             )),
         },
-        Some(Debug | Info | Warn | Error),
+        Some(Trace | Debug | Info | Warn | Error),
       ) =>
       event |> log(Error)
 
@@ -775,7 +938,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn | Error),
+        Some(Trace | Debug | Info | Warn | Error),
       ) =>
       event |> logWithData(Error1, data1)
 
@@ -791,7 +954,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn | Error),
+        Some(Trace | Debug | Info | Warn | Error),
       ) =>
       event |> logWithData2(Error2, data1, data2)
 
@@ -808,7 +971,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn | Error),
+        Some(Trace | Debug | Info | Warn | Error),
       ) =>
       event |> logWithData3(Error3, data1, data2, data3)
 
@@ -826,7 +989,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn | Error),
+        Some(Trace | Debug | Info | Warn | Error),
       ) =>
       event |> logWithData4(Error4, data1, data2, data3, data4)
 
@@ -845,7 +1008,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn | Error),
+        Some(Trace | Debug | Info | Warn | Error),
       ) =>
       event |> logWithData5(Error5, data1, data2, data3, data4, data5)
 
@@ -865,7 +1028,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn | Error),
+        Some(Trace | Debug | Info | Warn | Error),
       ) =>
       event |> logWithData6(Error6, data1, data2, data3, data4, data5, data6)
 
@@ -886,7 +1049,7 @@ let baseMapper = (_config, _cookies) => {
               ]),
             )),
         },
-        Some(Debug | Info | Warn | Error),
+        Some(Trace | Debug | Info | Warn | Error),
       ) =>
       event
       |> logWithData7(Error7, data1, data2, data3, data4, data5, data6, data7)
@@ -906,7 +1069,7 @@ let resultMapper = (config, cookies) => {
           pexp_attributes: [({txt: "log"}, payload)],
           pexp_desc: Pexp_match(match, cases),
         },
-        Some(Debug),
+        Some(Trace | Debug),
       ) =>
       let ns =
         switch (payload) {

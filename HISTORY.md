@@ -1,5 +1,8 @@
 # History
 
+## UNRELEASED
+- Add `Trace` level.
+
 ## 1.2.0
 - Make logging event polymorphic in `BrowserLogger` and `NodeLogger`.
 
