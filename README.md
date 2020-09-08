@@ -292,3 +292,6 @@ And rebuild BuckleScript project:
 ```shell
 BS_LOG=* yarn run build
 ```
+
+### Auto-formatting
+Note that this project doesn't use auto-formatting, so if you're intended to contribute, please, turn auto-formatting in the editor off while editing files.

@@ -1,8 +1,5 @@
-open Migrate_parsetree;
-open Ast_406;
-open Ast_mapper;
+open Ppxlib;
 open Ast_helper;
-open Parsetree;
 
 module Env = {
   let level = "BS_LOG";
@@ -14,13 +11,15 @@ module Delimiter = {
   let entries = ',';
 };
 
-module Args = {
-  let args: ref(option(string)) = ref(None);
+module LibArg = {
+  let box: ref(option(string)) = ref(None);
 
-  let set = x => args := Some(x);
-  let reset = () => args := None;
+  let set = x => box := Some(x);
+  let reset = () => box := None;
 
-  let list = [("--lib", Arg.String(set), "<name> Library name")];
+  let key = "--lib";
+  let spec = Arg.String(set);
+  let doc = "<name> Library name";
 };
 
 module Lib = {
@@ -102,45 +101,45 @@ module Fn = {
   let toString =
     fun
     | Trace => "trace"
-    | Trace1 => "traceWithData"
-    | Trace2 => "traceWithData2"
-    | Trace3 => "traceWithData3"
-    | Trace4 => "traceWithData4"
-    | Trace5 => "traceWithData5"
-    | Trace6 => "traceWithData6"
-    | Trace7 => "traceWithData7"
+    | Trace1 => "trace1"
+    | Trace2 => "trace2"
+    | Trace3 => "trace3"
+    | Trace4 => "trace4"
+    | Trace5 => "trace5"
+    | Trace6 => "trace6"
+    | Trace7 => "trace7"
     | Debug => "debug"
-    | Debug1 => "debugWithData"
-    | Debug2 => "debugWithData2"
-    | Debug3 => "debugWithData3"
-    | Debug4 => "debugWithData4"
-    | Debug5 => "debugWithData5"
-    | Debug6 => "debugWithData6"
-    | Debug7 => "debugWithData7"
+    | Debug1 => "debug1"
+    | Debug2 => "debug2"
+    | Debug3 => "debug3"
+    | Debug4 => "debug4"
+    | Debug5 => "debug5"
+    | Debug6 => "debug6"
+    | Debug7 => "debug7"
     | Info => "info"
-    | Info1 => "infoWithData"
-    | Info2 => "infoWithData2"
-    | Info3 => "infoWithData3"
-    | Info4 => "infoWithData4"
-    | Info5 => "infoWithData5"
-    | Info6 => "infoWithData6"
-    | Info7 => "infoWithData7"
+    | Info1 => "info1"
+    | Info2 => "info2"
+    | Info3 => "info3"
+    | Info4 => "info4"
+    | Info5 => "info5"
+    | Info6 => "info6"
+    | Info7 => "info7"
     | Warn => "warn"
-    | Warn1 => "warnWithData"
-    | Warn2 => "warnWithData2"
-    | Warn3 => "warnWithData3"
-    | Warn4 => "warnWithData4"
-    | Warn5 => "warnWithData5"
-    | Warn6 => "warnWithData6"
-    | Warn7 => "warnWithData7"
+    | Warn1 => "warn1"
+    | Warn2 => "warn2"
+    | Warn3 => "warn3"
+    | Warn4 => "warn4"
+    | Warn5 => "warn5"
+    | Warn6 => "warn6"
+    | Warn7 => "warn7"
     | Error => "error"
-    | Error1 => "errorWithData"
-    | Error2 => "errorWithData2"
-    | Error3 => "errorWithData3"
-    | Error4 => "errorWithData4"
-    | Error5 => "errorWithData5"
-    | Error6 => "errorWithData6"
-    | Error7 => "errorWithData7";
+    | Error1 => "error1"
+    | Error2 => "error2"
+    | Error3 => "error3"
+    | Error4 => "error4"
+    | Error5 => "error5"
+    | Error6 => "error6"
+    | Error7 => "error7";
 };
 
 let level = {
@@ -194,1177 +193,681 @@ let __module__ =
 let logger = name =>
   Exp.ident({txt: Ldot(Lident(logger), name), loc: default_loc^});
 
-let log = (fn, event) =>
-  Exp.apply(
-    fn |> Fn.toString |> logger,
-    [(Nolabel, __module__), (Nolabel, event)],
-  );
-
-let logWithData = (fn, data1, event) =>
-  Exp.apply(
-    fn |> Fn.toString |> logger,
-    [(Nolabel, __module__), (Nolabel, event), (Nolabel, data1)],
-  );
-
-let logWithData2 = (fn, data1, data2, event) =>
+let log = (fn, x) =>
   Exp.apply(
     fn |> Fn.toString |> logger,
     [
       (Nolabel, __module__),
-      (Nolabel, event),
-      (Nolabel, data1),
-      (Nolabel, data2),
+      (Nolabel, x),
     ],
   );
 
-let logWithData3 = (fn, data1, data2, data3, event) =>
+let log1 = (fn, x1, x) =>
   Exp.apply(
     fn |> Fn.toString |> logger,
     [
       (Nolabel, __module__),
-      (Nolabel, event),
-      (Nolabel, data1),
-      (Nolabel, data2),
-      (Nolabel, data3),
+      (Nolabel, x),
+      (Nolabel, x1),
     ],
   );
 
-let logWithData4 = (fn, data1, data2, data3, data4, event) =>
+let log2 = (fn, x1, x2, x) =>
   Exp.apply(
     fn |> Fn.toString |> logger,
     [
       (Nolabel, __module__),
-      (Nolabel, event),
-      (Nolabel, data1),
-      (Nolabel, data2),
-      (Nolabel, data3),
-      (Nolabel, data4),
+      (Nolabel, x),
+      (Nolabel, x1),
+      (Nolabel, x2),
     ],
   );
 
-let logWithData5 = (fn, data1, data2, data3, data4, data5, event) =>
+let log3 = (fn, x1, x2, x3, x) =>
   Exp.apply(
     fn |> Fn.toString |> logger,
     [
       (Nolabel, __module__),
-      (Nolabel, event),
-      (Nolabel, data1),
-      (Nolabel, data2),
-      (Nolabel, data3),
-      (Nolabel, data4),
-      (Nolabel, data5),
+      (Nolabel, x),
+      (Nolabel, x1),
+      (Nolabel, x2),
+      (Nolabel, x3),
     ],
   );
 
-let logWithData6 = (fn, data1, data2, data3, data4, data5, data6, event) =>
+let log4 = (fn, x1, x2, x3, x4, x) =>
   Exp.apply(
     fn |> Fn.toString |> logger,
     [
       (Nolabel, __module__),
-      (Nolabel, event),
-      (Nolabel, data1),
-      (Nolabel, data2),
-      (Nolabel, data3),
-      (Nolabel, data4),
-      (Nolabel, data5),
-      (Nolabel, data6),
+      (Nolabel, x),
+      (Nolabel, x1),
+      (Nolabel, x2),
+      (Nolabel, x3),
+      (Nolabel, x4),
     ],
   );
 
-let logWithData7 =
-    (fn, data1, data2, data3, data4, data5, data6, data7, event) =>
+let log5 = (fn, x1, x2, x3, x4, x5, x) =>
   Exp.apply(
     fn |> Fn.toString |> logger,
     [
       (Nolabel, __module__),
-      (Nolabel, event),
-      (Nolabel, data1),
-      (Nolabel, data2),
-      (Nolabel, data3),
-      (Nolabel, data4),
-      (Nolabel, data5),
-      (Nolabel, data6),
-      (Nolabel, data7),
+      (Nolabel, x),
+      (Nolabel, x1),
+      (Nolabel, x2),
+      (Nolabel, x3),
+      (Nolabel, x4),
+      (Nolabel, x5),
+    ],
+  );
+
+let log6 = (fn, x1, x2, x3, x4, x5, x6, x) =>
+  Exp.apply(
+    fn |> Fn.toString |> logger,
+    [
+      (Nolabel, __module__),
+      (Nolabel, x),
+      (Nolabel, x1),
+      (Nolabel, x2),
+      (Nolabel, x3),
+      (Nolabel, x4),
+      (Nolabel, x5),
+      (Nolabel, x6),
+    ],
+  );
+
+let log7 =
+    (fn, x1, x2, x3, x4, x5, x6, x7, x) =>
+  Exp.apply(
+    fn |> Fn.toString |> logger,
+    [
+      (Nolabel, __module__),
+      (Nolabel, x),
+      (Nolabel, x1),
+      (Nolabel, x2),
+      (Nolabel, x3),
+      (Nolabel, x4),
+      (Nolabel, x5),
+      (Nolabel, x6),
+      (Nolabel, x7),
     ],
   );
 
 let nothing = Exp.construct({txt: Lident("()"), loc: default_loc^}, None);
 
-let matchedLogEntry = (ns, ctx, tag) =>
-  switch (ns) {
-  | None =>
-    switch (ctx) {
-    | `WithoutPayload => Exp.constant(Pconst_string(tag, None))
-    | `WithPayload =>
-      Exp.constant(Pconst_string(tag ++ " with payload", None))
-    | `WithNotLoggedPayload =>
-      Exp.constant(Pconst_string(tag ++ " with payload (not logged)", None))
-    }
-  | Some(ns) =>
-    Exp.apply(
-      Exp.ident({txt: Ldot(Lident("Pervasives"), "^"), loc: default_loc^}),
-      [
-        (Nolabel, Exp.constant(Pconst_string(ns, None))),
-        (
-          Nolabel,
-          switch (ctx) {
-          | `WithoutPayload => Exp.constant(Pconst_string("::" ++ tag, None))
-          | `WithPayload =>
-            Exp.constant(Pconst_string("::" ++ tag ++ " with payload", None))
-          | `WithNotLoggedPayload =>
-            Exp.constant(
-              Pconst_string(
-                "::" ++ tag ++ " with payload (not logged)",
-                None,
-              ),
-            )
-          },
-        ),
-      ],
+module LogExt = {
+  let transform =
+    (
+      ~ext_level: Level.t,
+      ~env_level: option(Level.t),
+      ~context: Expansion_context.Extension.t,
+      payload: payload
+    ) =>
+      switch (payload) {
+      | PStr([{pstr_desc: Pstr_eval(x, _)}]) =>
+        switch (ext_level, env_level) {
+        | (Trace, Some(Trace))                               => x |> log(Trace)
+        | (Debug, Some(Trace | Debug))                       => x |> log(Debug)
+        | (Info,  Some(Trace | Debug | Info))                => x |> log(Info)
+        | (Warn,  Some(Trace | Debug | Info | Warn))         => x |> log(Warn)
+        | (Error, Some(Trace | Debug | Info | Warn | Error)) => x |> log(Error)
+        | (Trace | Debug | Info | Warn | Error, _)           => nothing
+        }
+
+      | PStr([{pstr_desc: Pstr_eval(x, _)}, {pstr_desc: Pstr_eval(x1, _)}]) =>
+        switch (ext_level, env_level) {
+        | (Trace, Some(Trace))                               => x |> log1(Trace1, x1)
+        | (Debug, Some(Trace | Debug))                       => x |> log1(Debug1, x1)
+        | (Info,  Some(Trace | Debug | Info))                => x |> log1(Info1, x1)
+        | (Warn,  Some(Trace | Debug | Info | Warn))         => x |> log1(Warn1, x1)
+        | (Error, Some(Trace | Debug | Info | Warn | Error)) => x |> log1(Error1, x1)
+        | (Trace | Debug | Info | Warn | Error, _)           => nothing
+        }
+
+      | PStr([
+          {pstr_desc: Pstr_eval(x, _)},
+          {pstr_desc: Pstr_eval(x1, _)},
+          {pstr_desc: Pstr_eval(x2, _)},
+        ]) =>
+        switch (ext_level, env_level) {
+        | (Trace, Some(Trace))                               => x |> log2(Trace2, x1, x2)
+        | (Debug, Some(Trace | Debug))                       => x |> log2(Debug2, x1, x2)
+        | (Info,  Some(Trace | Debug | Info))                => x |> log2(Info2, x1, x2)
+        | (Warn,  Some(Trace | Debug | Info | Warn))         => x |> log2(Warn2, x1, x2)
+        | (Error, Some(Trace | Debug | Info | Warn | Error)) => x |> log2(Error2, x1, x2)
+        | (Trace | Debug | Info | Warn | Error, _)           => nothing
+        }
+
+      | PStr([
+          {pstr_desc: Pstr_eval(x, _)},
+          {pstr_desc: Pstr_eval(x1, _)},
+          {pstr_desc: Pstr_eval(x2, _)},
+          {pstr_desc: Pstr_eval(x3, _)},
+        ]) =>
+        switch (ext_level, env_level) {
+        | (Trace, Some(Trace))                               => x |> log3(Trace3, x1, x2, x3)
+        | (Debug, Some(Trace | Debug))                       => x |> log3(Debug3, x1, x2, x3)
+        | (Info,  Some(Trace | Debug | Info))                => x |> log3(Info3, x1, x2, x3)
+        | (Warn,  Some(Trace | Debug | Info | Warn))         => x |> log3(Warn3, x1, x2, x3)
+        | (Error, Some(Trace | Debug | Info | Warn | Error)) => x |> log3(Error3, x1, x2, x3)
+        | (Trace | Debug | Info | Warn | Error, _)           => nothing
+        }
+
+      | PStr([
+          {pstr_desc: Pstr_eval(x, _)},
+          {pstr_desc: Pstr_eval(x1, _)},
+          {pstr_desc: Pstr_eval(x2, _)},
+          {pstr_desc: Pstr_eval(x3, _)},
+          {pstr_desc: Pstr_eval(x4, _)},
+        ]) =>
+        switch (ext_level, env_level) {
+        | (Trace, Some(Trace))                               => x |> log4(Trace4, x1, x2, x3, x4)
+        | (Debug, Some(Trace | Debug))                       => x |> log4(Debug4, x1, x2, x3, x4)
+        | (Info,  Some(Trace | Debug | Info))                => x |> log4(Info4, x1, x2, x3, x4)
+        | (Warn,  Some(Trace | Debug | Info | Warn))         => x |> log4(Warn4, x1, x2, x3, x4)
+        | (Error, Some(Trace | Debug | Info | Warn | Error)) => x |> log4(Error4, x1, x2, x3, x4)
+        | (Trace | Debug | Info | Warn | Error, _)           => nothing
+        }
+
+      | PStr([
+          {pstr_desc: Pstr_eval(x, _)},
+          {pstr_desc: Pstr_eval(x1, _)},
+          {pstr_desc: Pstr_eval(x2, _)},
+          {pstr_desc: Pstr_eval(x3, _)},
+          {pstr_desc: Pstr_eval(x4, _)},
+          {pstr_desc: Pstr_eval(x5, _)},
+        ]) =>
+        switch (ext_level, env_level) {
+        | (Trace, Some(Trace))                               => x |> log5(Trace5, x1, x2, x3, x4, x5)
+        | (Debug, Some(Trace | Debug))                       => x |> log5(Debug5, x1, x2, x3, x4, x5)
+        | (Info, Some(Trace | Debug | Info))                 => x |> log5(Info5, x1, x2, x3, x4, x5)
+        | (Warn, Some(Trace | Debug | Info | Warn))          => x |> log5(Warn5, x1, x2, x3, x4, x5)
+        | (Error, Some(Trace | Debug | Info | Warn | Error)) => x |> log5(Error5, x1, x2, x3, x4, x5)
+        | (Trace | Debug | Info | Warn | Error, _)           => nothing
+        }
+
+      | PStr([
+          {pstr_desc: Pstr_eval(x, _)},
+          {pstr_desc: Pstr_eval(x1, _)},
+          {pstr_desc: Pstr_eval(x2, _)},
+          {pstr_desc: Pstr_eval(x3, _)},
+          {pstr_desc: Pstr_eval(x4, _)},
+          {pstr_desc: Pstr_eval(x5, _)},
+          {pstr_desc: Pstr_eval(x6, _)},
+        ]) =>
+        switch (ext_level, env_level) {
+        | (Trace, Some(Trace))                               => x |> log6(Trace6, x1, x2, x3, x4, x5, x6)
+        | (Debug, Some(Trace | Debug))                       => x |> log6(Debug6, x1, x2, x3, x4, x5, x6)
+        | (Info, Some(Trace | Debug | Info))                 => x |> log6(Info6, x1, x2, x3, x4, x5, x6)
+        | (Warn, Some(Trace | Debug | Info | Warn))          => x |> log6(Warn6, x1, x2, x3, x4, x5, x6)
+        | (Error, Some(Trace | Debug | Info | Warn | Error)) => x |> log6(Error6, x1, x2, x3, x4, x5, x6)
+        | (Trace | Debug | Info | Warn | Error, _)           => nothing
+        }
+
+      | PStr([
+          {pstr_desc: Pstr_eval(x, _)},
+          {pstr_desc: Pstr_eval(x1, _)},
+          {pstr_desc: Pstr_eval(x2, _)},
+          {pstr_desc: Pstr_eval(x3, _)},
+          {pstr_desc: Pstr_eval(x4, _)},
+          {pstr_desc: Pstr_eval(x5, _)},
+          {pstr_desc: Pstr_eval(x6, _)},
+          {pstr_desc: Pstr_eval(x7, _)},
+        ]) =>
+        switch (ext_level, env_level) {
+        | (Trace, Some(Trace))                               => x |> log7(Trace7, x1, x2, x3, x4, x5, x6, x7)
+        | (Debug, Some(Trace | Debug))                       => x |> log7(Debug7, x1, x2, x3, x4, x5, x6, x7)
+        | (Info, Some(Trace | Debug | Info))                 => x |> log7(Info7, x1, x2, x3, x4, x5, x6, x7)
+        | (Warn, Some(Trace | Debug | Info | Warn))          => x |> log7(Warn7, x1, x2, x3, x4, x5, x6, x7)
+        | (Error, Some(Trace | Debug | Info | Warn | Error)) => x |> log7(Error7, x1, x2, x3, x4, x5, x6, x7)
+        | (Trace | Debug | Info | Warn | Error, _)           => nothing
+        }
+
+      | _ =>
+        Location.raise_errorf(
+          ~loc=context |> Expansion_context.Extension.extension_point_loc,
+          "Too many arguments",
+        )
+      };
+
+
+  let trace = Context_free.Rule.extension(
+    Extension.V3.declare(
+      "log.trace",
+      Extension.Context.expression,
+      Ast_pattern.__,
+      (~ctxt, payload) =>
+        payload |> transform(
+          ~ext_level=Trace,
+          ~env_level=level,
+          ~context=ctxt,
+        )
     )
-  };
-
-let toData = arg =>
-  Exp.tuple([
-    Exp.constant(Pconst_string(arg, None)),
-    Exp.ident({txt: Lident(arg), loc: default_loc^}),
-  ]);
-
-let baseMapper = (_config, _cookies) => {
-  ...default_mapper,
-  expr: (mapper, expr) =>
-    switch (expr, level) {
-    /* Level: Trace */
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.trace"},
-              PStr([{pstr_desc: Pstr_eval(event, _)}]),
-            )),
-        },
-        Some(Trace),
-      ) =>
-      event |> log(Trace)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.trace"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-              ]),
-            )),
-        },
-        Some(Trace),
-      ) =>
-      event |> logWithData(Trace1, data1)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.trace"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-              ]),
-            )),
-        },
-        Some(Trace),
-      ) =>
-      event |> logWithData2(Trace2, data1, data2)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.trace"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-              ]),
-            )),
-        },
-        Some(Trace),
-      ) =>
-      event |> logWithData3(Trace3, data1, data2, data3)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.trace"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-              ]),
-            )),
-        },
-        Some(Trace),
-      ) =>
-      event |> logWithData4(Trace4, data1, data2, data3, data4)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.trace"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-              ]),
-            )),
-        },
-        Some(Trace),
-      ) =>
-      event |> logWithData5(Trace5, data1, data2, data3, data4, data5)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.trace"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-                {pstr_desc: Pstr_eval(data6, _)},
-              ]),
-            )),
-        },
-        Some(Trace),
-      ) =>
-      event |> logWithData6(Trace6, data1, data2, data3, data4, data5, data6)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.trace"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-                {pstr_desc: Pstr_eval(data6, _)},
-                {pstr_desc: Pstr_eval(data7, _)},
-              ]),
-            )),
-        },
-        Some(Trace),
-      ) =>
-      event
-      |> logWithData7(Trace7, data1, data2, data3, data4, data5, data6, data7)
-
-    | (
-        {pexp_desc: Pexp_extension(({txt: "log.trace"}, _))},
-        Some(Debug | Info | Warn | Error) | None,
-      ) => nothing
-
-    /* Level: Debug */
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.debug"},
-              PStr([{pstr_desc: Pstr_eval(event, _)}]),
-            )),
-        },
-        Some(Trace | Debug),
-      ) =>
-      event |> log(Debug)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.debug"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug),
-      ) =>
-      event |> logWithData(Debug1, data1)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.debug"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug),
-      ) =>
-      event |> logWithData2(Debug2, data1, data2)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.debug"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug),
-      ) =>
-      event |> logWithData3(Debug3, data1, data2, data3)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.debug"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug),
-      ) =>
-      event |> logWithData4(Debug4, data1, data2, data3, data4)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.debug"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug),
-      ) =>
-      event |> logWithData5(Debug5, data1, data2, data3, data4, data5)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.debug"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-                {pstr_desc: Pstr_eval(data6, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug),
-      ) =>
-      event |> logWithData6(Debug6, data1, data2, data3, data4, data5, data6)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.debug"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-                {pstr_desc: Pstr_eval(data6, _)},
-                {pstr_desc: Pstr_eval(data7, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug),
-      ) =>
-      event
-      |> logWithData7(Debug7, data1, data2, data3, data4, data5, data6, data7)
-
-    | (
-        {pexp_desc: Pexp_extension(({txt: "log.debug"}, _))},
-        Some(Info | Warn | Error) | None,
-      ) => nothing
-
-    /* Level: Info */
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.info"},
-              PStr([{pstr_desc: Pstr_eval(event, _)}]),
-            )),
-        },
-        Some(Trace | Debug | Info),
-      ) =>
-      event |> log(Info)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.info"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info),
-      ) =>
-      event |> logWithData(Info1, data1)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.info"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info),
-      ) =>
-      event |> logWithData2(Info2, data1, data2)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.info"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info),
-      ) =>
-      event |> logWithData3(Info3, data1, data2, data3)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.info"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info),
-      ) =>
-      event |> logWithData4(Info4, data1, data2, data3, data4)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.info"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info),
-      ) =>
-      event |> logWithData5(Info5, data1, data2, data3, data4, data5)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.info"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-                {pstr_desc: Pstr_eval(data6, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info),
-      ) =>
-      event |> logWithData6(Info6, data1, data2, data3, data4, data5, data6)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.info"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-                {pstr_desc: Pstr_eval(data6, _)},
-                {pstr_desc: Pstr_eval(data7, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info),
-      ) =>
-      event
-      |> logWithData7(Info7, data1, data2, data3, data4, data5, data6, data7)
-
-    | (
-        {pexp_desc: Pexp_extension(({txt: "log.info"}, _))},
-        Some(Warn | Error) | None,
-      ) => nothing
-
-    /* Level: Warn */
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.warn"},
-              PStr([{pstr_desc: Pstr_eval(event, _)}]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn),
-      ) =>
-      event |> log(Warn)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.warn"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn),
-      ) =>
-      event |> logWithData(Warn1, data1)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.warn"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn),
-      ) =>
-      event |> logWithData2(Warn2, data1, data2)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.warn"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn),
-      ) =>
-      event |> logWithData3(Warn3, data1, data2, data3)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.warn"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn),
-      ) =>
-      event |> logWithData4(Warn4, data1, data2, data3, data4)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.warn"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn),
-      ) =>
-      event |> logWithData5(Warn5, data1, data2, data3, data4, data5)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.warn"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-                {pstr_desc: Pstr_eval(data6, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn),
-      ) =>
-      event |> logWithData6(Warn6, data1, data2, data3, data4, data5, data6)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.warn"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-                {pstr_desc: Pstr_eval(data6, _)},
-                {pstr_desc: Pstr_eval(data7, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn),
-      ) =>
-      event
-      |> logWithData7(Warn7, data1, data2, data3, data4, data5, data6, data7)
-
-    | (
-        {pexp_desc: Pexp_extension(({txt: "log.warn"}, _))},
-        Some(Error) | None,
-      ) => nothing
-
-    /* Level: Error */
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.error"},
-              PStr([{pstr_desc: Pstr_eval(event, _)}]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn | Error),
-      ) =>
-      event |> log(Error)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.error"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn | Error),
-      ) =>
-      event |> logWithData(Error1, data1)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.error"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn | Error),
-      ) =>
-      event |> logWithData2(Error2, data1, data2)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.error"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn | Error),
-      ) =>
-      event |> logWithData3(Error3, data1, data2, data3)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.error"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn | Error),
-      ) =>
-      event |> logWithData4(Error4, data1, data2, data3, data4)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.error"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn | Error),
-      ) =>
-      event |> logWithData5(Error5, data1, data2, data3, data4, data5)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.error"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-                {pstr_desc: Pstr_eval(data6, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn | Error),
-      ) =>
-      event |> logWithData6(Error6, data1, data2, data3, data4, data5, data6)
-
-    | (
-        {
-          pexp_desc:
-            Pexp_extension((
-              {txt: "log.error"},
-              PStr([
-                {pstr_desc: Pstr_eval(event, _)},
-                {pstr_desc: Pstr_eval(data1, _)},
-                {pstr_desc: Pstr_eval(data2, _)},
-                {pstr_desc: Pstr_eval(data3, _)},
-                {pstr_desc: Pstr_eval(data4, _)},
-                {pstr_desc: Pstr_eval(data5, _)},
-                {pstr_desc: Pstr_eval(data6, _)},
-                {pstr_desc: Pstr_eval(data7, _)},
-              ]),
-            )),
-        },
-        Some(Trace | Debug | Info | Warn | Error),
-      ) =>
-      event
-      |> logWithData7(Error7, data1, data2, data3, data4, data5, data6, data7)
-
-    | ({pexp_desc: Pexp_extension(({txt: "log.error"}, _))}, None) => nothing
-
-    | _ => default_mapper.expr(mapper, expr)
-    },
-};
-
-let resultMapper = (config, cookies) => {
-  ...default_mapper,
-  expr: (mapper, expr) =>
-    switch (expr, level) {
-    | (
-        {
-          pexp_attributes: [({txt: "log"}, payload)],
-          pexp_desc: Pexp_match(match, cases),
-        },
-        Some(Trace | Debug),
-      ) =>
-      let ns =
-        switch (payload) {
-        | PStr([
-            {
-              pstr_desc:
-                Pstr_eval(
-                  {pexp_desc: Pexp_constant(Pconst_string(x, None))},
-                  _,
-                ),
-            },
-          ]) =>
-          Some(x)
-        | _ => None
-        };
-      Exp.match(
-        match,
-        cases
-        |> List.map(case =>
-             switch (case) {
-             | {
-                 pc_lhs:
-                   {ppat_desc: Ppat_construct({txt: Lident(tag)}, None)} as pattern,
-                 pc_rhs: branch,
-               } =>
-               Exp.case(
-                 pattern,
-                 Exp.sequence(
-                   tag |> matchedLogEntry(ns, `WithoutPayload) |> log(Debug),
-                   baseMapper(config, cookies).expr(mapper, branch),
-                 ),
-               )
-             | {
-                 pc_lhs:
-                   {
-                     ppat_desc:
-                       Ppat_construct(
-                         {txt: Lident(tag)},
-                         Some({
-                           ppat_desc:
-                             Ppat_tuple([
-                               {ppat_desc: Ppat_var({txt: arg1})},
-                             ]),
-                         }),
-                       ),
-                   } as pattern,
-                 pc_rhs: branch,
-               } =>
-               Exp.case(
-                 pattern,
-                 Exp.sequence(
-                   tag
-                   |> matchedLogEntry(ns, `WithPayload)
-                   |> logWithData(Debug1, arg1 |> toData),
-                   baseMapper(config, cookies).expr(mapper, branch),
-                 ),
-               )
-             | {
-                 pc_lhs:
-                   {
-                     ppat_desc:
-                       Ppat_construct(
-                         {txt: Lident(tag)},
-                         Some({
-                           ppat_desc:
-                             Ppat_tuple([
-                               {ppat_desc: Ppat_var({txt: arg1})},
-                               {ppat_desc: Ppat_var({txt: arg2})},
-                             ]),
-                         }),
-                       ),
-                   } as pattern,
-                 pc_rhs: branch,
-               } =>
-               Exp.case(
-                 pattern,
-                 Exp.sequence(
-                   tag
-                   |> matchedLogEntry(ns, `WithPayload)
-                   |> logWithData2(Debug2, arg1 |> toData, arg2 |> toData),
-                   baseMapper(config, cookies).expr(mapper, branch),
-                 ),
-               )
-             | {
-                 pc_lhs:
-                   {
-                     ppat_desc:
-                       Ppat_construct(
-                         {txt: Lident(tag)},
-                         Some({
-                           ppat_desc:
-                             Ppat_tuple([
-                               {ppat_desc: Ppat_var({txt: arg1})},
-                               {ppat_desc: Ppat_var({txt: arg2})},
-                               {ppat_desc: Ppat_var({txt: arg3})},
-                             ]),
-                         }),
-                       ),
-                   } as pattern,
-                 pc_rhs: branch,
-               } =>
-               Exp.case(
-                 pattern,
-                 Exp.sequence(
-                   tag
-                   |> matchedLogEntry(ns, `WithPayload)
-                   |> logWithData3(
-                        Debug3,
-                        arg1 |> toData,
-                        arg2 |> toData,
-                        arg3 |> toData,
-                      ),
-                   baseMapper(config, cookies).expr(mapper, branch),
-                 ),
-               )
-             | {
-                 pc_lhs:
-                   {
-                     ppat_desc:
-                       Ppat_construct(
-                         {txt: Lident(tag)},
-                         Some({
-                           ppat_desc:
-                             Ppat_tuple([
-                               {ppat_desc: Ppat_var({txt: arg1})},
-                               {ppat_desc: Ppat_var({txt: arg2})},
-                               {ppat_desc: Ppat_var({txt: arg3})},
-                               {ppat_desc: Ppat_var({txt: arg4})},
-                             ]),
-                         }),
-                       ),
-                   } as pattern,
-                 pc_rhs: branch,
-               } =>
-               Exp.case(
-                 pattern,
-                 Exp.sequence(
-                   tag
-                   |> matchedLogEntry(ns, `WithPayload)
-                   |> logWithData4(
-                        Debug4,
-                        arg1 |> toData,
-                        arg2 |> toData,
-                        arg3 |> toData,
-                        arg4 |> toData,
-                      ),
-                   baseMapper(config, cookies).expr(mapper, branch),
-                 ),
-               )
-             | {
-                 pc_lhs:
-                   {
-                     ppat_desc:
-                       Ppat_construct(
-                         {txt: Lident(tag)},
-                         Some({
-                           ppat_desc:
-                             Ppat_tuple([
-                               {ppat_desc: Ppat_var({txt: arg1})},
-                               {ppat_desc: Ppat_var({txt: arg2})},
-                               {ppat_desc: Ppat_var({txt: arg3})},
-                               {ppat_desc: Ppat_var({txt: arg4})},
-                               {ppat_desc: Ppat_var({txt: arg5})},
-                             ]),
-                         }),
-                       ),
-                   } as pattern,
-                 pc_rhs: branch,
-               } =>
-               Exp.case(
-                 pattern,
-                 Exp.sequence(
-                   tag
-                   |> matchedLogEntry(ns, `WithPayload)
-                   |> logWithData5(
-                        Debug5,
-                        arg1 |> toData,
-                        arg2 |> toData,
-                        arg3 |> toData,
-                        arg4 |> toData,
-                        arg5 |> toData,
-                      ),
-                   baseMapper(config, cookies).expr(mapper, branch),
-                 ),
-               )
-             | {
-                 pc_lhs:
-                   {
-                     ppat_desc:
-                       Ppat_construct(
-                         {txt: Lident(tag)},
-                         Some({
-                           ppat_desc:
-                             Ppat_tuple([
-                               {ppat_desc: Ppat_var({txt: arg1})},
-                               {ppat_desc: Ppat_var({txt: arg2})},
-                               {ppat_desc: Ppat_var({txt: arg3})},
-                               {ppat_desc: Ppat_var({txt: arg4})},
-                               {ppat_desc: Ppat_var({txt: arg5})},
-                               {ppat_desc: Ppat_var({txt: arg6})},
-                             ]),
-                         }),
-                       ),
-                   } as pattern,
-                 pc_rhs: branch,
-               } =>
-               Exp.case(
-                 pattern,
-                 Exp.sequence(
-                   tag
-                   |> matchedLogEntry(ns, `WithPayload)
-                   |> logWithData6(
-                        Debug6,
-                        arg1 |> toData,
-                        arg2 |> toData,
-                        arg3 |> toData,
-                        arg4 |> toData,
-                        arg5 |> toData,
-                        arg6 |> toData,
-                      ),
-                   baseMapper(config, cookies).expr(mapper, branch),
-                 ),
-               )
-             | {
-                 pc_lhs:
-                   {
-                     ppat_desc:
-                       Ppat_construct(
-                         {txt: Lident(tag)},
-                         Some({
-                           ppat_desc:
-                             Ppat_tuple([
-                               {ppat_desc: Ppat_var({txt: arg1})},
-                               {ppat_desc: Ppat_var({txt: arg2})},
-                               {ppat_desc: Ppat_var({txt: arg3})},
-                               {ppat_desc: Ppat_var({txt: arg4})},
-                               {ppat_desc: Ppat_var({txt: arg5})},
-                               {ppat_desc: Ppat_var({txt: arg6})},
-                               {ppat_desc: Ppat_var({txt: arg7})},
-                             ]),
-                         }),
-                       ),
-                   } as pattern,
-                 pc_rhs: branch,
-               } =>
-               Exp.case(
-                 pattern,
-                 Exp.sequence(
-                   tag
-                   |> matchedLogEntry(ns, `WithPayload)
-                   |> logWithData7(
-                        Debug7,
-                        arg1 |> toData,
-                        arg2 |> toData,
-                        arg3 |> toData,
-                        arg4 |> toData,
-                        arg5 |> toData,
-                        arg6 |> toData,
-                        arg7 |> toData,
-                      ),
-                   baseMapper(config, cookies).expr(mapper, branch),
-                 ),
-               )
-             | {
-                 pc_lhs:
-                   {ppat_desc: Ppat_construct({txt: Lident(tag)}, Some(_))} as pattern,
-                 pc_rhs: branch,
-               } =>
-               Exp.case(
-                 pattern,
-                 Exp.sequence(
-                   tag
-                   |> matchedLogEntry(ns, `WithNotLoggedPayload)
-                   |> log(Debug),
-                   baseMapper(config, cookies).expr(mapper, branch),
-                 ),
-               )
-             | {pc_lhs: pattern, pc_rhs: branch} =>
-               Exp.case(
-                 pattern,
-                 baseMapper(config, cookies).expr(mapper, branch),
-               )
-             }
-           ),
-      );
-
-    | _ => baseMapper(config, cookies).expr(mapper, expr)
-    },
-};
-
-let () =
-  Driver.register(
-    ~name="bs-log-ppx",
-    ~args=Args.list,
-    ~reset_args=Args.reset,
-    Versions.ocaml_406,
-    resultMapper,
   );
+
+  let debug = Context_free.Rule.extension(
+    Extension.V3.declare(
+      "log.debug",
+      Extension.Context.expression,
+      Ast_pattern.__,
+      (~ctxt, payload) =>
+        payload |> transform(
+          ~ext_level=Debug,
+          ~env_level=level,
+          ~context=ctxt,
+        )
+    )
+  );
+
+  let info = Context_free.Rule.extension(
+    Extension.V3.declare(
+      "log.info",
+      Extension.Context.expression,
+      Ast_pattern.__,
+      (~ctxt, payload) =>
+        payload |> transform(
+          ~ext_level=Info,
+          ~env_level=level,
+          ~context=ctxt,
+        )
+    )
+  );
+
+  let warn = Context_free.Rule.extension(
+    Extension.V3.declare(
+      "log.warn",
+      Extension.Context.expression,
+      Ast_pattern.__,
+      (~ctxt, payload) =>
+        payload |> transform(
+          ~ext_level=Warn,
+          ~env_level=level,
+          ~context=ctxt,
+        )
+    )
+  );
+
+  let error = Context_free.Rule.extension(
+    Extension.V3.declare(
+      "log.error",
+      Extension.Context.expression,
+      Ast_pattern.__,
+      (~ctxt, payload) =>
+        payload |> transform(
+          ~ext_level=Error,
+          ~env_level=level,
+          ~context=ctxt,
+        )
+    )
+  );
+};
+
+module LogAttr = {
+  let attr =
+    Attribute.declare(
+      "log",
+      Attribute.Context.expression,
+      Ast_pattern.(T((ctx, loc, x, k) => {
+        switch x {
+        | PStr([]) =>
+          ctx.matched = ctx.matched + 1;
+          None |> k
+        | PStr([
+            {pstr_desc: Pstr_eval({pexp_desc: Pexp_constant(Pconst_string(x, None))}, _)},
+          ]) =>
+            ctx.matched = ctx.matched + 1;
+            Some(x) |> k
+        | _ => Location.raise_errorf(~loc, "Expected string")
+        }
+      })),
+      x => x,
+    );
+
+  let format = (ns, ctx, tag) =>
+    switch (ns) {
+    | None =>
+      switch (ctx) {
+      | `WithoutPayload => Exp.constant(Pconst_string(tag, None))
+      | `WithPayload =>
+        Exp.constant(Pconst_string(tag ++ " with payload", None))
+      | `WithNotLoggedPayload =>
+        Exp.constant(Pconst_string(tag ++ " with payload (not logged)", None))
+      }
+    | Some(ns) =>
+      Exp.apply(
+        Exp.ident({txt: Ldot(Lident("Pervasives"), "^"), loc: default_loc^}),
+        [
+          (Nolabel, Exp.constant(Pconst_string(ns, None))),
+          (
+            Nolabel,
+            switch (ctx) {
+            | `WithoutPayload => Exp.constant(Pconst_string("::" ++ tag, None))
+            | `WithPayload =>
+              Exp.constant(Pconst_string("::" ++ tag ++ " with payload", None))
+            | `WithNotLoggedPayload =>
+              Exp.constant(
+                Pconst_string(
+                  "::" ++ tag ++ " with payload (not logged)",
+                  None,
+                ),
+              )
+            },
+          ),
+        ],
+      )
+    };
+
+  let payload = x =>
+    Exp.tuple([
+      Exp.constant(Pconst_string(x, None)),
+      Exp.ident({txt: Lident(x), loc: default_loc^}),
+    ]);
+
+  let transform = (~env_level: option(Level.t), ~namespace: option(string), expr) =>
+    switch (expr, env_level) {
+    |
+      (
+        {pexp_desc: Pexp_match(match, cases), pexp_loc, pexp_attributes},
+        Some(Trace | Debug)
+      ) =>
+        Exp.match(
+          ~loc=pexp_loc,
+          ~attrs=pexp_attributes,
+          match,
+          cases
+          |> List.map(case =>
+               switch (case) {
+               | {
+                   pc_lhs:
+                     {ppat_desc: Ppat_construct({txt: Lident(tag)}, None)} as pattern,
+                   pc_rhs: branch,
+                 } =>
+                 Exp.case(
+                   pattern,
+                   Exp.sequence(
+                     tag |> format(namespace, `WithoutPayload) |> log(Debug),
+                     branch,
+                   ),
+                 )
+               | {
+                   pc_lhs:
+                     {
+                       ppat_desc:
+                         Ppat_construct(
+                           {txt: Lident(tag)},
+                           Some({
+                             ppat_desc:
+                               Ppat_tuple([
+                                 {ppat_desc: Ppat_var({txt: x1})},
+                               ]),
+                           }),
+                         ),
+                     } as pattern,
+                   pc_rhs: branch,
+                 } =>
+                 Exp.case(
+                   pattern,
+                   Exp.sequence(
+                     tag
+                     |> format(namespace, `WithPayload)
+                     |> log1(Debug1, x1 |> payload),
+                     branch,
+                   ),
+                 )
+               | {
+                   pc_lhs:
+                     {
+                       ppat_desc:
+                         Ppat_construct(
+                           {txt: Lident(tag)},
+                           Some({
+                             ppat_desc:
+                               Ppat_tuple([
+                                 {ppat_desc: Ppat_var({txt: x1})},
+                                 {ppat_desc: Ppat_var({txt: x2})},
+                               ]),
+                           }),
+                         ),
+                     } as pattern,
+                   pc_rhs: branch,
+                 } =>
+                 Exp.case(
+                   pattern,
+                   Exp.sequence(
+                     tag
+                     |> format(namespace, `WithPayload)
+                     |> log2(Debug2, x1 |> payload, x2 |> payload),
+                     branch,
+                   ),
+                 )
+               | {
+                   pc_lhs:
+                     {
+                       ppat_desc:
+                         Ppat_construct(
+                           {txt: Lident(tag)},
+                           Some({
+                             ppat_desc:
+                               Ppat_tuple([
+                                 {ppat_desc: Ppat_var({txt: x1})},
+                                 {ppat_desc: Ppat_var({txt: x2})},
+                                 {ppat_desc: Ppat_var({txt: x3})},
+                               ]),
+                           }),
+                         ),
+                     } as pattern,
+                   pc_rhs: branch,
+                 } =>
+                 Exp.case(
+                   pattern,
+                   Exp.sequence(
+                     tag
+                     |> format(namespace, `WithPayload)
+                     |> log3(
+                          Debug3,
+                          x1 |> payload,
+                          x2 |> payload,
+                          x3 |> payload,
+                        ),
+                     branch,
+                   ),
+                 )
+               | {
+                   pc_lhs:
+                     {
+                       ppat_desc:
+                         Ppat_construct(
+                           {txt: Lident(tag)},
+                           Some({
+                             ppat_desc:
+                               Ppat_tuple([
+                                 {ppat_desc: Ppat_var({txt: x1})},
+                                 {ppat_desc: Ppat_var({txt: x2})},
+                                 {ppat_desc: Ppat_var({txt: x3})},
+                                 {ppat_desc: Ppat_var({txt: x4})},
+                               ]),
+                           }),
+                         ),
+                     } as pattern,
+                   pc_rhs: branch,
+                 } =>
+                 Exp.case(
+                   pattern,
+                   Exp.sequence(
+                     tag
+                     |> format(namespace, `WithPayload)
+                     |> log4(
+                          Debug4,
+                          x1 |> payload,
+                          x2 |> payload,
+                          x3 |> payload,
+                          x4 |> payload,
+                        ),
+                     branch,
+                   ),
+                 )
+               | {
+                   pc_lhs:
+                     {
+                       ppat_desc:
+                         Ppat_construct(
+                           {txt: Lident(tag)},
+                           Some({
+                             ppat_desc:
+                               Ppat_tuple([
+                                 {ppat_desc: Ppat_var({txt: x1})},
+                                 {ppat_desc: Ppat_var({txt: x2})},
+                                 {ppat_desc: Ppat_var({txt: x3})},
+                                 {ppat_desc: Ppat_var({txt: x4})},
+                                 {ppat_desc: Ppat_var({txt: x5})},
+                               ]),
+                           }),
+                         ),
+                     } as pattern,
+                   pc_rhs: branch,
+                 } =>
+                 Exp.case(
+                   pattern,
+                   Exp.sequence(
+                     tag
+                     |> format(namespace, `WithPayload)
+                     |> log5(
+                          Debug5,
+                          x1 |> payload,
+                          x2 |> payload,
+                          x3 |> payload,
+                          x4 |> payload,
+                          x5 |> payload,
+                        ),
+                     branch,
+                   ),
+                 )
+               | {
+                   pc_lhs:
+                     {
+                       ppat_desc:
+                         Ppat_construct(
+                           {txt: Lident(tag)},
+                           Some({
+                             ppat_desc:
+                               Ppat_tuple([
+                                 {ppat_desc: Ppat_var({txt: x1})},
+                                 {ppat_desc: Ppat_var({txt: x2})},
+                                 {ppat_desc: Ppat_var({txt: x3})},
+                                 {ppat_desc: Ppat_var({txt: x4})},
+                                 {ppat_desc: Ppat_var({txt: x5})},
+                                 {ppat_desc: Ppat_var({txt: x6})},
+                               ]),
+                           }),
+                         ),
+                     } as pattern,
+                   pc_rhs: branch,
+                 } =>
+                 Exp.case(
+                   pattern,
+                   Exp.sequence(
+                     tag
+                     |> format(namespace, `WithPayload)
+                     |> log6(
+                          Debug6,
+                          x1 |> payload,
+                          x2 |> payload,
+                          x3 |> payload,
+                          x4 |> payload,
+                          x5 |> payload,
+                          x6 |> payload,
+                        ),
+                     branch,
+                   ),
+                 )
+               | {
+                   pc_lhs:
+                     {
+                       ppat_desc:
+                         Ppat_construct(
+                           {txt: Lident(tag)},
+                           Some({
+                             ppat_desc:
+                               Ppat_tuple([
+                                 {ppat_desc: Ppat_var({txt: x1})},
+                                 {ppat_desc: Ppat_var({txt: x2})},
+                                 {ppat_desc: Ppat_var({txt: x3})},
+                                 {ppat_desc: Ppat_var({txt: x4})},
+                                 {ppat_desc: Ppat_var({txt: x5})},
+                                 {ppat_desc: Ppat_var({txt: x6})},
+                                 {ppat_desc: Ppat_var({txt: x7})},
+                               ]),
+                           }),
+                         ),
+                     } as pattern,
+                   pc_rhs: branch,
+                 } =>
+                 Exp.case(
+                   pattern,
+                   Exp.sequence(
+                     tag
+                     |> format(namespace, `WithPayload)
+                     |> log7(
+                          Debug7,
+                          x1 |> payload,
+                          x2 |> payload,
+                          x3 |> payload,
+                          x4 |> payload,
+                          x5 |> payload,
+                          x6 |> payload,
+                          x7 |> payload,
+                        ),
+                     branch,
+                   ),
+                 )
+               | {
+                   pc_lhs:
+                     {ppat_desc: Ppat_construct({txt: Lident(tag)}, Some(_))} as pattern,
+                   pc_rhs: branch,
+                 } =>
+                 Exp.case(
+                   pattern,
+                   Exp.sequence(
+                     tag
+                     |> format(namespace, `WithNotLoggedPayload)
+                     |> log(Debug),
+                     branch,
+                   ),
+                 )
+               | {pc_lhs: pattern, pc_rhs: branch} =>
+                 Exp.case(
+                   pattern,
+                   branch,
+                 )
+               }
+             ),
+        );
+    | ({pexp_desc: Pexp_match(_, _)} as expr, Some(Info | Warn | Error) | None) => expr
+    | ({pexp_loc}, _) => Location.raise_errorf(~loc=pexp_loc, "Expected pattern matching")
+    };
+
+  let impl =
+    {
+      inherit class Ast_traverse.map as super;
+      pub! expression = expr => {
+        let expr = super#expression(expr);
+        switch (Attribute.get(attr, expr)) {
+        | None => expr
+        | Some(namespace) => expr |> transform(~env_level=level, ~namespace)
+        };
+      };
+      pub! structure = str => {
+        let str = super#structure(str);
+        Attribute.check_all_seen();
+        str;
+      }
+    }#structure;
+};
+
+"bs-log-ppx" |> Driver.register_transformation(
+  ~impl=LogAttr.impl,
+  ~rules=LogExt.[trace, debug, info, warn, error],
+);
+
+Driver.add_arg(LibArg.key, LibArg.spec, ~doc=LibArg.doc);

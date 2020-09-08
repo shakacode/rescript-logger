@@ -2,5 +2,4 @@
   (name bin)
   (public_name bs-log-ppx)
   (libraries bs-log-ppx.lib)
-  (ocamlopt_flags ( -linkall ))
 )
