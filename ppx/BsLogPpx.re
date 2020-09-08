@@ -176,11 +176,23 @@ let level = {
 };
 
 let logger = {
-  let default = "BrowserLogger";
+  let default = "BsLog.Browser";
+
+  let rec build =
+    (~lid=?, xs) =>
+      switch (lid, xs) {
+      | (None, [x, ...xs]) => xs |> build(~lid=Lident(x))
+      | (Some(lid), [x, ...xs]) => xs |> build(~lid=Ldot(lid, x))
+      | (Some(lid), []) => lid
+      | (None, []) => failwith("Empty logger")
+      };
+
+  let parse = x => x |> String.split_on_char('.') |> build;
+
   switch (Env.logger |> Sys.getenv) {
-  | "" => default
-  | exception Not_found => default
-  | _ as x => x
+  | "" => default |> parse
+  | exception Not_found => default |> parse
+  | _ as x => x |> parse
   };
 };
 
@@ -190,8 +202,8 @@ let __module__ =
     loc: default_loc^,
   });
 
-let logger = name =>
-  Exp.ident({txt: Ldot(Lident(logger), name), loc: default_loc^});
+let logger = fn =>
+  Exp.ident({txt: Ldot(logger, fn), loc: default_loc^});
 
 let log = (fn, x) =>
   Exp.apply(

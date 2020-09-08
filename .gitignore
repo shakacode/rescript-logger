@@ -1,6 +1,5 @@
 node_modules/
-lib/
-dist/
+*/**/lib/
 .cache
 .merlin
 .bsb.lock

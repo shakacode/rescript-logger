@@ -4,10 +4,6 @@
 [@bs.val] [@bs.scope "console"] external groupCollapsed: ('a, 'b, 'c) => unit = "groupCollapsed";
 [@bs.val] [@bs.scope "console"] external groupEnd: unit => unit = "groupEnd";
 
-module Module = {
-  let format = x => {j|[$x]|j};
-};
-
 // Level: Trace
 let traceLabel = {js|\u001B[48;2;99;99;99m\u001B[38;2;255;255;255m TRACE \u001B[39m\u001B[49m|js};
 

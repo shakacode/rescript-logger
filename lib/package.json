@@ -1,0 +1,11 @@
+{
+  "name": "bs-log",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "bsb -clean-world -make-world"
+  },
+  "devDependencies": {
+    "bs-platform": "7.0.1"
+  }
+}

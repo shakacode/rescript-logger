@@ -2,10 +2,6 @@
 [@bs.val] [@bs.scope "console"] external log2: ('a, 'b) => unit = "log";
 [@bs.val] [@bs.scope "console"] external groupEnd: unit => unit = "groupEnd";
 
-module Module = {
-  let format = x => {j|[$x]|j};
-};
-
 // Level: Trace
 [@bs.val] [@bs.scope "console"]
 external traceGroup:

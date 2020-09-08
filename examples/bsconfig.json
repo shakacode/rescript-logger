@@ -1,12 +1,18 @@
 {
-  "name": "bs-log",
+  "name": "bs-log-examples",
   "sources": [
     "src"
+  ],
+  "bs-dependencies": [
+    "bs-log"
   ],
   "refmt": 3,
   "package-specs": {
     "module": "es6",
     "in-source": true
   },
+  "ppx-flags": [
+    ["../_build/default/bin/bin.exe"]
+  ],
   "suffix": ".bs.js"
 }

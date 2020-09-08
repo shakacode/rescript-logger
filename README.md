@@ -45,44 +45,30 @@ There are 5 log levels:
 - `warn`
 - `error`
 
-You can log message of specific level using either PPX or common functions:
+You can log message of specific level using appropriate macros:
 
 ```reason
-/* ppx */
-[%log.info "Info level message"];
-
-/* non-ppx */
-BrowserLogger.info(__MODULE__, "Info level message");
+[%log.info "Info message"];
+[%log.error "Error message"];
 ```
-
-If you use PPX, value of `__MODULE__` variable will be injected automatically.
 
 ### Additional data
 You can add data to log entry like this:
 
 ```reason
 /* ppx */
-[%log.info "Info level message"; ("Foo", 42)];
+[%log.info "Info message"; ("Foo", 42)];
 [%log.info
-  "Info level message";
+  "Info message";
   ("Foo", {"x": 42});
   ("Bar", [1, 2, 3]);
 ];
-
-/* non-ppx */
-BrowserLogger.infoWithData(__MODULE__, "Info level message", ("Foo", 42));
-BrowserLogger.infoWithData2(
-  __MODULE__,
-  "Info level message",
-  ("Foo", {"x": 42}),
-  ("Bar", [1, 2, 3]),
-);
 ```
 
 Currently, logger can accept up to 7 additional entries.
 
 ### Verbosity customization
-You can set maximum log level via environment variable `BS_LOG`. This feature is available only when you use PPX.
+You can set maximum log level via environment variable `BS_LOG`.
 
 Let's say you want to log only warnings and errors. To make it happen, run your build like this:
 
@@ -105,32 +91,32 @@ In case if `BS_LOG` environment variable is not set, log level `warn` will be us
 
 Also, see [Usage in libraries](#usage-in-libraries).
 
-### PPX vs non-PPX
-PPX gives you ability to customize maximum log level of your build and eliminates unwanted log entries from production builds. Also, it enables `ReasonReact` integration. If for some reason you want to use non-PPX api, then you have to handle elimination of log entries yourself on post-compilation stage.
-
-Default logger compiles log entries to `console.*` method calls so those are discardable via [UglifyJS](https://github.com/mishoo/UglifyJS2#compress-options)/[TerserJS](https://github.com/terser-js/terser#compress-options) or [Babel plugin](https://babeljs.io/docs/en/babel-plugin-transform-remove-console).
-
 ### `[@log]` helper
 This helper can be placed in front of any `switch` expression with constructor patterns and it will inject debug expressions into each branch.
 
 ```reason
-let _ = x => [@log] switch (x) {
-  | A => "A"
-  | B(b) => b
-}
+let _ =
+  x =>
+    [@log]
+    switch (x) {
+    | A => "A"
+    | B(b) => b
+    }
 ```
 
 Without a `@log` helper, an equivalent would be:
 
 ```reason
-let _ = x => switch (x) {
-  | A =>
-    [%log.debug "A"];
-    "A";
-  | B(b) =>
-    [%log.debug "B with payload"; ("b", b)];
-    b;
-}
+let _ =
+  x =>
+    switch (x) {
+    | A =>
+      [%log.debug "A"];
+      "A";
+    | B(b) =>
+      [%log.debug "B with payload"; ("b", b)];
+      b;
+    }
 ```
 
 You can pass optional custom namespace to helper like this: `[@log "MyNamespace"]`.
@@ -143,17 +129,20 @@ Using `[@log]` helper, you can log dispatched actions in your components.
 Annotate `reducer` function like this:
 
 ```reason
-let reducer = (state, action) => [@log] switch (action) {
-  ...
-}
+let reducer =
+  (state, action) =>
+    [@log]
+    switch (action) {
+      ...
+    }
 ```
 
-These entries are logged on the `debug` level so none of those will appear in production builds.
+These entries are logged on the `debug` level so none of it will appear in your production builds.
 
 ### Custom loggers
 `bs-log` ships with 2 loggers:
-- `BrowserLogger` (default)
-- `NodeLogger`
+- `BsLog.Browser` (default)
+- `BsLog.Node`
 
 And you can easily plug your own.
 
@@ -169,35 +158,40 @@ BS_LOGGER=BugTracker
 Considering that you want to log only `error` level messages, you need to create functions only for errors logging.
 
 ```reason
-/* BugTracker.re */
+// BugTracker.re
 
-let error = (__module__, event) =>
-  RemoteBugTracker.notify(event ++ " in " ++ __module__);
+let error = (__module__, event) => BugTrackerSDK.notify(event ++ " in " ++ __module__);
 
-let errorWithData = (__module__, event, (label, data)) =>
-  RemoteBugTracker.notify(
-    event ++ " in " ++ __module__,
-    [|(label, data)|], /* dummy example of passing additional data */
-  );
+let error1 =
+  (
+    __module__,
+    event,
+    (label, data),
+  ) =>
+    BugTrackerSDK.notify(
+      event ++ " in " ++ __module__,
+      [|(label, data)|],
+    );
 
-let errorWithData2 = (
-  __module__,
-  event,
-  (label1, data1),
-  (label2, data2),
-) =>
-  RemoteBugTracker.notify(
-    event ++ " in " ++ __module__,
-    [|
-      (label1, data1),
-      (label2, data2),
-    |],
-  );
+let error2 =
+  (
+    __module__,
+    event,
+    (label1, data1),
+    (label2, data2),
+  ) =>
+    BugTrackerSDK.notify(
+      event ++ " in " ++ __module__,
+      [|
+        (label1, data1),
+        (label2, data2),
+      |],
+    );
 
-/* Up to 7 */
+// Up to 7
 ```
 
-You don't have to re-implement all functions from default logger, only the ones you actually use. Don't worry to forget to implement something. If later on, you will attempt to use unimplemented method it will be compile time error.
+You don't have to re-implement all functions from the default logger, only the ones you actually use. Don't worry to forget to implement something. If later on, you will attempt to use unimplemented method it will be compile time error.
 
 ### Usage in libraries
 I you are developing a library and want to use `bs-log` during development process, you can do so without spamming output of consumers of your library.
@@ -255,7 +249,7 @@ When you change a value of `BS_LOG` and/or `BS_LOGGER`, `-clean-world` before th
 
 ## Developing
 Repo consists of 2 parts:
-- BuckleScript loggers: dependencies are managed by `yarn`
+- BuckleScript lib: dependencies are managed by `yarn`
 - Dune ppx: dependencies are managed by `esy`
 
 Clone repo and install deps:
@@ -268,29 +262,9 @@ yarn install
 Build loggers and ppx:
 
 ```shell
-yarn run build
 esy build
-```
-
-To explore generated output, extend `bsconfig.json`:
-
-```json
-"sources": [
-  "src",
-  {
-    "dir": "test",
-    "type" : "dev"
-  }
-],
-"ppx-flags": [
-  "./_build/default/bin/bin.exe"
-]
-```
-
-And rebuild BuckleScript project:
-
-```shell
-BS_LOG=* yarn run build
+cd lib && yarn run build
+cd ../examples && yarn run build
 ```
 
 ### Auto-formatting
