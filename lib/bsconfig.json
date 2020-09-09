@@ -1,5 +1,5 @@
 {
-  "name": "bs-log",
+  "name": "res-log",
   "namespace": true,
   "sources": [
     "src"

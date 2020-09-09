@@ -1,7 +1,7 @@
 {
-  "name": "bs-log-ppx",
+  "name": "res-log-ppx",
   "version": "1.3.0",
-  "description": "Logging implementation for ReasonML/BuckleScript",
+  "description": "Logging implementation for ReScript",
   "author": "Alex Fedoseev <alex.fedoseev@gmail.com>",
   "license": "MIT",
   "esy": {

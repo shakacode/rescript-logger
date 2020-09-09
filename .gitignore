@@ -7,4 +7,4 @@ node_modules/
 .DS_Store
 _esy
 _build
-bs-log-ppx.install
+res-log-ppx.install

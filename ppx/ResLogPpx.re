@@ -2,9 +2,9 @@ open Ppxlib;
 open Ast_helper;
 
 module Env = {
-  let level = "BS_LOG";
-  let logger = "BS_LOGGER";
-  let only = "BS_LOG_ONLY";
+  let level = "RES_LOG";
+  let logger = "RES_LOGGER";
+  let only = "RES_LOG_ONLY";
 };
 
 module Delimiter = {
@@ -177,7 +177,7 @@ let level = {
 };
 
 let logger = {
-  let default = "BsLog.Browser";
+  let default = "ResLog.Browser";
 
   let rec build =
     (~lid=?, xs) =>
@@ -1026,7 +1026,7 @@ module LogAttr = {
     }#structure;
 };
 
-"bs-log-ppx" |> Driver.register_transformation(
+"res-log-ppx" |> Driver.register_transformation(
   ~rules=LogExt.[trace, debug, info, warn, error],
   ~impl=str => {
     let ctx =

@@ -1,7 +1,20 @@
 {
   "checksum": "944dbfe641e14d3a3c631ca92a90db98",
-  "root": "bs-log-ppx@link-dev:./esy.json",
+  "root": "res-log-ppx@link-dev:./esy.json",
   "node": {
+    "res-log-ppx@link-dev:./esy.json": {
+      "id": "res-log-ppx@link-dev:./esy.json",
+      "name": "res-log-ppx",
+      "version": "link-dev:./esy.json",
+      "source": { "type": "link-dev", "path": ".", "manifest": "esy.json" },
+      "overrides": [],
+      "dependencies": [
+        "refmterr@3.3.2@d41d8cd9", "ocaml@4.6.1000@d41d8cd9",
+        "@opam/ppxlib@opam:0.16.0@69ddf423",
+        "@opam/dune@opam:2.0.1@697bb7dd", "@esy-ocaml/reason@3.6.2@d41d8cd9"
+      ],
+      "devDependencies": [ "@opam/merlin@opam:3.3.9@e0b69f63" ]
+    },
     "refmterr@3.3.2@d41d8cd9": {
       "id": "refmterr@3.3.2@d41d8cd9",
       "name": "refmterr",
@@ -35,19 +48,6 @@
       "overrides": [],
       "dependencies": [],
       "devDependencies": []
-    },
-    "bs-log-ppx@link-dev:./esy.json": {
-      "id": "bs-log-ppx@link-dev:./esy.json",
-      "name": "bs-log-ppx",
-      "version": "link-dev:./esy.json",
-      "source": { "type": "link-dev", "path": ".", "manifest": "esy.json" },
-      "overrides": [],
-      "dependencies": [
-        "refmterr@3.3.2@d41d8cd9", "ocaml@4.6.1000@d41d8cd9",
-        "@opam/ppxlib@opam:0.16.0@69ddf423",
-        "@opam/dune@opam:2.0.1@697bb7dd", "@esy-ocaml/reason@3.6.2@d41d8cd9"
-      ],
-      "devDependencies": [ "@opam/merlin@opam:3.3.9@e0b69f63" ]
     },
     "@reason-native/pastel@0.3.0@d41d8cd9": {
       "id": "@reason-native/pastel@0.3.0@d41d8cd9",

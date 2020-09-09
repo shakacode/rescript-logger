@@ -1,4 +1,4 @@
-name: bs-log pipeline
+name: CI
 
 on:
   pull_request:
@@ -57,8 +57,10 @@ jobs:
       - name: Build ppx
         run: esy build
 
-      - name: Build BuckleScript lib
-        run: yarn run build
+      - name: Build lib
+        run: |
+          cd lib
+          yarn run build
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
@@ -101,9 +103,9 @@ jobs:
       - name: Move artifacts
         run: |
           mkdir -p _release/bin
-          mv _bin/darwin/bin.exe _release/bin/bs-log-ppx-darwin-x64.exe
-          mv _bin/windows/bin.exe _release/bin/bs-log-ppx-win-x64.exe
-          mv _bin/linux/bin.exe _release/bin/bs-log-ppx-linux-x64.exe
+          mv _bin/darwin/bin.exe _release/bin/res-log-ppx-darwin-x64.exe
+          mv _bin/windows/bin.exe _release/bin/res-log-ppx-win-x64.exe
+          mv _bin/linux/bin.exe _release/bin/res-log-ppx-linux-x64.exe
           rm -rf _bin
 
       - name: Move lib files

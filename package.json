@@ -1,12 +1,12 @@
 {
-  "name": "bs-log",
+  "name": "res-log",
   "version": "1.3.0",
-  "description": "Logging implementation for ReasonML/BuckleScript",
+  "description": "Logging implementation for ReScript",
   "author": "Alex Fedoseev <alex.fedoseev@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MinimaHQ/bs-log.git"
+    "url": "https://github.com/MinimaHQ/res-log.git"
   },
   "private": true,
   "workspaces": [

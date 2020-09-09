@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 
-const PPX = "bs-log-ppx";
+const PPX = "res-log-ppx";
 
 let arch = process.arch;
 let platform = process.platform;
