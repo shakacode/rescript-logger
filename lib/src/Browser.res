@@ -19,32 +19,32 @@ external traceGroupCollapsed: (
   'b,
 ) => unit = "groupCollapsed"
 
-let trace = (m: Module.t, x: 'x) => {
-  m->Module.format->traceGroupCollapsed(x)
+let trace = (loc: Location.t, x: 'x) => {
+  loc->Location.format->traceGroupCollapsed(x)
   groupEnd()
 }
 
-let trace1 = (m: Module.t, x: 'x, (l1, x1): (string, 'x1)) => {
-  m->Module.format->traceGroup(x)
+let trace1 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1)) => {
+  loc->Location.format->traceGroup(x)
   log2(l1 ++ ":", x1)
   groupEnd()
 }
 
-let trace2 = (m: Module.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
-  m->Module.format->traceGroup(x)
+let trace2 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
+  loc->Location.format->traceGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   groupEnd()
 }
 
 let trace3 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
   (l3, x3): (string, 'x3),
 ) => {
-  m->Module.format->traceGroup(x)
+  loc->Location.format->traceGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -52,14 +52,14 @@ let trace3 = (
 }
 
 let trace4 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
   (l3, x3): (string, 'x3),
   (l4, x4): (string, 'x4),
 ) => {
-  m->Module.format->traceGroup(x)
+  loc->Location.format->traceGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -68,7 +68,7 @@ let trace4 = (
 }
 
 let trace5 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -76,7 +76,7 @@ let trace5 = (
   (l4, x4): (string, 'x4),
   (l5, x5): (string, 'x5),
 ) => {
-  m->Module.format->traceGroup(x)
+  loc->Location.format->traceGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -86,7 +86,7 @@ let trace5 = (
 }
 
 let trace6 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -95,7 +95,7 @@ let trace6 = (
   (l5, x5): (string, 'x5),
   (l6, x6): (string, 'x6),
 ) => {
-  m->Module.format->traceGroup(x)
+  loc->Location.format->traceGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -106,7 +106,7 @@ let trace6 = (
 }
 
 let trace7 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -116,7 +116,7 @@ let trace7 = (
   (l6, x6): (string, 'x6),
   (l7, x7): (string, 'x7),
 ) => {
-  m->Module.format->traceGroup(x)
+  loc->Location.format->traceGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -144,32 +144,32 @@ external debugGroupCollapsed: (
   'b,
 ) => unit = "groupCollapsed"
 
-let debug = (m: Module.t, x: 'x) => {
-  m->Module.format->debugGroupCollapsed(x)
+let debug = (loc: Location.t, x: 'x) => {
+  loc->Location.format->debugGroupCollapsed(x)
   groupEnd()
 }
 
-let debug1 = (m: Module.t, x: 'x, (l1, x1): (string, 'x1)) => {
-  m->Module.format->debugGroup(x)
+let debug1 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1)) => {
+  loc->Location.format->debugGroup(x)
   log2(l1 ++ ":", x1)
   groupEnd()
 }
 
-let debug2 = (m: Module.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
-  m->Module.format->debugGroup(x)
+let debug2 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
+  loc->Location.format->debugGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   groupEnd()
 }
 
 let debug3 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
   (l3, x3): (string, 'x3),
 ) => {
-  m->Module.format->debugGroup(x)
+  loc->Location.format->debugGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -177,14 +177,14 @@ let debug3 = (
 }
 
 let debug4 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
   (l3, x3): (string, 'x3),
   (l4, x4): (string, 'x4),
 ) => {
-  m->Module.format->debugGroup(x)
+  loc->Location.format->debugGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -193,7 +193,7 @@ let debug4 = (
 }
 
 let debug5 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -201,7 +201,7 @@ let debug5 = (
   (l4, x4): (string, 'x4),
   (l5, x5): (string, 'x5),
 ) => {
-  m->Module.format->debugGroup(x)
+  loc->Location.format->debugGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -211,7 +211,7 @@ let debug5 = (
 }
 
 let debug6 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -220,7 +220,7 @@ let debug6 = (
   (l5, x5): (string, 'x5),
   (l6, x6): (string, 'x6),
 ) => {
-  m->Module.format->debugGroup(x)
+  loc->Location.format->debugGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -231,7 +231,7 @@ let debug6 = (
 }
 
 let debug7 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -241,7 +241,7 @@ let debug7 = (
   (l6, x6): (string, 'x6),
   (l7, x7): (string, 'x7),
 ) => {
-  m->Module.format->debugGroup(x)
+  loc->Location.format->debugGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -269,32 +269,32 @@ external infoGroupCollapsed: (
   'b,
 ) => unit = "groupCollapsed"
 
-let info = (m: Module.t, x: 'x) => {
-  m->Module.format->infoGroupCollapsed(x)
+let info = (loc: Location.t, x: 'x) => {
+  loc->Location.format->infoGroupCollapsed(x)
   groupEnd()
 }
 
-let info1 = (m: Module.t, x: 'x, (l1, x1): (string, 'x1)) => {
-  m->Module.format->infoGroup(x)
+let info1 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1)) => {
+  loc->Location.format->infoGroup(x)
   log2(l1 ++ ":", x1)
   groupEnd()
 }
 
-let info2 = (m: Module.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
-  m->Module.format->infoGroup(x)
+let info2 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
+  loc->Location.format->infoGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   groupEnd()
 }
 
 let info3 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
   (l3, x3): (string, 'x3),
 ) => {
-  m->Module.format->infoGroup(x)
+  loc->Location.format->infoGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -302,14 +302,14 @@ let info3 = (
 }
 
 let info4 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
   (l3, x3): (string, 'x3),
   (l4, x4): (string, 'x4),
 ) => {
-  m->Module.format->infoGroup(x)
+  loc->Location.format->infoGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -318,7 +318,7 @@ let info4 = (
 }
 
 let info5 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -326,7 +326,7 @@ let info5 = (
   (l4, x4): (string, 'x4),
   (l5, x5): (string, 'x5),
 ) => {
-  m->Module.format->infoGroup(x)
+  loc->Location.format->infoGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -336,7 +336,7 @@ let info5 = (
 }
 
 let info6 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -345,7 +345,7 @@ let info6 = (
   (l5, x5): (string, 'x5),
   (l6, x6): (string, 'x6),
 ) => {
-  m->Module.format->infoGroup(x)
+  loc->Location.format->infoGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -356,7 +356,7 @@ let info6 = (
 }
 
 let info7 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -366,7 +366,7 @@ let info7 = (
   (l6, x6): (string, 'x6),
   (l7, x7): (string, 'x7),
 ) => {
-  m->Module.format->infoGroup(x)
+  loc->Location.format->infoGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -394,32 +394,32 @@ external warnGroupCollapsed: (
   'b,
 ) => unit = "groupCollapsed"
 
-let warn = (m: Module.t, x: 'x) => {
-  m->Module.format->warnGroupCollapsed(x)
+let warn = (loc: Location.t, x: 'x) => {
+  loc->Location.format->warnGroupCollapsed(x)
   groupEnd()
 }
 
-let warn1 = (m: Module.t, x: 'x, (l1, x1): (string, 'x1)) => {
-  m->Module.format->warnGroup(x)
+let warn1 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1)) => {
+  loc->Location.format->warnGroup(x)
   log2(l1 ++ ":", x1)
   groupEnd()
 }
 
-let warn2 = (m: Module.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
-  m->Module.format->warnGroup(x)
+let warn2 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
+  loc->Location.format->warnGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   groupEnd()
 }
 
 let warn3 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
   (l3, x3): (string, 'x3),
 ) => {
-  m->Module.format->warnGroup(x)
+  loc->Location.format->warnGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -427,14 +427,14 @@ let warn3 = (
 }
 
 let warn4 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
   (l3, x3): (string, 'x3),
   (l4, x4): (string, 'x4),
 ) => {
-  m->Module.format->warnGroup(x)
+  loc->Location.format->warnGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -443,7 +443,7 @@ let warn4 = (
 }
 
 let warn5 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -451,7 +451,7 @@ let warn5 = (
   (l4, x4): (string, 'x5),
   (l5, x5): (string, 'x6),
 ) => {
-  m->Module.format->warnGroup(x)
+  loc->Location.format->warnGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -461,7 +461,7 @@ let warn5 = (
 }
 
 let warn6 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -470,7 +470,7 @@ let warn6 = (
   (l5, x5): (string, 'x5),
   (l6, x6): (string, 'x6),
 ) => {
-  m->Module.format->warnGroup(x)
+  loc->Location.format->warnGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -481,7 +481,7 @@ let warn6 = (
 }
 
 let warn7 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -491,7 +491,7 @@ let warn7 = (
   (l6, x6): (string, 'x6),
   (l7, x7): (string, 'x7),
 ) => {
-  m->Module.format->warnGroup(x)
+  loc->Location.format->warnGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -519,32 +519,32 @@ external errorGroupCollapsed: (
   'b,
 ) => unit = "groupCollapsed"
 
-let error = (m: Module.t, x: 'x) => {
-  m->Module.format->errorGroupCollapsed(x)
+let error = (loc: Location.t, x: 'x) => {
+  loc->Location.format->errorGroupCollapsed(x)
   groupEnd()
 }
 
-let error1 = (m: Module.t, x: 'x, (l1, x1): (string, 'x1)) => {
-  m->Module.format->errorGroup(x)
+let error1 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1)) => {
+  loc->Location.format->errorGroup(x)
   log2(l1 ++ ":", x1)
   groupEnd()
 }
 
-let error2 = (m: Module.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
-  m->Module.format->errorGroup(x)
+let error2 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
+  loc->Location.format->errorGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   groupEnd()
 }
 
 let error3 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
   (l3, x3): (string, 'x3),
 ) => {
-  m->Module.format->errorGroup(x)
+  loc->Location.format->errorGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -552,14 +552,14 @@ let error3 = (
 }
 
 let error4 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
   (l3, x3): (string, 'x3),
   (l4, x4): (string, 'x4),
 ) => {
-  m->Module.format->errorGroup(x)
+  loc->Location.format->errorGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -568,7 +568,7 @@ let error4 = (
 }
 
 let error5 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -576,7 +576,7 @@ let error5 = (
   (l4, x4): (string, 'x4),
   (l5, x5): (string, 'x5),
 ) => {
-  m->Module.format->errorGroup(x)
+  loc->Location.format->errorGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -586,7 +586,7 @@ let error5 = (
 }
 
 let error6 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -595,7 +595,7 @@ let error6 = (
   (l5, x5): (string, 'x5),
   (l6, x6): (string, 'x6),
 ) => {
-  m->Module.format->errorGroup(x)
+  loc->Location.format->errorGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
@@ -606,7 +606,7 @@ let error6 = (
 }
 
 let error7 = (
-  m: Module.t,
+  loc: Location.t,
   x: 'x,
   (l1, x1): (string, 'x1),
   (l2, x2): (string, 'x2),
@@ -616,7 +616,7 @@ let error7 = (
   (l6, x6): (string, 'x6),
   (l7, x7): (string, 'x7),
 ) => {
-  m->Module.format->errorGroup(x)
+  loc->Location.format->errorGroup(x)
   log2(l1 ++ ":", x1)
   log2(l2 ++ ":", x2)
   log2(l3 ++ ":", x3)
