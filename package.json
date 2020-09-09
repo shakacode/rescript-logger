@@ -20,7 +20,7 @@
     "postinstall.js"
   ],
   "peerDependencies": {
-    "bs-platform": "^7.0.0"
+    "bs-platform": "^8.2.0"
   },
   "keywords": [
     "log",

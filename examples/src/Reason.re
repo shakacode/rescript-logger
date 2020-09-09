@@ -45,6 +45,23 @@ let something = Some("thing");
 [%log.error "Error message"; ("1", 42); ("2", {"x": 42}); ("3", something); ("4", [1, 2, 4]); ("5", [|1, 2, 4|]); ("6", true)];
 [%log.error "Error message"; ("1", 42); ("2", {"x": 42}); ("3", something); ("4", [1, 2, 4]); ("5", [|1, 2, 4|]); ("6", true); ("7", `X)];
 
+module Inner = {
+  [%log.error "Error message in module"];
+
+  let fn = x => {
+    [%log.error "Error message in module within a function"; ("X", x)];
+    x;
+  };
+};
+
+module Very = {
+  module Deep = {
+    module Module = {
+      [%log.info "Info message from the Very.Deep.Module"];
+    };
+  };
+};
+
 type state;
 type action =
   | A
@@ -88,6 +105,7 @@ let ns = x =>
     | C(_) => "C"
     }
   );
+ns(B("b"));
 
 let noop = x =>
   [@log]
