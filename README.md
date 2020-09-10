@@ -1,11 +1,11 @@
-# res-log
+# res-logger
 
-[![npm version](https://img.shields.io/npm/v/res-log.svg?style=flat-square)](https://www.npmjs.com/package/res-log)
-[![license](https://img.shields.io/npm/l/res-log.svg?style=flat-square)](https://www.npmjs.com/package/res-log)
+[![npm version](https://img.shields.io/npm/v/res-logger.svg?style=flat-square)](https://www.npmjs.com/package/res-logger)
+[![license](https://img.shields.io/npm/l/res-logger.svg?style=flat-square)](https://www.npmjs.com/package/res-logger)
 
 Logging implementation for [ReScript](https://rescript-lang.org).
 
-![res-log](./.assets/example.png)
+![res-logger](./.assets/example.png)
 
 ## Features
 - Zero runtime in production builds.
@@ -21,18 +21,18 @@ Get the package:
 
 ```shell
 # yarn
-yarn add res-log
+yarn add res-logger
 # or npm
-npm install --save res-log
+npm install --save res-logger
 ```
 
 Then add it to `bsconfig.json`:
 
 ```json
 "bs-dependencies": [
-  "res-log"
+  "res-logger"
 ],
-"ppx-flags": ["res-log/ppx"]
+"ppx-flags": ["res-logger/ppx"]
 ```
 
 ## Usage
@@ -245,9 +245,9 @@ let reducer =
 These entries are logged on the `debug` level so none of it will appear in your production builds.
 
 ### Custom loggers
-`res-log` ships with 2 loggers:
-- `ResLog.Browser` (default)
-- `ResLog.Node`
+`res-logger` ships with 2 loggers:
+- `ResLogger.Browser` (default)
+- `ResLogger.Node`
 
 And you can easily plug your own.
 
@@ -296,7 +296,7 @@ let error2 =
 // Up to 7
 ```
 
-The first argument `loc` is a `ResLog.Location.t` record. It's passed by PPX and contains location data.
+The first argument `loc` is a `ResLogger.Location.t` record. It's passed by PPX and contains the location data.
 
 ```reason
 type t = {
@@ -330,13 +330,13 @@ module Submodule = {
 Note, you don't have to re-implement all functions from the default logger, only the ones you actually use. Don't worry to forget to implement something. If later on, you will attempt to use unimplemented method it will be compile time error.
 
 ### Usage in libraries
-I you develop a library and want to use `res-log` during development process, you can do so without spamming output of consumers of your library.
+I you develop a library and want to use `res-logger` during development process, you can do so without spamming output of consumers of your library.
 
-`res-log/ppx` accepts `--lib` flag:
+`res-logger/ppx` accepts `--lib` flag:
 
 ```json
 "ppx-flags": [
-  ["res-log/ppx", "--lib=my-lib"]
+  ["res-logger/ppx", "--lib=my-lib"]
 ]
 ```
 

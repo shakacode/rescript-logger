@@ -1,10 +1,10 @@
 {
-  "name": "res-log-examples",
+  "name": "res-logger-examples",
   "sources": [
     "src"
   ],
   "bs-dependencies": [
-    "res-log"
+    "res-logger"
   ],
   "refmt": 3,
   "package-specs": {

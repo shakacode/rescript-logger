@@ -1,12 +1,12 @@
 {
-  "name": "res-log",
+  "name": "res-logger",
   "version": "1.3.0",
   "description": "Logging implementation for ReScript",
   "author": "Alex Fedoseev <alex.fedoseev@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MinimaHQ/res-log.git"
+    "url": "https://github.com/MinimaHQ/res-logger.git"
   },
   "private": true,
   "workspaces": [
@@ -24,7 +24,9 @@
   },
   "keywords": [
     "log",
+    "logger",
     "logging",
+    "rescript",
     "reason",
     "reasonml",
     "ocaml",

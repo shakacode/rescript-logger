@@ -177,7 +177,7 @@ let level = {
 };
 
 let logger = {
-  let default = "ResLog.Browser";
+  let default = "ResLogger.Browser";
 
   let rec build =
     (~lid=?, xs) =>
@@ -1026,7 +1026,7 @@ module LogAttr = {
     }#structure;
 };
 
-"res-log-ppx" |> Driver.register_transformation(
+"res-logger-ppx" |> Driver.register_transformation(
   ~rules=LogExt.[trace, debug, info, warn, error],
   ~impl=str => {
     let ctx =

@@ -1,5 +1,5 @@
 {
-  "name": "res-log",
+  "name": "res-logger",
   "namespace": true,
   "sources": [
     "src"

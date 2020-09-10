@@ -1,12 +1,12 @@
 {
-  "name": "res-log-examples",
+  "name": "res-logger-examples",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "build": "bsb -clean-world -make-world"
   },
   "devDependencies": {
-    "res-log": "*",
+    "res-logger": "*",
     "bs-platform": "8.3.0-dev.2"
   }
 }

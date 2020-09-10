@@ -1,6 +1,6 @@
 (library
-  (name ResLogPpx)
-  (public_name res-log-ppx.lib)
+  (name ResLoggerPpx)
+  (public_name res-logger-ppx.lib)
   (kind ppx_rewriter)
   (libraries ppxlib)
   (flags (:standard -w -30))
