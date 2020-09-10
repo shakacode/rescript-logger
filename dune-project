@@ -1,2 +1,2 @@
-(lang dune 1.0)
-  (name bs-log-ppx)
+(lang dune 1.6)
+  (name res-logger-ppx)

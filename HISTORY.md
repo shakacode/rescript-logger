@@ -1,5 +1,23 @@
 # History
 
+## 2.0.0-beta.1
+- Package renamed to `res-logger` and converted to `ReScript` syntax.
+- Default loggers namespaced and renamed:
+  - `BrowserLogger` -> `ResLogger.Browser`
+  - `NodeLogger` -> `ResLogger.Node`
+- Environment variables renamed:
+  - `BS_LOG` -> `RES_LOG`
+  - `BS_LOGGER` -> `RES_LOGGER`
+- Added environment variable `RES_LOG_ONLY`. It allows logging only from specific locations in code.<br />
+E.g. `RES_LOG_ONLY=Module.Submodule.fn bsb ...`<br />
+See [`Verbosity customization > Code location`](./README.md#code-location).
+- Each log entry produced by default loggers is prefixed with full location from where it's been called.<br />
+E.g. `[Module.Submodule.fn] ...`
+- Logger interface changed (pay attention if you have custom loggers in your codebase):
+  - Logger function `<level>WithData` renamed to `<level>1`
+  - Logger function `<level>WithData<x>` renamed to `<level><x>`
+  - Each logger function receives `Location.t` record instead of a `__MODULE__` string. See [`Custom loggers`](./README.md#custom-loggers).
+
 ## 1.3.0
 - Add `Trace` level.
 - Ensure PPX binary is available on all platforms.

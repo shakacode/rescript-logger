@@ -1,6 +1,5 @@
 node_modules/
-lib/
-dist/
+*/**/lib/
 .cache
 .merlin
 .bsb.lock
@@ -8,4 +7,4 @@ dist/
 .DS_Store
 _esy
 _build
-bs-log-ppx.install
+res-logger-ppx.install

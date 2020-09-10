@@ -1,0 +1,18 @@
+{
+  "name": "res-logger-examples",
+  "sources": [
+    "src"
+  ],
+  "bs-dependencies": [
+    "res-logger"
+  ],
+  "refmt": 3,
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "ppx-flags": [
+    ["../_build/default/bin/bin.exe"]
+  ],
+  "suffix": ".bs.js"
+}

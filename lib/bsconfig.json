@@ -1,0 +1,13 @@
+{
+  "name": "res-logger",
+  "namespace": true,
+  "sources": [
+    "src"
+  ],
+  "refmt": 3,
+  "package-specs": {
+    "module": "es6",
+    "in-source": true
+  },
+  "suffix": ".bs.js"
+}
