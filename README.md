@@ -404,4 +404,4 @@ cd ../examples && yarn run build
 ```
 
 ### Auto-formatting
-Note, this project doesn't use auto-formatting in Reason files (`*.re`), so if you're intended to contribute, please, turn auto-formatting in the editor off while editing such files.
+Note, this project doesn't use auto-formatting in OCaml/Reason files (`*.ml` or `*.re`), so if you're intended to contribute, please, turn auto-formatting in the editor off while editing such files.
