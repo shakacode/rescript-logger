@@ -1,10 +1,10 @@
 # History
 
-## 2.0.0-beta.1
-- Package renamed to `res-logger` and converted to `ReScript` syntax.
+## 2.0.0
+- Package renamed to `rescript-logger` and converted to `ReScript` syntax.
 - Default loggers namespaced and renamed:
-  - `BrowserLogger` -> `ResLogger.Browser`
-  - `NodeLogger` -> `ResLogger.Node`
+  - `BrowserLogger` -> `ReScriptLogger.Browser`
+  - `NodeLogger` -> `ReScriptLogger.Node`
 - Environment variables renamed:
   - `BS_LOG` -> `RES_LOG`
   - `BS_LOGGER` -> `RES_LOGGER`

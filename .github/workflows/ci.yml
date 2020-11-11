@@ -103,9 +103,9 @@ jobs:
       - name: Move artifacts
         run: |
           mkdir -p _release/bin
-          mv _bin/darwin/bin.exe _release/bin/res-logger-ppx-darwin-x64.exe
-          mv _bin/windows/bin.exe _release/bin/res-logger-ppx-win-x64.exe
-          mv _bin/linux/bin.exe _release/bin/res-logger-ppx-linux-x64.exe
+          mv _bin/darwin/bin.exe _release/bin/rescript-logger-ppx-darwin-x64.exe
+          mv _bin/windows/bin.exe _release/bin/rescript-logger-ppx-win-x64.exe
+          mv _bin/linux/bin.exe _release/bin/rescript-logger-ppx-linux-x64.exe
           rm -rf _bin
 
       - name: Move lib files

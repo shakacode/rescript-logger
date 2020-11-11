@@ -1,5 +1,5 @@
 {
-  "name": "res-logger-ppx",
+  "name": "rescript-logger-ppx",
   "version": "2.0.0-beta.2",
   "description": "Logging implementation for ReScript",
   "author": "Alex Fedoseev <alex.fedoseev@gmail.com>",

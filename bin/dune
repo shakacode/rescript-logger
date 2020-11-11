@@ -1,5 +1,5 @@
 (executable
   (name bin)
-  (public_name res-logger-ppx)
-  (libraries res-logger-ppx.lib)
+  (public_name rescript-logger-ppx)
+  (libraries rescript-logger-ppx.lib)
 )
