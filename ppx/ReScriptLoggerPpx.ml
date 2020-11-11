@@ -175,7 +175,7 @@ let level =
         )
 
 let logger =
-  let default = "ResLogger.Browser" in
+  let default = "ReScriptLogger.Browser" in
 
   let rec build ?lid xs =
     match (lid, xs) with
@@ -1021,7 +1021,7 @@ module LogAttr = struct
 end
 
 let _ =
-  "res-logger-ppx"
+  "rescript-logger-ppx"
   |>
     Driver.register_transformation
       ~rules: (let open LogExt in [trace; debug; info; warn; error])

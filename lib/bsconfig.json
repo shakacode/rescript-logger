@@ -1,6 +1,6 @@
 {
-  "name": "res-logger",
-  "namespace": true,
+  "name": "rescript-logger",
+  "namespace": "ReScriptLogger",
   "sources": [
     "src"
   ],

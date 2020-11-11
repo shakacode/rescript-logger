@@ -1,11 +1,11 @@
-# res-logger
+# rescript-logger
 
-[![npm version](https://img.shields.io/npm/v/res-logger.svg?style=flat-square)](https://www.npmjs.com/package/res-logger)
-[![license](https://img.shields.io/npm/l/res-logger.svg?style=flat-square)](https://www.npmjs.com/package/res-logger)
+[![npm version](https://img.shields.io/npm/v/rescript-logger.svg?style=flat-square)](https://www.npmjs.com/package/rescript-logger)
+[![license](https://img.shields.io/npm/l/rescript-logger.svg?style=flat-square)](https://www.npmjs.com/package/rescript-logger)
 
 Logging implementation for [ReScript](https://rescript-lang.org).
 
-![res-logger](./.assets/example.png)
+![rescript-logger](./.assets/example.png)
 
 ## Features
 - Zero runtime in production builds.
@@ -21,18 +21,18 @@ Get the package:
 
 ```shell
 # yarn
-yarn add res-logger
+yarn add rescript-logger
 # or npm
-npm install --save res-logger
+npm install --save rescript-logger
 ```
 
 Then add it to `bsconfig.json`:
 
 ```json
 "bs-dependencies": [
-  "res-logger"
+  "rescript-logger"
 ],
-"ppx-flags": ["res-logger/ppx"]
+"ppx-flags": ["rescript-logger/ppx"]
 ```
 
 ## Usage
@@ -245,9 +245,9 @@ let reducer =
 These entries are logged on the `debug` level so none of it will appear in your production builds.
 
 ### Custom loggers
-`res-logger` ships with 2 loggers:
-- `ResLogger.Browser` (default)
-- `ResLogger.Node`
+`rescript-logger` ships with 2 loggers:
+- `ReScriptLogger.Browser` (default)
+- `ReScriptLogger.Node`
 
 And you can easily plug your own.
 
@@ -296,7 +296,7 @@ let error2 =
 // Up to 7
 ```
 
-The first argument `loc` is a `ResLogger.Location.t` record. It's passed by PPX and contains the location data.
+The first argument `loc` is a `ReScriptLogger.Location.t` record. It's passed by PPX and contains the location data.
 
 ```reason
 type t = {
@@ -330,13 +330,13 @@ module Submodule = {
 Note, you don't have to re-implement all functions from the default logger, only the ones you actually use. Don't worry to forget to implement something. If later on, you will attempt to use unimplemented method it will be compile time error.
 
 ### Usage in libraries
-I you develop a library and want to use `res-logger` during development process, you can do so without spamming output of consumers of your library.
+I you develop a library and want to use `rescript-logger` during development process, you can do so without spamming output of consumers of your library.
 
-`res-logger/ppx` accepts `--lib` flag:
+`rescript-logger/ppx` accepts `--lib` flag:
 
 ```json
 "ppx-flags": [
-  ["res-logger/ppx", "--lib=my-lib"]
+  ["rescript-logger/ppx", "--lib=my-lib"]
 ]
 ```
 

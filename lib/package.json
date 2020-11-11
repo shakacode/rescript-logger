@@ -1,5 +1,5 @@
 {
-  "name": "res-logger",
+  "name": "rescript-logger",
   "version": "0.0.0",
   "private": true,
   "scripts": {

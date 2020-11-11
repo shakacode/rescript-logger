@@ -1,12 +1,12 @@
 {
-  "name": "res-logger",
-  "version": "2.0.0-beta.2",
+  "name": "rescript-logger",
+  "version": "2.0.0",
   "description": "Logging implementation for ReScript",
   "author": "Alex Fedoseev <alex.fedoseev@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MinimaHQ/res-logger.git"
+    "url": "https://github.com/MinimaHQ/rescript-logger.git"
   },
   "private": true,
   "workspaces": [
