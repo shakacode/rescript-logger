@@ -1,5 +1,8 @@
 # History
 
+## 2.0.1
+- Add support for M1 Macs through Rosetta [#28](https://github.com/shakacode/rescript-logger/pull/28).
+
 ## 2.0.0
 - Package renamed to `rescript-logger` and converted to `ReScript` syntax.
 - Default loggers namespaced and renamed:
