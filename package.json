@@ -19,9 +19,6 @@
     "bsconfig.json",
     "postinstall.js"
   ],
-  "peerDependencies": {
-    "bs-platform": "^8.2.0"
-  },
   "keywords": [
     "log",
     "logger",
