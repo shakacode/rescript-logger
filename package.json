@@ -1,6 +1,6 @@
 {
   "name": "rescript-logger",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Logging implementation for ReScript",
   "author": "Alex Fedoseev <alex@fedoseev.mx>",
   "license": "MIT",
