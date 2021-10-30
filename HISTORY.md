@@ -1,5 +1,8 @@
 # History
 
+## 2.0.2
+- Remove `bs-platform` peer dependency.
+
 ## 2.0.1
 - Add support for M1 Macs through Rosetta [#28](https://github.com/shakacode/rescript-logger/pull/28).
 
