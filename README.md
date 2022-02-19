@@ -5,7 +5,7 @@
 
 Logging implementation for [ReScript](https://rescript-lang.org).
 
-![rescript-logger](./.assets/example.png)
+![rescript-logger](./example.png)
 
 ## Features
 - Zero runtime in production builds.

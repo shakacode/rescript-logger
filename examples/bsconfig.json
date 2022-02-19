@@ -6,13 +6,12 @@
   "bs-dependencies": [
     "rescript-logger"
   ],
-  "refmt": 3,
   "package-specs": {
-    "module": "commonjs",
+    "module": "es6",
     "in-source": true
   },
   "ppx-flags": [
-    ["../_build/default/bin/bin.exe"]
+    ["../_build/default/ppx/bin/bin.exe"]
   ],
   "suffix": ".bs.js"
 }
