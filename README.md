@@ -12,7 +12,7 @@ Logging implementation for [ReScript](https://rescript-lang.org).
 - Multiple logging levels.
 - Customizable verbosity.
 - `[@log]` helper.
-- `ReasonReact` integration.
+- [`@rescript/react`](https://github.com/rescript-lang/rescript-react) integration.
 - Custom loggers.
 - Logging in libraries.
 
@@ -90,7 +90,7 @@ You can set maximum log level via environment variable `RES_LOG`.
 Let's say you want to log only warnings and errors. To make it happen, run your build like this:
 
 ```shell
-RES_LOG=warn bsb -clean-world -make-world
+RES_LOG=warn rescript build
 ```
 
 Available `RES_LOG` values:
@@ -114,7 +114,7 @@ If you want to focus on logging from specific part(s) of your code, you can use 
 For example, if you want to see logs only from module `Test`, run the build as following:
 
 ```shell
-RES_LOG_ONLY=Test bsb -clean-world -make-world
+RES_LOG_ONLY=Test rescript build
 ```
 
 You can pass submodules and functions to it as well. If you want to log from multiple locations, separate them by `,`.
@@ -141,7 +141,7 @@ Here is what will be logged with different build configurations:
 
 ```
 # build
-RES_LOG_ONLY=Test bsb -clean-world -make-world
+RES_LOG_ONLY=Test rescript build
 
 # output
 WARNING  [Test] Top level message
@@ -150,14 +150,14 @@ WARNING  [Test.Submodule2] Message from Submodule2
 WARNING  [Test.Submodule2.fn] Message from function within Submodule2
 
 # build
-RES_LOG_ONLY=Test.Submodule2 bsb -clean-world -make-world
+RES_LOG_ONLY=Test.Submodule2 rescript build
 
 # output
 WARNING  [Test.Submodule2] Message from Submodule2
 WARNING  [Test.Submodule2.fn] Message from function within Submodule2
 
 # build
-RES_LOG_ONLY=Test.Submodule1,Test.Submodule2.fn bsb -clean-world -make-world
+RES_LOG_ONLY=Test.Submodule1,Test.Submodule2.fn rescript build
 
 # output
 WARNING  [Test.Submodule1] Message from Submodule1
@@ -219,7 +219,7 @@ You can pass optional custom namespace to helper like this: `@log("MyNamespace")
 
 `[@log]` helper works only for `switch` expressions with constructor patterns, for now. Let us know [in the issues](/issues) if you need to handle more cases.
 
-### `ReasonReact` integration
+### `@rescript/react` integration
 Using `@log` helper, you can log dispatched actions in your components.
 
 Annotate `reducer` function like this:
@@ -343,29 +343,29 @@ I you develop a library and want to use `rescript-logger` during development pro
 Once this flag is passed, you need to provide special value of `RES_LOG` to log your entries:
 
 ```shell
-RES_LOG=my-lib=* bsb -make-world
+RES_LOG=my-lib=* rescript build
 ```
 
 If consumers of your lib would like to see log output from your lib, they can do so too by extending a value of `RES_LOG` variable:
 
 ```shell
-RES_LOG=*,my-lib=error bsb -make-world
+RES_LOG=*,my-lib=error rescript build
 ```
 
 Few more examples to illustrate how it works:
 
 ```shell
 # log everything from application code only
-RES_LOG=* bsb -make-world
+RES_LOG=* rescript build
 
 # log everything from application code
 # log errors from `my-lib`
-RES_LOG=*,my-lib=error bsb -make-world
+RES_LOG=*,my-lib=error rescript build
 
 # log everything from application code
 # log errors from `my-lib-1`
 # log warnings and errors from `my-lib-2`
-RES_LOG=*,my-lib-1=error,my-lib-2=warn bsb -make-world
+RES_LOG=*,my-lib-1=error,my-lib-2=warn rescript build
 ```
 
 ## Caveats
@@ -381,13 +381,41 @@ If your editor is telling you, variables used in ppx are unused, you can either:
 2. or open editor with `RES_LOG` variable set to appropriate level.
 
 **Changing value of `RES_LOG`/`RES_LOGGER`/`RES_LOG_ONLY` doesn't make any effect**<br />
-When you change a value of environment variable, `-clean-world` before the next build.
+When you change a value of environment variable, `rescript clean` before the next build.
 
 ## Developing
 Repo consists of 2 parts:
 - ReScript lib: dependencies are managed by `yarn`
-- Dune PPX: dependencies are managed by `esy`
+- OCaml PPX: dependencies are managed either by `nix` (in development) or `esy` (in development and/or on CI)
 
+### Nix flow
+Clone repo and either enter the Nix shell:
+
+```
+nix-shell
+```
+
+Or use [`direnv`](https://direnv.net/) and create `.envrc` file in the root directory of the project with the folowing content:
+
+```
+use nix
+```
+
+Then install deps:
+
+```shell
+yarn install
+```
+
+Build loggers and ppx:
+
+```shell
+dune build
+cd lib && yarn run build
+cd ../examples && yarn run build
+```
+
+### Esy flow 
 Clone repo and install deps:
 
 ```shell
@@ -404,4 +432,4 @@ cd ../examples && yarn run build
 ```
 
 ### Auto-formatting
-Note, this project doesn't use auto-formatting in OCaml/Reason files (`*.ml` or `*.re`), so if you're intended to contribute, please, turn auto-formatting in the editor off while editing such files.
+Note, this project doesn't use auto-formatting in OCaml files (`*.ml`), so if you're intended to contribute, please, turn off auto-formatting in the editor while editing such files.
