@@ -1,5 +1,8 @@
 # History
 
+## 2.1.0
+- Add native `arm64` support.
+
 ## 2.0.2
 - Remove `bs-platform` peer dependency.
 
