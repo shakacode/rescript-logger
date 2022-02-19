@@ -11,8 +11,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [12.x]
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        node-version: [16.x]
+        os: [macOS-latest, windows-latest]
 
     steps:
       - name: Checkout repo
@@ -38,7 +38,7 @@ jobs:
         run: yarn install
 
       - name: Install Esy
-        run: npm install -g esy@0.6.2
+        run: npm install -g esy@0.6.12
 
       - name: Install Esy deps
         run: esy install
@@ -66,10 +66,76 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: ${{ matrix.os }}
-          path: _build/default/bin/bin.exe
+          path: _build/default/ppx/bin/bin.exe
 
-  rc:
-    needs: build
+  build_linux:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    container:
+      image: alexfedoseev/alpine-node-yarn-esy:0.0.9
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Apply static linking patch
+        run: git apply linux.patch
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Print Yarn cache
+        id: print-yarn-cache
+        run: echo "::set-output name=yarn-cache::$(yarn cache dir)"
+
+      - name: Restore Yarn cache
+        id: yarn-cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.print-yarn-cache.outputs.yarn-cache }}
+          key: ${{ matrix.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Yarn deps
+        run: yarn install
+
+      - name: Install Esy deps
+        run: esy install
+
+      - name: Print Esy cache
+        id: print-esy-cache
+        run: node .github/workflows/scripts/print-esy-cache.js
+
+      - name: Restore Esy cache
+        id: esy-cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.print-esy-cache.outputs.esy-cache }}
+          key: ${{ matrix.os }}-esy-${{ hashFiles('**/index.json') }}
+
+      - name: Build ppx
+        run: esy build
+
+      - name: Build lib
+        run: |
+          cd lib
+          yarn run build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{ matrix.os }}
+          path: _build/default/ppx/bin/bin.exe
+
+  release:
+    needs:
+      - build
+      - build_linux
     name: Prepare RC
     runs-on: ubuntu-latest
 
@@ -80,7 +146,7 @@ jobs:
       - name: Setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 16.x
 
       - name: Download Linux artifacts
         uses: actions/download-artifact@v1

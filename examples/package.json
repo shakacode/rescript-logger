@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "bsb -clean-world -make-world"
+    "build": "rescript build"
   },
   "devDependencies": {
-    "rescript-logger": "*",
-    "bs-platform": "8.3.0-dev.2"
+    "rescript": "9.1.4",
+    "rescript-logger": "*"
   }
 }

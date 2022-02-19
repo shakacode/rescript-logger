@@ -105,7 +105,7 @@ let ns = x =>
     | C(_) => "C"
     }
   );
-ns(B("b"));
+let s: string = ns(B("b"));
 
 let noop = x =>
   [@log]

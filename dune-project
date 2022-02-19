@@ -1,2 +1,2 @@
-(lang dune 1.6)
+(lang dune 2.6)
   (name rescript-logger-ppx)
