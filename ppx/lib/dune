@@ -1,5 +1,5 @@
 (library
-  (name Lib)
+  (name lib)
   (public_name rescript-logger-ppx.lib)
   (kind ppx_rewriter)
   (libraries ppxlib)
