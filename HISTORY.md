@@ -1,5 +1,8 @@
 # History
 
+## 2.2.0
+- Add universal logger (`ReScriptLogger.Universal`). Useful for apps with SSR.
+
 ## 2.1.0
 - Add native `arm64` support.
 
