@@ -2,7 +2,10 @@
   "name": "rescript-logger",
   "namespace": "ReScriptLogger",
   "sources": [
-    "src"
+    {
+      "dir": "src",
+      "subdirs": true
+    }
   ],
   "package-specs": {
     "module": "es6",

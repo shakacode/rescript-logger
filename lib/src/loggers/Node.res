@@ -1,8 +1,7 @@
-@bs.val @bs.scope("console") external log: 'a => unit = "log"
-@bs.val @bs.scope("console") external log2: ('a, 'b) => unit = "log"
-@bs.val @bs.scope("console") external group: ('a, 'b, 'c) => unit = "group"
-@bs.val @bs.scope("console") external groupCollapsed: ('a, 'b, 'c) => unit = "groupCollapsed"
-@bs.val @bs.scope("console") external groupEnd: unit => unit = "groupEnd"
+@val @scope("console") external log: ('a, 'b) => unit = "log"
+@val @scope("console") external group: ('a, 'b, 'c) => unit = "group"
+@val @scope("console") external groupCollapsed: ('a, 'b, 'c) => unit = "groupCollapsed"
+@val @scope("console") external groupEnd: unit => unit = "groupEnd"
 
 // Level: Trace
 let traceLabel = `\u001B[48;2;99;99;99m\u001B[38;2;255;255;255m TRACE \u001B[39m\u001B[49m`
@@ -14,14 +13,14 @@ let trace = (loc: Location.t, x: 'x) => {
 
 let trace1 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1)) => {
   traceLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
+  log(l1 ++ ":", x1)
   groupEnd()
 }
 
 let trace2 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
   traceLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
   groupEnd()
 }
 
@@ -33,9 +32,9 @@ let trace3 = (
   (l3, x3): (string, 'x3),
 ) => {
   traceLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
   groupEnd()
 }
 
@@ -48,10 +47,10 @@ let trace4 = (
   (l4, x4): (string, 'x4),
 ) => {
   traceLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
   groupEnd()
 }
 
@@ -65,11 +64,11 @@ let trace5 = (
   (l5, x5): (string, 'x5),
 ) => {
   traceLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
   groupEnd()
 }
 
@@ -84,12 +83,12 @@ let trace6 = (
   (l6, x6): (string, 'x6),
 ) => {
   traceLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
-  log2(l6 ++ ":", x6)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
+  log(l6 ++ ":", x6)
   groupEnd()
 }
 
@@ -105,13 +104,13 @@ let trace7 = (
   (l7, x7): (string, 'x7),
 ) => {
   traceLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
-  log2(l6 ++ ":", x6)
-  log2(l7 ++ ":", x7)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
+  log(l6 ++ ":", x6)
+  log(l7 ++ ":", x7)
   groupEnd()
 }
 
@@ -125,14 +124,14 @@ let debug = (loc: Location.t, x: 'x) => {
 
 let debug1 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1)) => {
   debugLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
+  log(l1 ++ ":", x1)
   groupEnd()
 }
 
 let debug2 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
   debugLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
   groupEnd()
 }
 
@@ -144,9 +143,9 @@ let debug3 = (
   (l3, x3): (string, 'x3),
 ) => {
   debugLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
   groupEnd()
 }
 
@@ -159,10 +158,10 @@ let debug4 = (
   (l4, x4): (string, 'x4),
 ) => {
   debugLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
   groupEnd()
 }
 
@@ -176,11 +175,11 @@ let debug5 = (
   (l5, x5): (string, 'x5),
 ) => {
   debugLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
   groupEnd()
 }
 
@@ -195,12 +194,12 @@ let debug6 = (
   (l6, x6): (string, 'x6),
 ) => {
   debugLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
-  log2(l6 ++ ":", x6)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
+  log(l6 ++ ":", x6)
   groupEnd()
 }
 
@@ -216,13 +215,13 @@ let debug7 = (
   (l7, x7): (string, 'x7),
 ) => {
   debugLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
-  log2(l6 ++ ":", x6)
-  log2(l7 ++ ":", x7)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
+  log(l6 ++ ":", x6)
+  log(l7 ++ ":", x7)
   groupEnd()
 }
 
@@ -236,14 +235,14 @@ let info = (loc: Location.t, x: 'x) => {
 
 let info1 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1)) => {
   infoLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
+  log(l1 ++ ":", x1)
   groupEnd()
 }
 
 let info2 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
   infoLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
   groupEnd()
 }
 
@@ -255,9 +254,9 @@ let info3 = (
   (l3, x3): (string, 'x3),
 ) => {
   infoLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
   groupEnd()
 }
 
@@ -270,10 +269,10 @@ let info4 = (
   (l4, x4): (string, 'x4),
 ) => {
   infoLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
   groupEnd()
 }
 
@@ -287,11 +286,11 @@ let info5 = (
   (l5, x5): (string, 'x5),
 ) => {
   infoLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
   groupEnd()
 }
 
@@ -306,12 +305,12 @@ let info6 = (
   (l6, x6): (string, 'x6),
 ) => {
   infoLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
-  log2(l6 ++ ":", x6)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
+  log(l6 ++ ":", x6)
   groupEnd()
 }
 
@@ -327,13 +326,13 @@ let info7 = (
   (l7, x7): (string, 'x7),
 ) => {
   infoLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
-  log2(l6 ++ ":", x6)
-  log2(l7 ++ ":", x7)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
+  log(l6 ++ ":", x6)
+  log(l7 ++ ":", x7)
   groupEnd()
 }
 
@@ -347,14 +346,14 @@ let warn = (loc: Location.t, x: 'x) => {
 
 let warn1 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1)) => {
   warnLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
+  log(l1 ++ ":", x1)
   groupEnd()
 }
 
 let warn2 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
   warnLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
   groupEnd()
 }
 
@@ -366,9 +365,9 @@ let warn3 = (
   (l3, x3): (string, 'x3),
 ) => {
   warnLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
   groupEnd()
 }
 
@@ -381,10 +380,10 @@ let warn4 = (
   (l4, x4): (string, 'x4),
 ) => {
   warnLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
   groupEnd()
 }
 
@@ -398,11 +397,11 @@ let warn5 = (
   (l5, x5): (string, 'x6),
 ) => {
   warnLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
   groupEnd()
 }
 
@@ -417,12 +416,12 @@ let warn6 = (
   (l6, x6): (string, 'x6),
 ) => {
   warnLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
-  log2(l6 ++ ":", x6)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
+  log(l6 ++ ":", x6)
   groupEnd()
 }
 
@@ -438,13 +437,13 @@ let warn7 = (
   (l7, x7): (string, 'x7),
 ) => {
   warnLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
-  log2(l6 ++ ":", x6)
-  log2(l7 ++ ":", x7)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
+  log(l6 ++ ":", x6)
+  log(l7 ++ ":", x7)
   groupEnd()
 }
 
@@ -458,14 +457,14 @@ let error = (loc: Location.t, x: 'x) => {
 
 let error1 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1)) => {
   errorLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
+  log(l1 ++ ":", x1)
   groupEnd()
 }
 
 let error2 = (loc: Location.t, x: 'x, (l1, x1): (string, 'x1), (l2, x2): (string, 'x2)) => {
   errorLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
   groupEnd()
 }
 
@@ -477,9 +476,9 @@ let error3 = (
   (l3, x3): (string, 'x3),
 ) => {
   errorLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
   groupEnd()
 }
 
@@ -492,10 +491,10 @@ let error4 = (
   (l4, x4): (string, 'x4),
 ) => {
   errorLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
   groupEnd()
 }
 
@@ -509,11 +508,11 @@ let error5 = (
   (l5, x5): (string, 'x5),
 ) => {
   errorLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
   groupEnd()
 }
 
@@ -528,12 +527,12 @@ let error6 = (
   (l6, x6): (string, 'x6),
 ) => {
   errorLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
-  log2(l6 ++ ":", x6)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
+  log(l6 ++ ":", x6)
   groupEnd()
 }
 
@@ -549,12 +548,12 @@ let error7 = (
   (l7, x7): (string, 'x7),
 ) => {
   errorLabel->group(loc->Location.format, x)
-  log2(l1 ++ ":", x1)
-  log2(l2 ++ ":", x2)
-  log2(l3 ++ ":", x3)
-  log2(l4 ++ ":", x4)
-  log2(l5 ++ ":", x5)
-  log2(l6 ++ ":", x6)
-  log2(l7 ++ ":", x7)
+  log(l1 ++ ":", x1)
+  log(l2 ++ ":", x2)
+  log(l3 ++ ":", x3)
+  log(l4 ++ ":", x4)
+  log(l5 ++ ":", x5)
+  log(l6 ++ ":", x6)
+  log(l7 ++ ":", x7)
   groupEnd()
 }
