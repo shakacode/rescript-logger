@@ -1,6 +1,6 @@
 {
   "name": "rescript-logger-ppx",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Logging implementation for ReScript",
   "author": "Alex Fedoseev <alex@fedoseev.mx>",
   "license": "MIT",
