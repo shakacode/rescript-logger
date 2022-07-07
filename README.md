@@ -331,7 +331,7 @@ module Submodule = {
 Note, you don't have to re-implement all functions from the default logger, only the ones you actually use. Don't worry to forget to implement something. If later on, you will attempt to use unimplemented method it will be compile time error.
 
 ### Usage in libraries
-I you develop a library and want to use `rescript-logger` during development process, you can do so without spamming output of consumers of your library.
+If you develop a library and want to use `rescript-logger` during development process, you can do so without spamming output of consumers of your library.
 
 `rescript-logger/ppx` accepts `--lib` flag:
 
