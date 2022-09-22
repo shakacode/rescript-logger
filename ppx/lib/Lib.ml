@@ -633,7 +633,7 @@ module LogAttr = struct
                   {
                     pstr_desc =
                       Pstr_eval(
-                        {pexp_desc = Pexp_constant (Pconst_string (x, _loc, None))},
+                        {pexp_desc = Pexp_constant (Pconst_string (x, _loc, _))},
                         _
                       )
                   }::[]) ->
@@ -724,13 +724,16 @@ module LogAttr = struct
                             ppat_desc =
                               Ppat_construct (
                                 {txt = Lident tag},
-                                Some {
-                                  ppat_desc =
-                                    (
-                                      (Ppat_tuple ({ppat_desc = Ppat_var {txt = x1}}::[]))(* Reason *)
-                                      | (Ppat_var {txt = x1}) (* ReScript *)
-                                    )
-                                }
+                                Some(
+                                  _,
+                                  {
+                                    ppat_desc =
+                                      (
+                                        (Ppat_tuple ({ppat_desc = Ppat_var {txt = x1}}::[]))(* Reason *)
+                                        | (Ppat_var {txt = x1}) (* ReScript *)
+                                      )
+                                  }
+                                )
                               )
                           } as pattern;
                         pc_rhs = branch;
@@ -753,13 +756,16 @@ module LogAttr = struct
                             ppat_desc =
                               Ppat_construct (
                                 {txt = Lident tag},
-                                Some {
-                                  ppat_desc =
-                                    Ppat_tuple (
-                                      {ppat_desc = Ppat_var {txt = x1}}::
-                                      {ppat_desc = Ppat_var {txt = x2}}::[]
-                                    )
-                                }
+                                Some(
+                                  _,
+                                  {
+                                    ppat_desc =
+                                      Ppat_tuple (
+                                        {ppat_desc = Ppat_var {txt = x1}}::
+                                        {ppat_desc = Ppat_var {txt = x2}}::[]
+                                      )
+                                  }
+                                )
                               )
                           } as pattern;
                         pc_rhs = branch;
@@ -782,14 +788,17 @@ module LogAttr = struct
                             ppat_desc =
                               Ppat_construct (
                                 {txt = Lident tag},
-                                Some {
-                                  ppat_desc =
-                                    Ppat_tuple (
-                                       {ppat_desc = Ppat_var {txt = x1}}::
-                                       {ppat_desc = Ppat_var {txt = x2}}::
-                                       {ppat_desc = Ppat_var {txt = x3}}::[]
-                                    )
-                                }
+                                Some(
+                                  _,
+                                  {
+                                    ppat_desc =
+                                      Ppat_tuple (
+                                        {ppat_desc = Ppat_var {txt = x1}}::
+                                        {ppat_desc = Ppat_var {txt = x2}}::
+                                        {ppat_desc = Ppat_var {txt = x3}}::[]
+                                      )
+                                  }
+                                )
                               )
                           } as pattern;
                         pc_rhs = branch;
@@ -818,15 +827,18 @@ module LogAttr = struct
                             ppat_desc =
                               Ppat_construct (
                                 {txt = Lident tag},
-                                Some {
-                                  ppat_desc =
-                                    Ppat_tuple (
-                                      {ppat_desc = Ppat_var {txt = x1}}::
-                                      {ppat_desc = Ppat_var {txt = x2}}::
-                                      {ppat_desc = Ppat_var {txt = x3}}::
-                                      {ppat_desc = Ppat_var {txt = x4}}::[]
-                                    )
-                                }
+                                Some(
+                                  _,
+                                  {
+                                    ppat_desc =
+                                      Ppat_tuple (
+                                        {ppat_desc = Ppat_var {txt = x1}}::
+                                        {ppat_desc = Ppat_var {txt = x2}}::
+                                        {ppat_desc = Ppat_var {txt = x3}}::
+                                        {ppat_desc = Ppat_var {txt = x4}}::[]
+                                      )
+                                  }
+                                )
                               )
                           } as pattern;
                         pc_rhs = branch;
@@ -856,16 +868,19 @@ module LogAttr = struct
                             ppat_desc =
                               Ppat_construct (
                                 {txt = Lident tag},
-                                Some {
-                                  ppat_desc =
-                                    Ppat_tuple (
-                                      {ppat_desc = Ppat_var {txt = x1}}::
-                                      {ppat_desc = Ppat_var {txt = x2}}::
-                                      {ppat_desc = Ppat_var {txt = x3}}::
-                                      {ppat_desc = Ppat_var {txt = x4}}::
-                                      {ppat_desc = Ppat_var {txt = x5}}::[]
-                                    )
-                                }
+                                Some(
+                                  _,
+                                  {
+                                    ppat_desc =
+                                      Ppat_tuple (
+                                        {ppat_desc = Ppat_var {txt = x1}}::
+                                        {ppat_desc = Ppat_var {txt = x2}}::
+                                        {ppat_desc = Ppat_var {txt = x3}}::
+                                        {ppat_desc = Ppat_var {txt = x4}}::
+                                        {ppat_desc = Ppat_var {txt = x5}}::[]
+                                      )
+                                  }
+                                )
                               )
                           } as pattern;
                         pc_rhs = branch;
@@ -896,17 +911,20 @@ module LogAttr = struct
                             ppat_desc =
                               Ppat_construct (
                                 {txt = Lident tag},
-                                Some {
-                                  ppat_desc =
-                                    Ppat_tuple (
-                                      {ppat_desc = Ppat_var {txt = x1}}::
-                                      {ppat_desc = Ppat_var {txt = x2}}::
-                                      {ppat_desc = Ppat_var {txt = x3}}::
-                                      {ppat_desc = Ppat_var {txt = x4}}::
-                                      {ppat_desc = Ppat_var {txt = x5}}::
-                                      {ppat_desc = Ppat_var {txt = x6}}::[]
-                                    )
-                                }
+                                Some(
+                                  _,
+                                  {
+                                    ppat_desc =
+                                      Ppat_tuple (
+                                        {ppat_desc = Ppat_var {txt = x1}}::
+                                        {ppat_desc = Ppat_var {txt = x2}}::
+                                        {ppat_desc = Ppat_var {txt = x3}}::
+                                        {ppat_desc = Ppat_var {txt = x4}}::
+                                        {ppat_desc = Ppat_var {txt = x5}}::
+                                        {ppat_desc = Ppat_var {txt = x6}}::[]
+                                      )
+                                  }
+                                )
                               )
                           } as pattern;
                         pc_rhs = branch;
@@ -938,18 +956,21 @@ module LogAttr = struct
                             ppat_desc =
                               Ppat_construct (
                                 {txt = Lident tag},
-                                Some {
-                                  ppat_desc =
-                                    Ppat_tuple (
-                                      {ppat_desc = Ppat_var {txt = x1}}::
-                                      {ppat_desc = Ppat_var {txt = x2}}::
-                                      {ppat_desc = Ppat_var {txt = x3}}::
-                                      {ppat_desc = Ppat_var {txt = x4}}::
-                                      {ppat_desc = Ppat_var {txt = x5}}::
-                                      {ppat_desc = Ppat_var {txt = x6}}::
-                                      {ppat_desc = Ppat_var {txt = x7}}::[]
-                                    )
-                                }
+                                Some(
+                                  _,
+                                  {
+                                    ppat_desc =
+                                      Ppat_tuple (
+                                        {ppat_desc = Ppat_var {txt = x1}}::
+                                        {ppat_desc = Ppat_var {txt = x2}}::
+                                        {ppat_desc = Ppat_var {txt = x3}}::
+                                        {ppat_desc = Ppat_var {txt = x4}}::
+                                        {ppat_desc = Ppat_var {txt = x5}}::
+                                        {ppat_desc = Ppat_var {txt = x6}}::
+                                        {ppat_desc = Ppat_var {txt = x7}}::[]
+                                      )
+                                  }
+                                )
                               )
                           } as pattern;
                         pc_rhs = branch;

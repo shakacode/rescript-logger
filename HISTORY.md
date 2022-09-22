@@ -1,4 +1,6 @@
 # History
+## UNRELEASED
+- Upgrade to `rescript@10`.
 
 ## 2.2.0
 - Add universal logger (`ReScriptLogger.Universal`). Useful for apps with SSR.
