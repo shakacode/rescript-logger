@@ -1,5 +1,7 @@
 # History
 ## UNRELEASED
+
+## 3.0.0
 - **[BREAKING]** Remove `filePath` from `Location.t`.
 - Upgrade to `rescript@10`.
 
