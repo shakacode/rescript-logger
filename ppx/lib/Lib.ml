@@ -282,10 +282,6 @@ module Ast = struct
           {txt = Lident "fullPath"; loc = !default_loc},
           Exp.constant (Const.string (cp |> Code_path.fully_qualified_path))
         );
-        (
-          {txt = Lident "filePath"; loc = !default_loc},
-          Exp.constant (Const.string (cp |> Code_path.file_path))
-        );
       ]
       None
 
