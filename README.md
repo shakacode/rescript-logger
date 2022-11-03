@@ -69,6 +69,10 @@ You can add data to log entry like this:
   "Info message"
   ("Foo", 42)
 )
+
+// Adding log entries on a single line requires semicolons between arguments:
+%log.info("Info message"; ("Foo", 42))
+
 %log.info(
   "Info message"
   ("Foo", {x: 42})
