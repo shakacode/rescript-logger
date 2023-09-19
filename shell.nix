@@ -1,7 +1,7 @@
 with import <nixpkgs> {};
 with pkgs.ocaml-ng.ocamlPackages_4_12;
 
-let 
+let
   ppxlib-rescript = ppxlib.overrideAttrs (_: {
     version = "git";
     src = fetchFromGitHub {

@@ -1,5 +1,6 @@
 node_modules/
 .direnv/
+.devbox/
 .vscode/
 .envrc
 .cache
@@ -12,4 +13,6 @@ node_modules/
 /_release
 /lib/lib/
 /examples/lib/
+/scripts/aws.env
+/scripts/aws.pem
 rescript-logger-ppx.install

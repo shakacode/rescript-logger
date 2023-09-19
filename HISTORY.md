@@ -1,6 +1,9 @@
 # History
 ## UNRELEASED
 
+## 3.1.0
+- Add Linux `arm64` binary.
+
 ## 3.0.0
 - **[BREAKING]** Remove `filePath` from `Location.t`.
 - Upgrade to `rescript@10`.
