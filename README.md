@@ -421,6 +421,33 @@ cd lib && yarn run build
 cd ../examples && yarn run build
 ```
 
+### Devbox flow
+Clone repo and either enter the Devbox shell:
+
+```
+devbox shell
+```
+
+Or use [`direnv`](https://direnv.net/) and create `.envrc` file in the root directory of the project by running:
+
+```
+devbox generate direnv --print-envrc
+```
+
+Then install deps:
+
+```shell
+yarn install
+```
+
+Build loggers and ppx:
+
+```shell
+devbox run build
+cd lib && yarn run build
+cd ../examples && yarn run build
+```
+
 ### Esy flow 
 Clone repo and install deps:
 
