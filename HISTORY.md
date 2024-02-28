@@ -1,5 +1,7 @@
 # History
 ## UNRELEASED
+- Update to ReScript 11.
+- **[BREAKING]** Remove Linux `arm64` binary.
 
 ## 3.1.0
 - Add Linux `arm64` binary.
