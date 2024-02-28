@@ -250,9 +250,10 @@ let reducer =
 These entries are logged on the `debug` level so none of it will appear in your production builds.
 
 ### Custom loggers
-`rescript-logger` ships with 3 loggers:
+`rescript-logger` ships with 4 loggers:
 - `ReScriptLogger.Browser` (default)
 - `ReScriptLogger.Node`
+- `ReScriptLogger.Edge` (to use in edge environment, such as Cloudflare Workers)
 - `ReScriptLogger.Universal` (picks either `Browser` or `Node` logger at runtime depending on an environment, useful for apps with SSR)
 
 And you can easily plug your own.

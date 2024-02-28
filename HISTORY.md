@@ -1,6 +1,7 @@
 # History
 ## UNRELEASED
 - Update to ReScript 11.
+- Add `Edge` logger.
 - **[BREAKING]** Remove Linux `arm64` binary.
 
 ## 3.1.0
