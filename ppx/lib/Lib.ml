@@ -1014,24 +1014,49 @@ module LogAttr = struct
 
         | ({pexp_loc}, _) -> Location.raise_errorf ~loc: pexp_loc "Expected pattern matching"
 
-  let impl =
-    (
-      object (_this)
-        inherit Ast_traverse.map_with_expansion_context as super
+    let impl =
+      (
+        object (_self)
+          inherit Ast_traverse.map_with_expansion_context_and_errors as super
 
-        method! expression ctx expr =
-          let expr = super#expression ctx expr in
-          match expr |> Attribute.get attr with
-          | None -> expr
-          | Some namespace ->
-            expr |> transform ~env_level: level ~namespace ~context: ctx
+          method! expression ctx expr =
+            let expr, errors = super#expression ctx expr in
+            match expr |> Attribute.get attr with
+            | None -> (expr, errors)
+            | Some namespace ->
+              let expr = expr |> transform ~env_level:level ~namespace ~context:ctx in
+              (expr, errors)
 
-        method! structure str =
-          let str = super#structure str in
-          Attribute.check_all_seen ();
-          str
-      end
-    )#structure;
+          method! structure ctx str =
+            let str, errors = super#structure ctx str in
+            Attribute.check_all_seen ();
+            (str, errors)
+        end
+      )#structure
+end
+
+module File_path = struct
+  let chop_prefix ~prefix x =
+    let prefix_len = String.length prefix in
+    let x_len = String.length x in
+    if x_len >= prefix_len && String.sub x 0 prefix_len = prefix then
+      Some (String.sub x prefix_len (x_len - prefix_len))
+    else
+      None
+
+  let get_default_path (loc : Location.t) =
+    let fname = loc.loc_start.pos_fname in
+    match chop_prefix ~prefix:"./" fname with
+    | Some fname -> fname
+    | None -> fname
+
+  let get_default_path_str : structure -> string = function
+    | [] -> ""
+    | { pstr_loc = loc; _ } :: _ -> get_default_path loc
+
+  let get_default_path_sig : signature -> string = function
+    | [] -> ""
+    | { psig_loc = loc; _ } :: _ -> get_default_path loc
 end
 
 let _ =
@@ -1045,15 +1070,16 @@ let _ =
           let ctx =
             Expansion_context.Base.top_level
               ~tool_name: (Ocaml_common.Ast_mapper.tool_name ())
-              ~file_path: path 
+              ~file_path: path
               ~input_name: (
                 (* I'm not sure if it's what meant by `input_name` *)
-                match path |> Filename.basename |> Filename.chop_extension with 
+                match path |> Filename.basename |> Filename.chop_extension with
                 | x -> x
                 | exception _ -> ""
               )
           in
-          str |> LogAttr.impl ctx
+          let str, _ = str |> LogAttr.impl ctx in
+          str
       )
 
 let _ = Driver.add_arg LibArg.key LibArg.spec ~doc:LibArg.doc

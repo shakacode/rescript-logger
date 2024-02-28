@@ -6,7 +6,7 @@ node_modules/
 .cache
 .merlin
 .bsb.lock
-*.bs.js
+*.res.js
 .DS_Store
 /_esy
 /_build

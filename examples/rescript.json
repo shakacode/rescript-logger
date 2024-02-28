@@ -1,0 +1,22 @@
+{
+    "name": "rescript-logger-examples",
+    "sources": [
+        {
+            "dir": "src",
+            "subdirs": true
+        }
+    ],
+    "bs-dependencies": [
+        "rescript-logger"
+    ],
+    "package-specs": {
+        "module": "es6",
+        "in-source": true
+    },
+    "ppx-flags": [
+        [
+            "../_build/default/ppx/bin/bin.exe"
+        ]
+    ],
+    "suffix": ".res.js"
+}

@@ -1,12 +1,12 @@
 {
-  "name": "rescript-logger",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "start": "rescript build -w",
-    "build": "rescript build"
-  },
-  "devDependencies": {
-    "rescript": "10.0.1"
-  }
+    "name": "rescript-logger",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "start": "rescript build -w",
+        "build": "rescript build"
+    },
+    "devDependencies": {
+        "rescript": "11.0.1"
+    }
 }
