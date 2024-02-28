@@ -1,5 +1,10 @@
+(env
+ (static
+  (flags
+   (:standard -ccopt -static))))
+
 (executable
+  (package rescript-logger-ppx)
   (name bin)
   (public_name rescript-logger-ppx)
-  (libraries rescript-logger-ppx.lib)
-)
+  (libraries rescript-logger-ppx.lib))

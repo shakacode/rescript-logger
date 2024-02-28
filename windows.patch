@@ -1,0 +1,15 @@
+diff --git a/rescript-logger-ppx.opam b/rescript-logger-ppx.opam
+index f270f4d..1cd834e 100644
+--- a/rescript-logger-ppx.opam
++++ b/rescript-logger-ppx.opam
+@@ -13,8 +13,8 @@ bug-reports: "https://github.com/shakacode/rescript-logger/issues"
+ dev-repo: "git+https://github.com/shakacode/rescript-logger.git"
+ depends: [
+   "ocaml" { = "4.14.1" }
+-  "dune" { = "3.11.1" }
+-  "ppxlib" { = "0.30.0" }
++  "dune" { = "3.5.0" }
++  "ppxlib" { = "0.28.0" }
+ ]
+ build: [
+   ["dune" "build" "-p" name "-j" jobs]

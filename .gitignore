@@ -6,13 +6,10 @@ node_modules/
 .cache
 .merlin
 .bsb.lock
-*.bs.js
+*.res.js
 .DS_Store
-/_esy
 /_build
 /_release
 /lib/lib/
 /examples/lib/
-/scripts/aws.env
-/scripts/aws.pem
 rescript-logger-ppx.install
